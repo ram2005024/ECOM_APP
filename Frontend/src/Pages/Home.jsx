@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Footer } from "../Components/Home/Footer";
 import Hero from "../Components/Home/Hero";
 import Join from "../Components/Home/Join";
@@ -8,9 +9,14 @@ import Selling from "../Components/Home/Selling";
 import Specification from "../Components/Home/Specification";
 
 const Home = () => {
+  const [showProfile, setShowProfile] = useState(false);
   return (
-    <div id="#" className="min-h-screen min-w-screen ">
-      <Nav />
+    <div
+      id="#"
+      className="min-h-screen min-w-screen "
+      onClick={() => setShowProfile(false)}
+    >
+      <Nav showProfile={showProfile} setShowProfile={setShowProfile} />
       <hr className="text-gray-300 " />
       <Hero />
       <ScrollProduct />

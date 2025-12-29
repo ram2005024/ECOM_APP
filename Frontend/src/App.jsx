@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Login from "./Components/SignIn/Login";
 import Seller from "./Pages/Seller";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { login } from "./slices/authSlice";
+import Protected from "./middlewares/Protected";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,7 +21,8 @@ const App = () => {
           }
         );
         if (!res.data.success) return toast.error(res.data.message);
-        console.log(res.data.user);
+
+        console.log("ME API USER:", res.data.user);
         dispatch(login(res.data.user));
       } catch (error) {
         console.log(error);
@@ -28,7 +30,7 @@ const App = () => {
     };
     getUser();
   }, []);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+
   const router = createBrowserRouter([
     {
       index: true,
@@ -40,7 +42,11 @@ const App = () => {
     },
     {
       path: "/store",
-      element: isAuthenticated ? <Seller /> : <Login />,
+      element: (
+        <Protected>
+          <Seller />
+        </Protected>
+      ),
     },
   ]);
   return <RouterProvider router={router} />;

@@ -12,7 +12,46 @@ model User{
   name String?
   email String @unique
   password String?
-  image String?
+  image String? @default("")
+  role String @default("customer")
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  seller Seller?
+}
+model Seller{
+  id Int @id @default(autoincrement())
+  userID Int @unique
+  description String?
+  type String?
+  isApproved String? @default("pending")
+  storename String
+  reasonForRejection String?
+  approvedAt DateTime?
+  image String?
+  approvedBy String?
+  filled Boolean @default(false)
+  products Product[]
+    createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user User @relation(fields: [userID] ,references: [id])
+}
+model Category{
+  id Int @id @default(autoincrement())
+  name String 
+  parentId Int?
+  parent Category? @relation("CategoryTree",fields: [parentId],references: [id])
+  children Category[] @relation("CategoryTree")
+  products Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+model Product{
+  id Int @id @default(autoincrement())
+  sellerId Int
+  name String
+  stock Int?
+  price Int?
+  categoryId Int
+  category Category @relation(fields: [categoryId],references: [id])
+  seller Seller @relation(fields: [sellerId],references: [id])
 }

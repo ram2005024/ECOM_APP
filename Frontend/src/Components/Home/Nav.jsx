@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Search, ShoppingCart } from "lucide-react";
 import { Link, Navigate } from "react-router-dom";
-import Login from "../SignIn/Login";
+import Login from "../SignIn/Login.jsx";
 import { useSelector } from "react-redux";
+import ShowProfile from "../Nav/ShowProfile";
 
-const Nav = () => {
+const Nav = ({ showProfile, setShowProfile }) => {
   const user = useSelector((state) => state.auth.user);
-  console.log(user?.userName);
+  console.log(user?.id);
+
   const [logButton, setLogButton] = useState(false);
   const links = [
     {
@@ -17,10 +19,7 @@ const Nav = () => {
       linkName: "Shop",
       linkPath: "/shop",
     },
-    {
-      linkName: "Seller",
-      linkPath: "/store",
-    },
+
     {
       linkName: "Admin",
       linkPath: "/admin",
@@ -37,7 +36,7 @@ const Nav = () => {
     };
   }, [logButton]);
   return (
-    <nav className="flex justify-between items-center mx-auto w-10/12">
+    <nav className="flex justify-between  items-center mx-auto w-10/12">
       {/* Logo section */}
       <Link to="/">
         <img
@@ -48,26 +47,34 @@ const Nav = () => {
       </Link>
 
       {/* Link section */}
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-2  sm:gap-4 items-center">
         {links.map((i, index) => {
           return (
             <Link
               id={index}
               to={i.linkPath}
-              className="text-gray-900 hover:text-gray-600"
+              className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
             >
               {i.linkName}
             </Link>
           );
         })}
-        <div className="flex gap-5 items-center">
+        {user?.role === "seller" && (
+          <Link
+            to="/store"
+            className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+          >
+            Seller
+          </Link>
+        )}
+        <div className="flex gap:2 sm:gap-5 items-center">
           <div className="relative ml-3">
             <input
               type="text"
               placeholder="Search Products"
-              className="bg-gray-200 rounded-full p-3 pl-12 text-sm focus:outline-none "
+              className="bg-gray-200 rounded-full p-2 sm:p-3 pl-8 sm:pl-12 text-xs sm:text-sm focus:outline-none "
             />
-            <Search size={18} className="absolute top-3 left-3 " />
+            <Search className="size-3.5 absolute top-2 left-3 sm:left-5 sm:top-3.5 sm:right-5" />
           </div>
           <div className="flex gap-1.5 items-center cursor-pointer hover:text-gray-600">
             <ShoppingCart size={18} />
@@ -76,12 +83,19 @@ const Nav = () => {
           {/* <button
             onClick={() => setLogButton(true)}
             className="rounded-full bg-emerald-700 text-center py-2 px-8 cursor-pointer hover:bg-emerald-600 text-white"
-          >
+            >
             Login
-          </button> */}
-          {user?.userID ? (
-            <button className="text-center size-10 rounded-full bg-gray-700 text-white cursor-pointer">
-              {user?.userName?.slice(0, 1)}
+            </button> */}
+          {user?.id ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowProfile((prev) => !prev);
+              }}
+              className="text-center size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
+            >
+              {user?.name?.slice(0, 1)}
+              {showProfile && <ShowProfile />}
             </button>
           ) : (
             <button

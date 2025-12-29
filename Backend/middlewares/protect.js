@@ -8,8 +8,8 @@ export const protectRoute = async (req, res, next) => {
         .status(401)
         .json({ success: false, message: "Invalid/missing token" });
     const data = jwt.verify(token, process.env.JWT_SECRET);
-    req.userID = data.userID;
-    req.userName = data.userName;
+    console.log(data);
+    req.user = data.user;
     next();
   } catch (error) {
     return res
