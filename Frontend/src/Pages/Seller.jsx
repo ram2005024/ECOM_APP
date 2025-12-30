@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { createSeller } from "../slices/sellerSlice";
 import SellerVerificationPage from "../Components/Seller/SellerDoc";
+import SellerDashboard from "../Components/Seller/SellerDashboard";
 
 const Seller = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ const Seller = () => {
       {seller?.filled && seller.isApproved === "pending" && (
         <SellerVerificationPage sellerDetails={seller} />
       )}
+      {seller.isApproved === "approved" && <SellerDashboard />}
     </div>
   );
 };

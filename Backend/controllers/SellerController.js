@@ -20,6 +20,7 @@ export const registerSellerData = async (req, res) => {
         userID: Number(req.body.userID),
         description: req.body.des,
         phoneNo: req.body.phone,
+        address: req.body.address,
         isApproved: "pending",
         image: imageURL,
         filled: true,

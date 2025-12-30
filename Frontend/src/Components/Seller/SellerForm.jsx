@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   FileType,
   Image,
+  LocationEdit,
   Notebook,
   Phone,
   Store,
@@ -16,7 +17,8 @@ const SellerForm = () => {
   const [storename, setStoreName] = useState("");
   const [storeDescription, setDescription] = useState("");
   const [storeType, setStoreType] = useState("");
-  const [phnNo, setPhnNo] = useState();
+  const [phnNo, setPhnNo] = useState("");
+  const [add, setAdd] = useState("");
   const [files, setFiles] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -53,6 +55,19 @@ const SellerForm = () => {
       ),
       placeholder: "Enter your contact no.",
     },
+    {
+      id: "Address",
+      type: "text",
+      value: add,
+      setter: setAdd,
+      icon: (
+        <LocationEdit
+          size={14}
+          className="absolute top-10 left-4 text-gray-600"
+        />
+      ),
+      placeholder: "Enter your store address",
+    },
 
     {
       id: "Store type",
@@ -74,6 +89,7 @@ const SellerForm = () => {
     formData.append("type", storeType);
     formData.append("userID", user?.id);
     formData.append("phone", phnNo);
+    formData.append("address", add);
     formData.append("storeImage", files);
 
     if (confirm("Are you sure want to save the store info")) {
