@@ -7,11 +7,13 @@ import { useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { createSeller } from "../slices/sellerSlice";
+import SellerVerificationPage from "../Components/Seller/SellerDoc";
 
 const Seller = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const seller = useSelector((state) => state.seller.seller);
+  console.log(seller);
   console.log("Yo hai ", seller);
   useEffect(() => {
     const getSellerDetail = async () => {
@@ -36,11 +38,11 @@ const Seller = () => {
     getSellerDetail();
   }, []);
   return (
-    <div className="h-screen w-screen grid grid-cols-12 grid-rows-12">
+    <div className="min-h-screen min-w-screen">
       <Nav />
       {!seller?.filled && <SellerForm />}
       {seller?.filled && seller.isApproved === "pending" && (
-        <div>Show documnent with pending status</div>
+        <SellerVerificationPage sellerDetails={seller} />
       )}
     </div>
   );

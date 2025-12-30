@@ -21,8 +21,8 @@ const Nav = ({ showProfile, setShowProfile }) => {
     },
 
     {
-      linkName: "Admin",
-      linkPath: "/admin",
+      linkName: "Contact",
+      linkPath: "/contact",
     },
   ];
   useEffect(() => {
@@ -65,6 +65,14 @@ const Nav = ({ showProfile, setShowProfile }) => {
             className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
           >
             Seller
+          </Link>
+        )}
+        {user?.role === "admin" && (
+          <Link
+            to="/admin"
+            className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+          >
+            Admin
           </Link>
         )}
         <div className="flex gap:2 sm:gap-5 items-center">

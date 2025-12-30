@@ -3,6 +3,7 @@ import {
   FileType,
   Image,
   Notebook,
+  Phone,
   Store,
   StoreIcon,
   UploadCloud,
@@ -15,6 +16,7 @@ const SellerForm = () => {
   const [storename, setStoreName] = useState("");
   const [storeDescription, setDescription] = useState("");
   const [storeType, setStoreType] = useState("");
+  const [phnNo, setPhnNo] = useState();
   const [files, setFiles] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -40,6 +42,18 @@ const SellerForm = () => {
       ),
       placeholder: "Enter your store description",
     },
+
+    {
+      id: "Phone number",
+      type: "text",
+      value: phnNo,
+      setter: setPhnNo,
+      icon: (
+        <Phone size={14} className="absolute top-10 left-4 text-gray-600" />
+      ),
+      placeholder: "Enter your contact no.",
+    },
+
     {
       id: "Store type",
       type: "text",
@@ -59,6 +73,7 @@ const SellerForm = () => {
     formData.append("des", storeDescription);
     formData.append("type", storeType);
     formData.append("userID", user?.id);
+    formData.append("phone", phnNo);
     formData.append("storeImage", files);
 
     if (confirm("Are you sure want to save the store info")) {
@@ -93,10 +108,10 @@ const SellerForm = () => {
     }
   };
   return (
-    <div className="col-span-12 row-span-10 flex justify-center items-center">
+    <div className=" flex justify-center ">
       <form
         onSubmit={(e) => handleStoreFormSubmit(e)}
-        className=" flex p-3 flex-col sm:min-w-lg gap-2.5 shadow-lg rounded-lg bg-slate-100"
+        className=" flex p-3 flex-col h-fit sm:min-w-lg gap-2.5 mt-10 shadow-lg rounded-lg bg-slate-100"
       >
         <h2 className="text-center text-cl font-semibold text-gray-900">
           Please submit the store information
@@ -127,7 +142,7 @@ const SellerForm = () => {
                 Selected : {files.name}
               </h2>
             ) : (
-              <div>
+              <div className="flex flex-col items-center">
                 <UploadCloud
                   size={18}
                   className="text-gray-600 transform transition-all hover:scale-105 mr-2.5"

@@ -9,6 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { login } from "./slices/authSlice";
 import Protected from "./middlewares/Protected";
+import Admin from "./Pages/Admin";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -45,6 +46,14 @@ const App = () => {
       element: (
         <Protected>
           <Seller />
+        </Protected>
+      ),
+    },
+    {
+      path: "/admin",
+      element: (
+        <Protected>
+          <Admin />
         </Protected>
       ),
     },

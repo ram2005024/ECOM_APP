@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Seller" ALTER COLUMN "phoneNo" SET DATA TYPE TEXT;
