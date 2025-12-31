@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { createSeller } from "../slices/sellerSlice";
 import SellerVerificationPage from "../Components/Seller/SellerDoc";
 import SellerDashboard from "../Components/Seller/SellerDashboard";
+import SellerIfRejectedForm from "../Components/Seller/SellerIfRejectedForm";
 
 const Seller = () => {
   const dispatch = useDispatch();
@@ -42,10 +43,11 @@ const Seller = () => {
     <div className="min-h-screen min-w-screen">
       <Nav />
       {!seller?.filled && <SellerForm />}
-      {seller?.filled && seller.isApproved === "pending" && (
+      {seller?.filled && seller?.isApproved === "pending" && (
         <SellerVerificationPage sellerDetails={seller} />
       )}
-      {seller.isApproved === "approved" && <SellerDashboard />}
+      {seller?.isApproved === "approved" && <SellerDashboard />}
+      {seller?.isApproved === "rejected" && <SellerIfRejectedForm />}
     </div>
   );
 };

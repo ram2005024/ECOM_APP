@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import { sellerRegister } from "./EmailTemplate/sellerRegistationTemplate.js";
 import { adminReviewEmail } from "./EmailTemplate/adminReview.js";
+import { approveSuccessEmail } from "./EmailTemplate/approveSuccess.js";
+import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -14,7 +16,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async ({
   to,
   subject,
-
+  type,
   storename,
   username,
   id,
@@ -23,11 +25,12 @@ export const sendEmail = async ({
     from: process.env.USER_EMAIL,
     to,
     subject,
-    html: sellerRegister(storename, username, id),
+    html: sellerRegister(storename, username, id, type),
   });
 };
 export const sendAdminMessage = async ({
   to,
+  type,
   subject,
   storename,
   username,
@@ -38,6 +41,43 @@ export const sendAdminMessage = async ({
     from: process.env.USER_EMAIL,
     to,
     subject,
-    html: adminReviewEmail(storename, username, id, registrationDate),
+    html: adminReviewEmail(storename, username, id, type, registrationDate),
+  });
+};
+export const approvalMessage = async ({
+  to,
+  subject,
+  storename,
+  username,
+  id,
+  registrationDate,
+  approvedAt,
+}) => {
+  await transporter.sendMail({
+    from: process.env.USER_EMAIL,
+    to: to,
+    subject: subject,
+    html: approveSuccessEmail(
+      storename,
+      username,
+      id,
+      registrationDate,
+      approvedAt
+    ),
+  });
+};
+export const rejectionMessage = async ({
+  to,
+  subject,
+  storename,
+  username,
+  id,
+  rejectionMessage,
+}) => {
+  await transporter.sendMail({
+    from: process.env.USER_EMAIL,
+    to: to,
+    subject: subject,
+    html: rejectMessageTemplate(storename, username, id, rejectionMessage),
   });
 };

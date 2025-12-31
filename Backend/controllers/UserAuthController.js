@@ -15,8 +15,8 @@ export const login = async (req, res) => {
 
     if (!userExist)
       return res.json({ success: false, message: "User doesn't exist" });
-    const isMatchPassword = userExist.password === password;
-    // const isMatchPassword = await compareHash(password, userExist.password);
+    // const isMatchPassword = userExist.password === password;
+    const isMatchPassword = await compareHash(password, userExist.password);
     if (!isMatchPassword)
       return res.json({ message: "Password didn't match", success: false });
     userExist.password = undefined;

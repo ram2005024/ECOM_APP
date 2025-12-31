@@ -66,3 +66,56 @@ export const getSeller = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+//----------Reapply seller----------------------
+export const reapplySeller = async (req, res) => {
+  const file = req.file;
+  try {
+    let imageURL;
+    console.log(typeof req.body.sellerId);
+    //Storing image url into the cloud i.e. imagekit database
+    if (file) {
+      const urlInResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: req.file.originalname,
+        folder: "/sellers_profile",
+      });
+      imageURL = urlInResponse.url;
+    }
+    const seller = await prisma.seller.update({
+      where: { id: Number(req.body.sellerId) },
+      data: {
+        userID: Number(req.body.userID),
+        description: req.body.des,
+        phoneNo: req.body.phone,
+        address: req.body.address,
+        isApproved: "pending",
+        image: imageURL,
+        filled: true,
+        storename: req.body.name,
+        type: req.body.type,
+      },
+      include: {
+        user: true,
+      },
+    });
+    await inngest.send({
+      name: "seller/registration.submitted",
+      data: {
+        type: "resend",
+        storename: seller.storename,
+        username: seller.user.name,
+        email: seller.user.email,
+        storeID: seller.id,
+        registerDate: seller.createdAt.toLocaleDateString(),
+      },
+    });
+    return res.json({
+      message: "Store application re-sent",
+      success: true,
+      seller: seller,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: error.message, success: false });
+  }
+};
