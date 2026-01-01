@@ -88,3 +88,30 @@ export const rejectStatus = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
+//-------------Adding new Category--------------
+export const addCategory = async (req, res) => {
+  const { category } = req.body;
+  try {
+    const cat = await prisma.category.create({
+      data: {
+        name: category,
+      },
+    });
+    console.log(typeof cat);
+    return res.json({ message: "Added Cateogory", success: true, cat });
+  } catch (error) {
+    return res.json({ message: error.message, success: false });
+  }
+};
+//-------------Get Category-------------------
+export const getCategory = async (req, res) => {
+  try {
+    const categories = await prisma.category.findMany();
+    if (!categories) {
+      return res.json({ message: "No categories found", success: false });
+    }
+    return res.json({ success: true, categories });
+  } catch (error) {
+    return res.json({ message: error.message, success: false });
+  }
+};

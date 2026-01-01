@@ -15,8 +15,7 @@ const Seller = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const seller = useSelector((state) => state.seller.seller);
-  console.log(seller);
-  console.log("Yo hai ", seller);
+
   useEffect(() => {
     const getSellerDetail = async () => {
       try {
@@ -40,7 +39,7 @@ const Seller = () => {
     getSellerDetail();
   }, []);
   return (
-    <div className="min-h-screen min-w-screen">
+    <div className="h-screen w-screen  flex flex-col">
       <Nav />
       {!seller?.filled && <SellerForm />}
       {seller?.filled && seller?.isApproved === "pending" && (
