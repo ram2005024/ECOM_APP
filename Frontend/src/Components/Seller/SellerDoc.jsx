@@ -73,7 +73,7 @@ export default function SellerVerificationPage({ sellerDetails }) {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 min-h-screen">
+    <div className="flex  items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 ">
       <div className="w-full max-w-4xl">
         <div
           className={`rounded-t-xl border-l-4 border-r-4 border-t-4 p-6 flex items-center justify-between ${getStatusColor()}`}

@@ -42,6 +42,7 @@ export const addProduct = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
+//--------Controller to analyze the image-------------
 export const analyzeImage = async (req, res) => {
   const prompt = `
 You are a product image analysis API.
@@ -98,7 +99,7 @@ Rules:
     res.json({ message: error.message, success: false });
   }
 };
-//---------Controller to get product details---------------
+//---------Controller to get product according to seller ---------------
 export const getProduct = async (req, res) => {
   try {
     const sellerId = req.query.sellerId;
@@ -134,5 +135,22 @@ export const handleShow = async (req, res) => {
     return res.json({ success: true, products });
   } catch (error) {
     console.log(error);
+  }
+};
+//--------------Get all products----------------------
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        seller: true,
+        category: true,
+      },
+    });
+    if (!products)
+      return res.json({ success: false, message: "No products uploaded yet!" });
+    return res.json({ success: true, products });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, succes: false });
   }
 };

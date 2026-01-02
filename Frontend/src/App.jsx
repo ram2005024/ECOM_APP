@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { login } from "./slices/authSlice";
 import Protected from "./middlewares/Protected";
 import Admin from "./Pages/Admin";
+import ProductView from "./Pages/ProductView";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -46,6 +47,14 @@ const App = () => {
       element: (
         <Protected>
           <Seller />
+        </Protected>
+      ),
+    },
+    {
+      path: "/product/:pid",
+      element: (
+        <Protected>
+          <ProductView />
         </Protected>
       ),
     },

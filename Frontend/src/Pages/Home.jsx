@@ -7,9 +7,32 @@ import Product from "../Components/Home/Product";
 import ScrollProduct from "../Components/Home/ScrollProduct";
 import Selling from "../Components/Home/Selling";
 import Specification from "../Components/Home/Specification";
-
+import { setProduct } from "../slices/productSlice";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useEffect } from "react";
 const Home = () => {
+  const dispath = useDispatch();
   const [showProfile, setShowProfile] = useState(false);
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await axios.get(
+          import.meta.env.VITE_SERVER_URL + "/product/getAllProduct",
+          {
+            withCredentials: true,
+          }
+        );
+        if (!res.data.success) {
+          return;
+        }
+        dispath(setProduct(res.data.products));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProduct();
+  }, []);
   return (
     <div
       id="#"
