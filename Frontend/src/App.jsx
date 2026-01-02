@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
 import { useDispatch } from "react-redux";
-import Login from "./Components/SignIn/Login";
 import Seller from "./Pages/Seller";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -11,6 +10,9 @@ import { login } from "./slices/authSlice";
 import Protected from "./middlewares/Protected";
 import Admin from "./Pages/Admin";
 import ProductView from "./Pages/ProductView";
+import { Footer } from "./Components/Home/Footer";
+import MainLayout from "../Layouts/MainLayout";
+import ProtectedLayout from "../Layouts/ProtectedLayout";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,36 +37,51 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      index: true,
-      element: <Home />,
+      element: <MainLayout />,
+      children: [
+        {
+          index: true,
+          element: (
+            <Protected>
+              <Home />
+            </Protected>
+          ),
+        },
+        {
+          path: "/shop",
+          element: <Shop />,
+        },
+
+        {
+          path: "/product/:pid",
+          element: (
+            <Protected>
+              <ProductView />
+            </Protected>
+          ),
+        },
+      ],
     },
     {
-      path: "/shop",
-      element: <Shop />,
-    },
-    {
-      path: "/store",
-      element: (
-        <Protected>
-          <Seller />
-        </Protected>
-      ),
-    },
-    {
-      path: "/product/:pid",
-      element: (
-        <Protected>
-          <ProductView />
-        </Protected>
-      ),
-    },
-    {
-      path: "/admin",
-      element: (
-        <Protected>
-          <Admin />
-        </Protected>
-      ),
+      element: <ProtectedLayout />,
+      children: [
+        {
+          path: "/admin",
+          element: (
+            <Protected>
+              <Admin />
+            </Protected>
+          ),
+        },
+        {
+          path: "/store",
+          element: (
+            <Protected>
+              <Seller />
+            </Protected>
+          ),
+        },
+      ],
     },
   ]);
   return <RouterProvider router={router} />;

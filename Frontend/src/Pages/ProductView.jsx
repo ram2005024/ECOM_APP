@@ -6,12 +6,7 @@ import { Footer } from "../Components/Home/Footer";
 const ProductView = () => {
   const { pid } = useParams();
 
-  return (
-    <div className="min-h-screen min-w-screen">
-      <Nav />
-      <Footer />
-    </div>
-  );
+  return <div className="min-h-screen min-w-screen"></div>;
 };
 
 export default ProductView;

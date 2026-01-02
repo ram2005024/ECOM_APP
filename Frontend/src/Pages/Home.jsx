@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Footer } from "../Components/Home/Footer";
 import Hero from "../Components/Home/Hero";
 import Join from "../Components/Home/Join";
@@ -13,7 +12,6 @@ import axios from "axios";
 import { useEffect } from "react";
 const Home = () => {
   const dispath = useDispatch();
-  const [showProfile, setShowProfile] = useState(false);
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -34,12 +32,7 @@ const Home = () => {
     getProduct();
   }, []);
   return (
-    <div
-      id="#"
-      className="min-h-screen min-w-screen "
-      onClick={() => setShowProfile(false)}
-    >
-      <Nav showProfile={showProfile} setShowProfile={setShowProfile} />
+    <div>
       <hr className="text-gray-300 " />
       <Hero />
       <ScrollProduct />

@@ -40,7 +40,6 @@ const Seller = () => {
   }, []);
   return (
     <div className="h-screen w-screen  flex flex-col">
-      <Nav />
       {!seller?.filled && <SellerForm />}
       {seller?.filled && seller?.isApproved === "pending" && (
         <SellerVerificationPage sellerDetails={seller} />
