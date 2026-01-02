@@ -4,7 +4,6 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
 import toast from "react-hot-toast";
 const AddProduct = () => {
   const [categories, setCategories] = useState([]);
@@ -17,6 +16,38 @@ const AddProduct = () => {
   const [loading, setLoading] = useState(false);
   const { seller } = useSelector((state) => state.seller);
 
+  const analyzeImage = async (file) => {
+    if (files.length <= 1) {
+      try {
+        const form = new FormData();
+        form.append("image", file);
+        setLoading(true);
+        const res = await toast.promise(
+          axios.post(
+            import.meta.env.VITE_SERVER_URL + "/product/analyzeImage",
+            form,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+              withCredentials: true,
+            }
+          ),
+          {
+            loading: "Analyzing image....",
+            error: "Error to analyze image",
+            success: "Successfully analyzed",
+          }
+        );
+        setProductName(res.data.output.title);
+        setProductDescription(res.data.output.description);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        toast.error("Failed to analyze image");
+      }
+    }
+    return;
+  };
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     if (files.length === 0) alert("Please insert at least one image");
@@ -37,7 +68,7 @@ const AddProduct = () => {
       });
       await toast.promise(
         axios.post(
-          import.meta.env.VITE_SERVER_URL + "/store/addProduct",
+          import.meta.env.VITE_SERVER_URL + "/product/addProduct",
           form,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -58,13 +89,16 @@ const AddProduct = () => {
       setOfferPrice(0);
       setActualPrice(0);
       setCategoryID();
-
       setProductDescription("");
       setProductName("");
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (files.length === 1 && files[0]) {
+      analyzeImage(files[0]);
+    }
+  }, [files]);
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -109,13 +143,14 @@ const AddProduct = () => {
                   <UploadCloud size={20} strokeWidth={2} />
                   <input
                     hidden
-                    onChange={(e) =>
+                    disabled={loading}
+                    onChange={(e) => {
                       setFiles((prev) => {
                         const newFile = [...prev];
                         newFile[index] = e.target.files[0];
                         return newFile;
-                      })
-                    }
+                      });
+                    }}
                     name={`product_name${index}`}
                     accept="img/png, img/jpeg"
                     type="file"

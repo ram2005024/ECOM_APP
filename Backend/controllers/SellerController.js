@@ -1,6 +1,7 @@
 import imagekit from "../config/imageKit.js";
 import { prisma } from "../config/db.config.js";
 import { inngest } from "../inngest/index.js";
+import { openai } from "../config/geminiAI.js";
 export const registerSellerData = async (req, res) => {
   const file = req.file;
   try {
@@ -117,45 +118,5 @@ export const reapplySeller = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ message: error.message, success: false });
-  }
-};
-export const addProduct = async (req, res) => {
-  const files = req.files;
-  try {
-    const images = [];
-    if (files) {
-      for (const file of files) {
-        const res = await imagekit.upload({
-          file: file.buffer,
-          fileName: file.originalname,
-          folder: "/product_image",
-          extensions: [
-            {
-              name: "remove-bg",
-              options: {
-                add_shadow: true,
-                bg_color: "ffffff",
-              },
-            },
-          ],
-        });
-        images.push(res.url);
-      }
-    }
-    const product = await prisma.product.create({
-      data: {
-        sellerId: Number(req.body.sellerId),
-        name: req.body.productName,
-        image: images,
-        price: Number(req.body.actualPrice),
-        offerPrice: Number(req.body.offerPrice),
-        categoryId: Number(req.body.categoryId),
-      },
-    });
-    console.log(product);
-    return res.json({ message: "Added product", succes: true });
-  } catch (error) {
-    console.log(error);
-    return res.json({ message: error.message, success: false });
   }
 };
