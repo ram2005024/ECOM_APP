@@ -95,10 +95,10 @@ const Login = ({ setLogButton }) => {
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden"
       >
-        {location.pathname === "/" && (
+        {!location.pathname.startsWith("/product") && (
           <button
             onClick={() => setLogButton(false)}
-            className="absolute top-5 right-5 z-20 text-gray-500 hover:text-gray-700"
+            className="absolute cursor-pointer top-5 right-5 z-20 text-gray-500 hover:text-gray-700"
           >
             <X size={24} />
           </button>

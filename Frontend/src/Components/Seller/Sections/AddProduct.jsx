@@ -32,9 +32,9 @@ const AddProduct = () => {
             }
           ),
           {
-            loading: "Analyzing image....",
-            error: "Error to analyze image",
-            success: "Successfully analyzed",
+            loading: "Analyzing image...",
+            error: (err) => err.response?.data?.message || err.message,
+            success: (res) => res.data.message,
           }
         );
         setProductName(res.data.output.title);

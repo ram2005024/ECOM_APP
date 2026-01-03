@@ -41,11 +41,7 @@ const App = () => {
       children: [
         {
           index: true,
-          element: (
-            <Protected>
-              <Home />
-            </Protected>
-          ),
+          element: <Home />,
         },
         {
           path: "/shop",

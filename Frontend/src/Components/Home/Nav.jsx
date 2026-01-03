@@ -7,8 +7,7 @@ import ShowProfile from "../Nav/ShowProfile";
 
 const Nav = ({ showProfile, setShowProfile }) => {
   const user = useSelector((state) => state.auth.user);
-  console.log(user?.id);
-
+  const cartCount = useSelector((state) => state.cart.cartItemCount);
   const [logButton, setLogButton] = useState(false);
   const links = [
     {
@@ -85,7 +84,12 @@ const Nav = ({ showProfile, setShowProfile }) => {
             <Search className="size-3.5 absolute top-2 left-3 sm:left-5 sm:top-3.5 sm:right-5" />
           </div>
           <div className="flex gap-1.5 items-center cursor-pointer hover:text-gray-600">
-            <ShoppingCart size={18} />
+            <div className="relative">
+              <ShoppingCart size={18} />
+              <div className="w-4 h-4 absolute -top-2 -right-2 z-10 rounded-full text-xs bg-slate-600 text-white flex items-center justify-center">
+                <span className="text-xs">{cartCount}</span>
+              </div>
+            </div>
             <span>Cart</span>
           </div>
           {/* <button

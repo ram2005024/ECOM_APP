@@ -5,7 +5,7 @@ const Nav = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   return (
-    <nav className="  border-b  border-gray-300 sm:px-10 flex justify-between w-full items-center">
+    <nav className="  border-b  border-gray-300  flex justify-between w-full items-center">
       <img
         src="/Shoppy.png"
         alt="_logo"

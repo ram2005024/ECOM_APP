@@ -61,7 +61,9 @@ const ManageProduct = () => {
       );
       if (res.data.success) {
         setLoading(false);
-        setProducts(res.data.products);
+        setProducts((prev) =>
+          prev.map((p) => (p.id === pid ? { ...p, show: value } : p))
+        );
       }
     } catch (error) {
       console.log(error);
@@ -95,6 +97,13 @@ const ManageProduct = () => {
           </thead>
           <tbody className="text-sm text-gray-700">
             {products.map((i) => {
+              const imageURL = () => {
+                if (i.image[0].startsWith("http")) {
+                  return i.image[0];
+                } else {
+                  return `${import.meta.env.VITE_SERVER_URL}${i.image[0]}`;
+                }
+              };
               return (
                 <tr
                   key={i.id}
@@ -103,7 +112,7 @@ const ManageProduct = () => {
                   <td className=" p-2 flex gap-3">
                     <div className="w-20 h-12 rounded-sm border bg-white border-gray-200   flex items-center justify-center   ">
                       <img
-                        src={i.image[0]}
+                        src={imageURL()}
                         alt="_pImage"
                         className="h-7 w-8 "
                       />
@@ -125,6 +134,7 @@ const ManageProduct = () => {
                           type="checkbox"
                           className="sr-only "
                           disabled={loading}
+                          checked={i.show}
                           onChange={(e) => {
                             handleToggle(i.id, e.target.checked);
                           }}

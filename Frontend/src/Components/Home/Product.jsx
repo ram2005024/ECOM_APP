@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 const Product = () => {
   const products = useSelector((state) => state.products.products);
+
   const navigate = useNavigate();
   const handleClick = async (product) => {
     const pid = product.id;
@@ -26,7 +27,13 @@ const Product = () => {
       </div>
       <div className="flex gap-10 flex-wrap mb-20">
         {products?.slice(0, 4).map((i, index) => {
-          const dummyImage = i.image.slice(0, 1);
+          const imageURL = () => {
+            if (i.image[0].startsWith("http")) {
+              return i.image[0];
+            } else {
+              return `${import.meta.env.VITE_SERVER_URL}${i.image[0]}`;
+            }
+          };
           // const rating = Math.floor(i.rating.slice(0, 1)[0].rating);
           return (
             <div
@@ -36,7 +43,7 @@ const Product = () => {
             >
               <div className="size-50 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
                 <img
-                  src={dummyImage}
+                  src={imageURL()}
                   alt="_productImage"
                   className="size-30 bg-white rounded-lg transform transition-all group-hover:scale-110"
                 />

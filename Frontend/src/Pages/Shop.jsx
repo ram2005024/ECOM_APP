@@ -1,8 +1,13 @@
 import { DollarSign, Star } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Shop = () => {
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
-  console.log(products);
+  const handleClick = async (product) => {
+    const pid = product.id;
+    navigate(`/product/${pid}`);
+  };
   return (
     <div className="min-h-screen m-w-screen ">
       <hr className="text-gray-300 " />
@@ -15,12 +20,21 @@ const Shop = () => {
           <div className="flex flex-wrap gap-10 ">
             {products.map((i) => {
               // const rating = Math.floor(i.rating.slice(0, 1)[0].rating);
-              const dummyImage = i.image.slice(0, 1);
+              const imageURL = () => {
+                if (i.image[0].startsWith("http")) {
+                  return i.image[0];
+                } else {
+                  return `${import.meta.env.VITE_SERVER_URL}${i.image[0]}`;
+                }
+              };
               return (
-                <div className="group cursor-pointer">
+                <div
+                  className="group cursor-pointer"
+                  onClick={() => handleClick(i)}
+                >
                   <div className="size-50 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
                     <img
-                      src={dummyImage}
+                      src={imageURL()}
                       alt="_productImage"
                       className="size-30 bg-white rounded-lg transform transition-all group-hover:scale-110"
                     />

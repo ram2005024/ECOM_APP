@@ -1,11 +1,15 @@
 import { ArrowRight, Star } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 const Selling = () => {
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.products);
-
+  const handleClick = async (product) => {
+    const pid = product.id;
+    navigate(`product/${pid}`);
+  };
   return products?.length > 0 ? (
     <div className="w-8/12 mx-auto flex flex-col p-5 items-center">
       <h2 className="text-xl font-semibold mb-3">Latest Products</h2>
@@ -22,14 +26,24 @@ const Selling = () => {
         </Link>
       </div>
       <div className="flex gap-10 flex-wrap mb-20">
-        {products?.slice(0, 4).map((i, index) => {
-          const dummyImage = i.image.slice(0, 1);
+        {products?.slice(0, 8).map((i, index) => {
+          const imageURL = () => {
+            if (i.image[0].startsWith("http")) {
+              return i.image[0];
+            } else {
+              return `${import.meta.env.VITE_SERVER_URL}${i.image[0]}`;
+            }
+          };
           // const rating = Math.floor(i.rating.slice(0, 1)[0].rating);
           return (
-            <div id={index} className="flex flex-col gap-2 cursor-pointer">
+            <div
+              id={index}
+              onClick={() => handleClick(i)}
+              className="flex flex-col gap-2 cursor-pointer"
+            >
               <div className="size-50 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
                 <img
-                  src={dummyImage}
+                  src={imageURL()}
                   alt="_productImage"
                   className="size-30 bg-white rounded-lg transform transition-all group-hover:scale-110"
                 />

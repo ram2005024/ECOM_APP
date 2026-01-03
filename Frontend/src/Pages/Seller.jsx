@@ -1,6 +1,5 @@
 // import React, { useState } from "react";
 // import { storesDummyData } from "../assets/assets";
-import Nav from "../Components/Seller/Nav";
 import { useDispatch, useSelector } from "react-redux";
 import SellerForm from "../Components/Seller/SellerForm";
 import { useEffect } from "react";

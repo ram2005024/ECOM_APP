@@ -1,27 +1,15 @@
 import { prisma } from "../config/db.config.js";
 import imagekit from "../config/imageKit.js";
 import { openai } from "../config/geminiAI.js";
+import { uploadImage } from "../utils/uploadImage.js";
 export const addProduct = async (req, res) => {
   const files = req.files;
   try {
     const images = [];
     if (files) {
       for (const file of files) {
-        const res = await imagekit.upload({
-          file: file.buffer,
-          fileName: file.originalname,
-          folder: "/product_image",
-          extensions: [
-            {
-              name: "remove-bg",
-              options: {
-                add_shadow: true,
-                bg_color: "ffffff",
-              },
-            },
-          ],
-        });
-        images.push(res.url);
+        const url = await uploadImage(file);
+        images.push(url);
       }
     }
     const product = await prisma.product.create({
@@ -71,12 +59,7 @@ Rules:
 `;
 
   const file = req.file;
-  const upload = await imagekit.upload({
-    file: req.file.buffer,
-    folder: "/product_image",
-    fileName: req.file.originalname,
-  });
-  const imageURL = upload.url;
+  const imageURL = await uploadImage(file);
   console.log(imageURL);
   try {
     const response = await openai.chat.completions.create({
@@ -96,7 +79,7 @@ Rules:
     return res.json({ success: true, message: "Analyzed image", output });
   } catch (error) {
     console.log(error.message);
-    res.json({ message: error.message, success: false });
+    res.json({ message: "Quota exceeded", success: false });
   }
 };
 //---------Controller to get product according to seller ---------------
@@ -144,6 +127,7 @@ export const getAllProducts = async (req, res) => {
       include: {
         seller: true,
         category: true,
+        reviews: true,
       },
     });
     if (!products)
