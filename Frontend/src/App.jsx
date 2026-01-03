@@ -13,6 +13,7 @@ import ProductView from "./Pages/ProductView";
 import { Footer } from "./Components/Home/Footer";
 import MainLayout from "../Layouts/MainLayout";
 import ProtectedLayout from "../Layouts/ProtectedLayout";
+import { addCart } from "./slices/cartSlice";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,7 +33,23 @@ const App = () => {
         console.log(error);
       }
     };
+    const getCartDetail = async () => {
+      try {
+        const res = await axios.get(
+          import.meta.vite.VITE_SERVER_URL + "/cart/getCartDetail",
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          dispatch(addCart(res.data.response));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getUser();
+    getCartDetail();
   }, []);
 
   const router = createBrowserRouter([

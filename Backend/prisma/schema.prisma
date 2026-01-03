@@ -60,6 +60,7 @@ model Product{
   category Category @relation(fields: [categoryId],references: [id])
   seller Seller @relation(fields: [sellerId],references: [id])
   reviews Review[]
+ cartItem CartItem[]
 }
 model Review{
   id Int @id @default(autoincrement())
@@ -67,4 +68,19 @@ model Review{
   rating Int?
   productId Int
   product Product @relation(fields: [productId],references: [id])
+}
+model Cart{
+  id Int @id @default(autoincrement())
+  userId Int
+  createdAt DateTime @default(now())
+  cartItem CartItem[]
+}
+model CartItem{
+  id Int @id @default(autoincrement())
+  cartId Int
+  productId Int
+  quantity Int
+  totalPrice Int
+  product Product @relation(fields: [productId], references: [id])
+  cart Cart @relation(fields: [cartId], references: [id])
 }

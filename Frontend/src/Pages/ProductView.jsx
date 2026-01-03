@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { findAverageRating } from "../utils/findAverageRating.js";
 import { Globe, IdCard, Minus, Plus, Star, Tag, User } from "lucide-react";
-import { decreaseCartItem, increaseCartItem } from "../slices/cartSlice.jsx";
+import axios from "axios";
+import { addCart } from "../slices/cartSlice.jsx";
 
 const ProductView = () => {
-  const cartCount = useSelector((state) => state.cart.cartItemCount);
+  const { items } = useSelector((state) => state.cart);
   const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const [selectedImage, setSelected] = useState();
@@ -24,6 +25,10 @@ const ProductView = () => {
     };
     getProduct();
   }, [products, pid]);
+  const currentCartItem = product
+    ? items.find((i) => i.productId === product.id)
+    : null;
+  const quantity = currentCartItem ? currentCartItem.quantity : 0;
   const imageURL = (i) => {
     if (i?.startsWith("http")) {
       return i;
@@ -42,6 +47,67 @@ const ProductView = () => {
       setRating(null);
     }
   }, [product]);
+  const handleAddCart = async () => {
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_SERVER_URL + "/cart/addCart",
+        {
+          pid: product.id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        dispatch(addCart(res.data.response));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleIncreaseCart = async () => {
+    try {
+      const cartItemId = items.find(
+        (i) => product.id === i.productId
+      ).cartItemId;
+      const res = await axios.post(
+        import.meta.env.VITE_SERVER_URL + "/cart/increaseQuantity",
+        {
+          cartItemId,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        dispatch(addCart(res.data.response));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleDecreaseCart = async () => {
+    try {
+      const cartItemId = items.find(
+        (i) => product.id === i.productId
+      ).cartItemId;
+      const res = await axios.post(
+        import.meta.env.VITE_SERVER_URL + "/cart/decreaseQuantity",
+        {
+          cartItemId,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        dispatch(addCart(res.data.response));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(items);
   return (
     <div className="min-h-screen min-w-screen">
       <div className="mt-10 flex flex-col gap-3 w-10/12 m-auto">
@@ -134,34 +200,27 @@ const ProductView = () => {
               )}
             </div>
             <div className="mt-5">
-              {cartCount == 0 && (
+              {!currentCartItem ? (
                 <button
-                  onClick={() => {
-                    dispatch(increaseCartItem());
-                  }}
+                  onClick={() => handleAddCart()}
                   className="py-3 px-10 cursor-pointer bg-zinc-800 rounded-sm text-sm text-white "
                 >
                   Add to Cart
                 </button>
-              )}
-              {cartCount > 0 && (
+              ) : (
                 <div className="flex gap-3 items-end">
                   <div className="flex flex-col gap-2.5 ">
                     <span>Quantity</span>
                     <div className="flex py-1 border w-full  border-gray-200 justify-between px-2 rounded-sm">
                       <button
-                        onClick={() => {
-                          dispatch(decreaseCartItem());
-                        }}
+                        onClick={() => handleDecreaseCart()}
                         className="inline-flex  cursor-pointer items-center justify-center"
                       >
                         <Minus size={8} className="text-gray-600" />
                       </button>
-                      <span className="text-gray-700">{cartCount}</span>
+                      <span className="text-gray-700">{quantity}</span>
                       <button
-                        onClick={() => {
-                          dispatch(increaseCartItem());
-                        }}
+                        onClick={() => handleIncreaseCart()}
                         className="inline-flex cursor-pointer items-center justify-center"
                       >
                         <Plus size={8} className="text-gray-600" />

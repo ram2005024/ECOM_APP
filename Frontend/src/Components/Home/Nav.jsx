@@ -7,7 +7,7 @@ import ShowProfile from "../Nav/ShowProfile";
 
 const Nav = ({ showProfile, setShowProfile }) => {
   const user = useSelector((state) => state.auth.user);
-  const cartCount = useSelector((state) => state.cart.cartItemCount);
+  const { totalItems } = useSelector((state) => state.cart);
   const [logButton, setLogButton] = useState(false);
   const links = [
     {
@@ -87,7 +87,7 @@ const Nav = ({ showProfile, setShowProfile }) => {
             <div className="relative">
               <ShoppingCart size={18} />
               <div className="w-4 h-4 absolute -top-2 -right-2 z-10 rounded-full text-xs bg-slate-600 text-white flex items-center justify-center">
-                <span className="text-xs">{cartCount}</span>
+                <span className="text-xs">{totalItems}</span>
               </div>
             </div>
             <span>Cart</span>
