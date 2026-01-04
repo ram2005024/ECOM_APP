@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Search, ShoppingCart } from "lucide-react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Login from "../SignIn/Login.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ShowProfile from "../Nav/ShowProfile";
+import { setShowProfile } from "../../slices/profileSlice.jsx";
 
-const Nav = ({ showProfile, setShowProfile }) => {
+const Nav = () => {
   const user = useSelector((state) => state.auth.user);
+  const { showProfile } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
   const { totalItems } = useSelector((state) => state.cart);
   const [logButton, setLogButton] = useState(false);
+  const navigate = useNavigate();
   const links = [
     {
       linkName: "Home",
@@ -83,7 +87,10 @@ const Nav = ({ showProfile, setShowProfile }) => {
             />
             <Search className="size-3.5 absolute top-2 left-3 sm:left-5 sm:top-3.5 sm:right-5" />
           </div>
-          <div className="flex gap-1.5 items-center cursor-pointer hover:text-gray-600">
+          <div
+            onClick={() => navigate("/cart")}
+            className="flex gap-1.5 items-center cursor-pointer hover:text-gray-600"
+          >
             <div className="relative">
               <ShoppingCart size={18} />
               <div className="w-4 h-4 absolute -top-2 -right-2 z-10 rounded-full text-xs bg-slate-600 text-white flex items-center justify-center">
@@ -102,7 +109,7 @@ const Nav = ({ showProfile, setShowProfile }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setShowProfile((prev) => !prev);
+                dispatch(setShowProfile());
               }}
               className="text-center size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
             >
@@ -111,7 +118,9 @@ const Nav = ({ showProfile, setShowProfile }) => {
             </button>
           ) : (
             <button
-              onClick={() => setLogButton(true)}
+              onClick={() => {
+                setLogButton(true);
+              }}
               className="rounded-full bg-emerald-700 text-center py-2 px-8 cursor-pointer hover:bg-emerald-600 text-white"
             >
               Login

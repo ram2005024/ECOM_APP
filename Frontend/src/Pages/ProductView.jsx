@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { addCart } from "../slices/cartSlice.jsx";
 
 const ProductView = () => {
+  const navigate = useNavigate();
   const { items } = useSelector((state) => state.cart);
   const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
@@ -227,7 +228,10 @@ const ProductView = () => {
                       </button>
                     </div>
                   </div>
-                  <button className="py-2 px-8 cursor-pointer bg-zinc-800 rounded-sm text-sm text-white ">
+                  <button
+                    onClick={() => navigate("/cart")}
+                    className="py-2 px-8 cursor-pointer bg-zinc-800 rounded-sm text-sm text-white "
+                  >
                     View Cart
                   </button>
                 </div>

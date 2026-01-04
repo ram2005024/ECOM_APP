@@ -2,6 +2,7 @@ import express from "express";
 import {
   addCart,
   getCartDetail,
+  handleCartItemDelete,
   handleDecreaseCart,
   handleIncreaseCart,
 } from "../controllers/CartController.js";
@@ -11,3 +12,4 @@ cartRouter.post("/addCart", protectRoute, addCart);
 cartRouter.post("/increaseQuantity", protectRoute, handleIncreaseCart);
 cartRouter.post("/decreaseQuantity", protectRoute, handleDecreaseCart);
 cartRouter.get("/getCartDetail", protectRoute, getCartDetail);
+cartRouter.delete("/delete", protectRoute, handleCartItemDelete);

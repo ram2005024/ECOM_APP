@@ -13,6 +13,7 @@ model User{
   email String @unique
   password String?
   image String? @default("")
+  plusMember Boolean @default(false)
   role String @default("customer")
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -83,4 +84,16 @@ model CartItem{
   totalPrice Int
   product Product @relation(fields: [productId], references: [id])
   cart Cart @relation(fields: [cartId], references: [id])
+}
+model coupens{
+  id Int @id @default(autoincrement())
+  code String
+  maxCartValue Int?
+  discountType String @default("percentage")
+  discountValue Int
+  expiresAt DateTime?
+  forPlus Boolean @default(false)
+  maxDiscount Int?
+  isActive Boolean @default(true)
+
 }

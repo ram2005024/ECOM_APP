@@ -14,6 +14,7 @@ import { Footer } from "./Components/Home/Footer";
 import MainLayout from "../Layouts/MainLayout";
 import ProtectedLayout from "../Layouts/ProtectedLayout";
 import { addCart } from "./slices/cartSlice";
+import Cart from "./Pages/Cart";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,7 +37,7 @@ const App = () => {
     const getCartDetail = async () => {
       try {
         const res = await axios.get(
-          import.meta.vite.VITE_SERVER_URL + "/cart/getCartDetail",
+          import.meta.env.VITE_SERVER_URL + "/cart/getCartDetail",
           {
             withCredentials: true,
           }
@@ -70,6 +71,14 @@ const App = () => {
           element: (
             <Protected>
               <ProductView />
+            </Protected>
+          ),
+        },
+        {
+          path: "/cart",
+          element: (
+            <Protected>
+              <Cart />
             </Protected>
           ),
         },

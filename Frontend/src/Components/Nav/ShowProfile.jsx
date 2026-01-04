@@ -4,6 +4,8 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/authSlice";
+import { deleteCart } from "../../slices/cartSlice";
+import { setShowProfileOff } from "../../slices/profileSlice";
 
 const ShowProfile = () => {
   const user = useSelector((state) => state.auth.user);
@@ -20,6 +22,8 @@ const ShowProfile = () => {
       if (res.data.success) {
         toast.success(res.data.message);
         dispatch(logout());
+        dispatch(deleteCart());
+        dispatch(setShowProfileOff());
       }
     } catch (error) {
       console.log(error);

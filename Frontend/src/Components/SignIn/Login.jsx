@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { login } from "../../slices/authSlice";
+import { addCart } from "../../slices/cartSlice";
 
 const Login = ({ setLogButton }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,16 @@ const Login = ({ setLogButton }) => {
         if (setLogButton) setLogButton(false);
         dispatch(login(res.data.user));
         navigate(location.pathname);
+
+        const response = await axios.get(
+          import.meta.env.VITE_SERVER_URL + "/cart/getCartDetail",
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.data.success) {
+          dispatch(addCart(response.data.response));
+        }
         return;
       } catch (error) {
         toast.error(error.message);

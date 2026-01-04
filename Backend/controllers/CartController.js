@@ -115,6 +115,7 @@ export const handleDecreaseCart = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
+//Controller to get cart details of any user...
 export const getCartDetail = async (req, res) => {
   const userId = req.user.id;
   try {
@@ -136,4 +137,29 @@ export const getCartDetail = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+//Controller to delete the cart item
+export const handleCartItemDelete = async (req, res) => {
+  const { cartItemId } = req.body;
+  //Find if the cart exists or not
+  let cartItem = await prisma.cartItem.findFirst({
+    where: {
+      id: cartItemId,
+    },
+  });
+  if (!cartItem)
+    return res.json({ message: "Cart item doesn't exist", success: false });
+  //If exists delete
+  await prisma.cartItem.delete({
+    where: {
+      id: cartItemId,
+    },
+  });
+  //Send the remaining cart items in respective cart id and send it as response
+  const response = await BuildCartResponse(cartItem.cartId);
+  return res.json({
+    message: "Deleted item from cart",
+    success: true,
+    response,
+  });
 };

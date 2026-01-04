@@ -32,11 +32,13 @@ const MainLayout = () => {
   return (
     <div
       id="#"
-      className="min-h-screen min-w-screen "
+      className="min-h-screen min-w-screen flex flex-col "
       onClick={() => setShowProfile(false)}
     >
       <Nav showProfile={showProfile} setShowProfile={setShowProfile} />
-      <Outlet />
+      <main className="grow">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
