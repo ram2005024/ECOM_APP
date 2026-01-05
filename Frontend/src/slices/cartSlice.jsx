@@ -4,6 +4,8 @@ const initialState = {
   totalItems: 0,
   totalPrice: 0,
   cartId: null,
+  address: [],
+  addressFilled: false,
 };
 const cartSlice = createSlice({
   initialState,
@@ -21,7 +23,22 @@ const cartSlice = createSlice({
       state.totalPrice = 0;
       state.cartId = null;
     },
+    addAddress: (state, action) => {
+      state.address.push(action.payload);
+    },
+    deleteAddress: (state) => {
+      state.address = null;
+    },
+    setAddressFilled: (state) => {
+      state.addressFilled = !state.addressFilled;
+    },
   },
 });
 export default cartSlice.reducer;
-export const { addCart, deleteCart } = cartSlice.actions;
+export const {
+  addCart,
+  deleteCart,
+  addAddress,
+  deleteAddress,
+  setAddressFilled,
+} = cartSlice.actions;

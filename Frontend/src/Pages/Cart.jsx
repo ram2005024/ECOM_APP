@@ -1,12 +1,25 @@
 import axios from "axios";
-import { Minus, MoveRight, Plus, Trash, Trash2 } from "lucide-react";
+import {
+  Minus,
+  MoveRight,
+  NotebookPen,
+  Plus,
+  Trash,
+  Trash2,
+} from "lucide-react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addCart } from "../slices/cartSlice";
+import { addCart, setAddressFilled } from "../slices/cartSlice";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import AddressForm from "../Components/Cart/AddressForm";
 const Cart = () => {
   const { items } = useSelector((state) => state.cart);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const { address, addressFilled } = useSelector((state) => state.cart);
+  const [isAddressSelected, setIsAddressSelected] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const dispatch = useDispatch();
   const imageURL = (i) => {
     if (i?.startsWith("http")) {
@@ -83,6 +96,7 @@ const Cart = () => {
       </div>
     );
   }
+
   return (
     <div className="h-screen w-screen">
       <div className="w-10/12 m-auto">
@@ -95,80 +109,183 @@ const Cart = () => {
               <MoveRight size={12} />
             </div>
           </div>
-          <div className="w-full mt-6 flex flex-wrap">
-            <table className="border-collapse">
-              <thead>
-                <tr>
-                  <th className="pr-80">Product</th>
-                  <th className="pr-20">Quantity</th>
-                  <th className="pr-20">Total Price</th>
-                  <th className="pr-20">Remove</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items &&
-                  [...items]
-                    .sort((a, b) => a.price - b.price)
-                    .map((i) => {
-                      return (
-                        <tr key={i.cartItemId}>
-                          <td className="pt-4">
-                            <div className="flex gap-2.5">
-                              <img
-                                src={imageURL(i.image[0])}
-                                alt="product_image"
-                                className="size-18 p-3 bg-gray-100 rounded-md"
-                              />
-                              <div className="flex flex-col ">
-                                <span className="text-gray-700">{i.name}</span>
-                                <span className="text-gray-500 text-sm">
-                                  {i.category.name}
-                                </span>
-                                <span className="font-bold text-gray-600">
-                                  $ {i.price}
-                                </span>
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-start">
+            <div>
+              <table className="border-collapse text-sm">
+                <thead>
+                  <tr>
+                    <th className="pr-80">Product</th>
+                    <th className="pr-20">Quantity</th>
+                    <th className="pr-20">Total Price</th>
+                    <th className="pr-20">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items &&
+                    [...items]
+                      .sort((a, b) => a.price - b.price)
+                      .map((i) => {
+                        return (
+                          <tr key={i.cartItemId}>
+                            <td className="pt-4">
+                              <div className="flex gap-2.5">
+                                <img
+                                  src={imageURL(i.image[0])}
+                                  alt="product_image"
+                                  className="size-18 p-3 bg-gray-100 rounded-md"
+                                />
+                                <div className="flex flex-col ">
+                                  <span className="text-gray-700">
+                                    {i.name}
+                                  </span>
+                                  <span className="text-gray-500 text-sm">
+                                    {i.category.name}
+                                  </span>
+                                  <span className="font-bold text-gray-600">
+                                    $ {i.price}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                          </td>
-                          <td className=" text-start">
-                            <div className="flex py-1 border w-fit  border-gray-200 justify-between px-2 rounded-sm">
-                              <button
-                                onClick={() => handleDecreaseCart(i.cartItemId)}
-                                className="inline-flex  cursor-pointer items-center justify-center"
-                              >
-                                <Minus size={8} className="text-gray-600" />
-                              </button>
-                              <input
-                                type="number"
-                                min={1}
-                                readOnly
-                                className="w-10 outline-none text-center"
-                                value={i.quantity}
+                            </td>
+                            <td className=" text-start">
+                              <div className="flex py-1 border w-fit  border-gray-200 justify-between px-2 rounded-sm">
+                                <button
+                                  onClick={() =>
+                                    handleDecreaseCart(i.cartItemId)
+                                  }
+                                  className="inline-flex  cursor-pointer items-center justify-center"
+                                >
+                                  <Minus size={8} className="text-gray-600" />
+                                </button>
+                                <input
+                                  type="number"
+                                  min={1}
+                                  readOnly
+                                  className="w-10 outline-none text-center"
+                                  value={i.quantity}
+                                />
+                                <button
+                                  onClick={() =>
+                                    handleIncreaseCart(i.cartItemId)
+                                  }
+                                  className="inline-flex cursor-pointer items-center justify-center"
+                                >
+                                  <Plus size={8} className="text-gray-600" />
+                                </button>
+                              </div>
+                            </td>
+                            <td className=" text-start">$ {i.subTotal}</td>
+                            <td className=" text-center">
+                              <Trash2
+                                size={18}
+                                onClick={() =>
+                                  handleDeleteCartItem(i.cartItemId)
+                                }
+                                className="text-red-500 cursor-pointer"
                               />
-                              <button
-                                onClick={() => handleIncreaseCart(i.cartItemId)}
-                                className="inline-flex cursor-pointer items-center justify-center"
-                              >
-                                <Plus size={8} className="text-gray-600" />
-                              </button>
-                            </div>
-                          </td>
-                          <td className=" text-start">$ {i.subTotal}</td>
-                          <td className=" text-center">
-                            <Trash2
-                              size={18}
-                              onClick={() => handleDeleteCartItem(i.cartItemId)}
-                              className="text-red-500 cursor-pointer"
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-              </tbody>
-            </table>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Move payment section here */}
+            <div className="flex flex-col w-auto py-6 px-5 h-fit text-gray-500 border border-gray-300 rounded-lg bg-slate-50">
+              <h2 className="text-gray-600 text-2xl mb-3">Payment Summary</h2>
+              <span className="text-sm mb-2">Payment method</span>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5 text-sm">
+                  <label className="flex gap-2">
+                    <input
+                      type="radio"
+                      value="cod"
+                      name="paymentMethod"
+                      checked={paymentMethod === "cod"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    COD
+                  </label>
+                  <label className="flex gap-2">
+                    <input
+                      type="radio"
+                      value="stripe"
+                      name="paymentMethod"
+                      checked={paymentMethod === "stripe"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="bg-black"
+                    />
+                    Stripe
+                  </label>
+                </div>
+                <hr className="text-gray-200 w-11/12 self-center text-sm" />
+                <div className="flex flex-col gap-2.5">
+                  <span>Address</span>
+                  {address.length !== 0 && !isAddressSelected && (
+                    <select
+                      onChange={(e) => {
+                        const index = parseInt(e.target.value);
+                        if (index === -1) {
+                          setSelectedAddress(null);
+                          setIsAddressSelected(false);
+                        } else {
+                          setSelectedAddress(address[index]);
+                          console.log(selectedAddress);
+                          setIsAddressSelected(true);
+                        }
+                      }}
+                    >
+                      <option value={-1}>Select an address</option>
+                      {address.map((i, index) => {
+                        return (
+                          <option key={index} value={index}>
+                            {i.userName},{i.city},{i.state},{i.zip}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  )}
+                  {isAddressSelected && (
+                    <div className="flex w-full gap-8 items-center">
+                      <span>
+                        {selectedAddress.userName},{selectedAddress.city},
+                        {selectedAddress.street},{selectedAddress.zip}
+                      </span>
+                      <NotebookPen
+                        size={13}
+                        onClick={() => dispatch(setAddressFilled())}
+                        className="cursor-pointer text-gray-700"
+                      />
+                    </div>
+                  )}
+                  <div
+                    onClick={() => {
+                      dispatch(setAddressFilled());
+                      setSelectedAddress(null);
+                      setIsAddressSelected(false);
+                    }}
+                    className="flex gap-1.5 cursor-pointer items-center text-sm"
+                  >
+                    <span>Add address</span>
+                    <Plus size={14} strokeWidth={4} />
+                  </div>
+                </div>
+                {/* When  the user clicks the add address */}
+
+                <hr className="text-gray-200 w-11/12 self-center text-sm" />
+              </div>
+            </div>
           </div>
+          <div className="mt-6 relative flex  sm:flex-row flex-col  flex-wrap"></div>
         </div>
       </div>
+      {addressFilled && (
+        <AddressForm
+          onEdit={(finalAddress) => setSelectedAddress(finalAddress)}
+          addresses={selectedAddress}
+        />
+      )}
     </div>
   );
 };

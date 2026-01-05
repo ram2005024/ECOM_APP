@@ -93,7 +93,7 @@ const Nav = () => {
           >
             <div className="relative">
               <ShoppingCart size={18} />
-              <div className="w-4 h-4 absolute -top-2 -right-2 z-10 rounded-full text-xs bg-slate-600 text-white flex items-center justify-center">
+              <div className="w-4 h-4 absolute -top-2 -right-2  rounded-full text-xs bg-slate-600 text-white flex items-center justify-center">
                 <span className="text-xs">{totalItems}</span>
               </div>
             </div>
