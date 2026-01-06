@@ -7,19 +7,23 @@ import {
   Trash,
   Trash2,
 } from "lucide-react";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addCart, setAddressFilled } from "../slices/cartSlice";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import AddressForm from "../Components/Cart/AddressForm";
+import CoupenSection from "../Components/Cart/CoupenSection";
 const Cart = () => {
   const { items } = useSelector((state) => state.cart);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const { address, addressFilled } = useSelector((state) => state.cart);
   const [isAddressSelected, setIsAddressSelected] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [coupenDetail, setCoupenDetail] = useState(null);
+  const handleSubmitFromChild = (value) => {
+    setCoupenDetail(value);
+  };
   const dispatch = useDispatch();
   const imageURL = (i) => {
     if (i?.startsWith("http")) {
@@ -96,7 +100,31 @@ const Cart = () => {
       </div>
     );
   }
-
+  console.log("From parent", coupenDetail);
+  const handlePaymentSubmit = async () => {
+    try {
+      if (!selectedAddress) {
+        toast.error("Please fill the address field");
+        return;
+      }
+      const res = await axios.post(
+        import.meta.env.VITE_SERVER_URL + "/cart/payment/stripe-session",
+        {
+          items,
+          coupenDetail,
+          selectedAddress,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (!res.data.success) return toast.error(res.data.message);
+      window.location.href = res.data.url;
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+      console.log(error);
+    }
+  };
   return (
     <div className="h-screen w-screen">
       <div className="w-10/12 m-auto">
@@ -109,7 +137,7 @@ const Cart = () => {
               <MoveRight size={12} />
             </div>
           </div>
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-start">
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
             <div>
               <table className="border-collapse text-sm">
                 <thead>
@@ -192,7 +220,7 @@ const Cart = () => {
             </div>
 
             {/* Move payment section here */}
-            <div className="flex flex-col w-auto py-6 px-5 h-fit text-gray-500 border border-gray-300 rounded-lg bg-slate-50">
+            <div className="flex flex-col  py-6 px-5 h-fit text-gray-500 border border-gray-300 rounded-lg bg-slate-50">
               <h2 className="text-gray-600 text-2xl mb-3">Payment Summary</h2>
               <span className="text-sm mb-2">Payment method</span>
               <div className="flex flex-col gap-2">
@@ -220,7 +248,7 @@ const Cart = () => {
                   </label>
                 </div>
                 <hr className="text-gray-200 w-11/12 self-center text-sm" />
-                <div className="flex flex-col gap-2.5">
+                <div className="flex flex-col gap-2.5 text-sm">
                   <span>Address</span>
                   {address.length !== 0 && !isAddressSelected && (
                     <select
@@ -271,13 +299,19 @@ const Cart = () => {
                     <Plus size={14} strokeWidth={4} />
                   </div>
                 </div>
-                {/* When  the user clicks the add address */}
-
                 <hr className="text-gray-200 w-11/12 self-center text-sm" />
+                <div>
+                  <CoupenSection onSubmit={handleSubmitFromChild} />
+                </div>
+                <button
+                  onClick={handlePaymentSubmit}
+                  className="py-3 mt-8 rounded-sm text-sm cursor-pointer text-center bg-slate-800 text-white font-semibold"
+                >
+                  Place order
+                </button>
               </div>
             </div>
           </div>
-          <div className="mt-6 relative flex  sm:flex-row flex-col  flex-wrap"></div>
         </div>
       </div>
       {addressFilled && (

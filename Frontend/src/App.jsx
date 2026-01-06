@@ -15,6 +15,8 @@ import MainLayout from "../Layouts/MainLayout";
 import ProtectedLayout from "../Layouts/ProtectedLayout";
 import { addCart } from "./slices/cartSlice";
 import Cart from "./Pages/Cart";
+import Success from "./Pages/Success";
+import Orders from "./Pages/Orders";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -82,7 +84,19 @@ const App = () => {
             </Protected>
           ),
         },
+        {
+          path: "/orders",
+          element: (
+            <Protected>
+              <Orders />
+            </Protected>
+          ),
+        },
       ],
+    },
+    {
+      path: "/success",
+      element: <Success />,
     },
     {
       element: <ProtectedLayout />,
