@@ -18,6 +18,7 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   seller Seller?
+  reviews Review[]
   order Order[]
 }
 model Seller{
@@ -48,6 +49,7 @@ model Category{
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+
 model Product{
   id Int @id @default(autoincrement())
   sellerId Int
@@ -69,7 +71,10 @@ model Review{
   id Int @id @default(autoincrement())
   comment String?
   rating Int?
+  userId Int
+
   productId Int
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
   product Product @relation(fields: [productId],references: [id])
 }
 model Cart{
@@ -103,12 +108,13 @@ model coupens{
 model Order{
   id Int @id @default(autoincrement())
   totalAmount Int
+  discountAmount Int @default(0)
   sessionId String @unique
   userId Int
   paymentMethod String
   paymentStatus String
   address Json
-  orderStatus String? @default("order placed")
+
   items OrderItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -119,9 +125,11 @@ model OrderItem{
   orderId Int
   productId Int
   name String
+  coupen String? @default("")
   price Int
   quantity Int
   image String[]
+    orderStatus String  @default("ORDER_PLACED")
   createdAt DateTime @default(now())
   product Product @relation(fields: [productId],references: [id])
   order Order @relation(fields: [orderId],references: [id],onDelete: Cascade)

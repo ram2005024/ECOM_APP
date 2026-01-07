@@ -186,11 +186,13 @@ export const verifyCoupen = async (req, res) => {
         code: coupenCode.toUpperCase(),
       },
     });
-    //if the coupen is valid or not
     if (!coupen)
       return res
         .status(400)
         .json({ success: false, message: "Invalid coupen" });
+    //if the coupen is valid or not
+    if (!coupen.isActive)
+      return res.json({ message: "Coupen is expired", success: false });
     // if the coupen is valid proceed further----------
     const user = await prisma.user.findUnique({
       where: {
@@ -356,8 +358,11 @@ export const verifyPayment = async (req, res) => {
           totalAmount: coupen
             ? Math.round(Number(coupen.grandTotal))
             : Math.round(Number(total)),
+          discountAmount: coupen
+            ? Math.round(Number(coupen.discountedValue))
+            : 0,
           sessionId: sessionID,
-          paymentMethod: "card",
+          paymentMethod: "stripe",
           paymentStatus: session.payment_status,
           address: JSON.parse(session.metadata.address),
           user: {
@@ -369,6 +374,7 @@ export const verifyPayment = async (req, res) => {
             create: orderItems.map((item) => ({
               productId: item.productId,
               name: item.productName,
+              coupen: coupen ? coupen.name : "",
               price: item.price,
               quantity: item.quantity,
               image: item.image,

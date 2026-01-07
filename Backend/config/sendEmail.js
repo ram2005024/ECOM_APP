@@ -4,6 +4,7 @@ import { adminReviewEmail } from "./EmailTemplate/adminReview.js";
 import { approveSuccessEmail } from "./EmailTemplate/approveSuccess.js";
 import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotification.js";
+import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -94,5 +95,20 @@ export const sendSellerNotification = async ({
     to: to,
     subject: subject,
     html: sendSellerNotificationTemplate(storename, sellername, customerName),
+  });
+};
+export const sendUserNotificationAboutOrderStatus = async ({
+  to,
+  subject,
+  storename,
+  productName,
+  customerName,
+  status,
+}) => {
+  await transporter.sendMail({
+    from: process.env.USER_EMAIL,
+    to: to,
+    subject,
+    html: sendUserOrderStatus(storename, productName, customerName, status),
   });
 };

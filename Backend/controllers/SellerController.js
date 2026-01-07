@@ -120,3 +120,44 @@ export const reapplySeller = async (req, res) => {
     res.json({ message: error.message, success: false });
   }
 };
+//---------Controller to get the seller orders if received-----
+export const getSellerOrder = async (req, res) => {
+  const sellerId = req.user.id;
+  try {
+    //Get seller id of the user
+    const seller = await prisma.seller.findFirst({
+      where: {
+        userID: req.user.id,
+      },
+    });
+    const sellerId = seller.id;
+    //Get the order with seller info
+    const orders = await prisma.order.findMany({
+      include: {
+        items: {
+          include: {
+            product: {
+              include: {
+                seller: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const selectedOrder = orders.filter((i) =>
+      i.items.some((item) => item.product.sellerId == sellerId)
+    );
+    console.log("Selected order is ", selectedOrder);
+    const sellerOrders = orders.flatMap((i) => {
+      return i.items.filter((i) => i.product.sellerId == sellerId);
+    });
+    return res.json({
+      success: true,
+      orderItems: sellerOrders,
+      order: selectedOrder,
+    });
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};

@@ -1,5 +1,4 @@
 import { inngest } from "../client.js";
-import { prisma } from "../../config/db.config.js";
 import { sendSellerNotification } from "../../config/sendEmail.js";
 export const afterPayment = inngest.createFunction(
   {

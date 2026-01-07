@@ -138,3 +138,57 @@ export const getAllProducts = async (req, res) => {
     return res.json({ message: error.message, succes: false });
   }
 };
+//Controller to add review/rating to the product-----------------
+export const addReview = async (req, res) => {
+  const { pId, rating, comment } = req.body;
+  const userId = req.user.id;
+  try {
+    //Check if the field is provided or not
+    if (!rating && !comment) {
+      return res.json({
+        success: false,
+        message: "Please fill at least one field.",
+      });
+    }
+    //Put the rating for the given product
+    await prisma.review.create({
+      data: {
+        productId: pId,
+        userId,
+        rating: Number(rating),
+        comment: comment ? comment : "",
+      },
+    });
+
+    return res.json({ message: "Thanks for your review", success: true });
+  } catch (error) {
+    console.log("Bro", error.message);
+  }
+};
+//Controller to update review/rating to the product-----------------
+export const updateReview = async (req, res) => {
+  const { reviewId, rating, comment } = req.body;
+  console.log(reviewId, rating, comment);
+  try {
+    //Check if the field is provided or not
+    if (!rating && !comment) {
+      return res.json({
+        success: false,
+        message: "Please fill at least one field.",
+      });
+    }
+    //Put the rating for the given product
+    await prisma.review.update({
+      where: {
+        id: Number(reviewId),
+      },
+      data: {
+        rating: Number(rating),
+        comment: comment ? comment : "",
+      },
+    });
+    return res.json({ message: "Review updated", success: true });
+  } catch (error) {
+    console.log("Bro", error.message);
+  }
+};

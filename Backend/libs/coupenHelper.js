@@ -30,6 +30,7 @@ export const calculateDiscount = async (items, coupen) => {
     discountedValue,
     grandTotal: Math.max(total - discountedValue, 0),
     coupenDescription: coupen.description,
+    name: coupen.code,
   };
 };
 //Helper to find total for cart items
