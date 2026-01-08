@@ -1,9 +1,18 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { findAverageRating } from "../utils/findAverageRating.js";
-import { Globe, IdCard, Minus, Plus, Star, Tag, User } from "lucide-react";
+import {
+  Globe,
+  IdCard,
+  Minus,
+  MoveRight,
+  Plus,
+  Star,
+  Tag,
+  User,
+} from "lucide-react";
 import axios from "axios";
 import { addCart } from "../slices/cartSlice.jsx";
 
@@ -16,6 +25,8 @@ const ProductView = () => {
   const { pid } = useParams();
   const [product, setProduct] = useState(null);
   const [rating, setRating] = useState(null);
+  const [pReview, setPReview] = useState([]);
+  const [activeLink, setActiveLink] = useState("description");
   useEffect(() => {
     const getProduct = async () => {
       if (products.length > 0) {
@@ -43,6 +54,7 @@ const ProductView = () => {
       (async () => {
         const rating = await findAverageRating(ratingArray);
         setRating(rating);
+        setPReview(product.reviews);
       })();
     } else {
       setRating(null);
@@ -108,7 +120,6 @@ const ProductView = () => {
       console.log(error);
     }
   };
-  console.log(items);
   return (
     <div className="min-h-screen min-w-screen">
       <div className="mt-10 flex flex-col gap-3 w-10/12 m-auto">
@@ -254,6 +265,111 @@ const ProductView = () => {
             </div>
           </div>
         </div>
+        <div className="sm:mt-15 sm:ml-15 p-0">
+          <div className="border-b  border-gray-200 flex text-sm text-gray-700">
+            <span
+              onClick={() => setActiveLink("description")}
+              className={`px-4   cursor-pointer ${
+                activeLink === "description"
+                  ? "border-b-2  border-b-gray-500 -mb-px   "
+                  : ""
+              }`}
+            >
+              Description
+            </span>
+            <span
+              onClick={() => setActiveLink("review")}
+              className={`px-4  cursor-pointer ${
+                activeLink === "review"
+                  ? "border-b-2  border-b-gray-500 -mb-px  "
+                  : ""
+              }`}
+            >
+              Reviews
+            </span>
+          </div>
+          {activeLink === "description" ? (
+            <div className=" text-sm  mt-5 text-gray-500 w-md ">
+              <p className="px-2">{product?.description}</p>
+            </div>
+          ) : (
+            <div className="text-sm  mt-5 text-gray-500 w-md space-y-3">
+              {pReview && pReview.length > 0 ? (
+                pReview.map((i) => {
+                  const rating = i.rating;
+                  const comment = i.comment;
+                  return (
+                    <div className="flex gap-3">
+                      {/* User image */}
+                      {i.user.image && (
+                        <img
+                          src={i.user.image}
+                          alt="_userImage"
+                          className="size-18 rounded-full "
+                        />
+                      )}
+                      <div>
+                        <User
+                          size={30}
+                          strokeWidth={1}
+                          className="bg-slate-800 rounded-full text-white fill-white"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex gap-1 ">
+                          {Array.from({ length: 5 }).map((_, inx) => (
+                            <Star
+                              key={inx}
+                              className={`size-3 ${
+                                rating > inx
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300 fill-gray-300 "
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <div>
+                          {!comment && <span>No comment</span>}
+                          <p>{comment}</p>
+                        </div>
+                        <span className="font-semibold">{i.user.name}</span>
+                        <span className="text-xs">
+                          {new Date(i.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <span className="mt-5 text-gray-600 text-sm">
+                  No reviews yet
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+        {/* Product by section */}
+        {product && (
+          <div className="sm:mt-10 sm:ml-15">
+            <div className="flex  items-center">
+              <img
+                src={product.seller.image}
+                alt="_seller_image"
+                className="size-20 rounded-full bg-white border-gray-100"
+              />
+
+              <div className="text-sm">
+                <span className="text-gray-500 font-semibold">
+                  Product by {product.seller.storename}
+                </span>
+                <div className="flex gap-2 items-center text-sm text-gray-500">
+                  <Link to={`/shop/${product.seller.id}`}>view store</Link>
+                  <MoveRight size={12} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

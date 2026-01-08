@@ -90,6 +90,9 @@ export const getProduct = async (req, res) => {
       where: {
         sellerId: Number(sellerId),
       },
+      include: {
+        reviews: true,
+      },
     });
     if (products) return res.json({ success: true, products });
   } catch (error) {
@@ -127,7 +130,11 @@ export const getAllProducts = async (req, res) => {
       include: {
         seller: true,
         category: true,
-        reviews: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
     if (!products)
@@ -155,6 +162,7 @@ export const addReview = async (req, res) => {
       data: {
         productId: pId,
         userId,
+        createdAt: new Date(),
         rating: Number(rating),
         comment: comment ? comment : "",
       },
@@ -185,6 +193,7 @@ export const updateReview = async (req, res) => {
       data: {
         rating: Number(rating),
         comment: comment ? comment : "",
+        createdAt: new Date(),
       },
     });
     return res.json({ message: "Review updated", success: true });

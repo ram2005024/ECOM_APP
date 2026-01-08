@@ -27,7 +27,7 @@ const Specification = () => {
   ];
 
   return (
-    <div className="mb-40">
+    <div className="sm:mb-40 mb-10 sm:mt-20">
       <div className="w-10/12 mx-auto flex flex-col items-center ">
         <h2 className="text-xl font-semibold mb-3">Our specification</h2>
         <p className="text-gray-600 font-sm text-sm  max-w-lg text-center mb-20">

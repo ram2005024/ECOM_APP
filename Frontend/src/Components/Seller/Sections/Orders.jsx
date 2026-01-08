@@ -2,10 +2,14 @@ import axios from "axios";
 import { Loader, PlusSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import OrderDetail from "../OrderDetail";
 const Orders = () => {
   const [orderItems, setOrderItems] = useState([]);
-  const [order, setOrder] = useState();
+  const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showOrderDetail, setShowOrderDetail] = useState(false);
+  const [showOrderItem, setShowOrderItem] = useState();
+  const [showOrder, setShowOrder] = useState();
   const getSellerOrder = async () => {
     try {
       const res = await axios.get(
@@ -20,7 +24,7 @@ const Orders = () => {
       }
 
       setOrderItems(res.data.orderItems);
-      setOrder(res.data.order[0]);
+      setOrder(res.data.order);
     } catch (error) {
       console.log(error);
     } finally {
@@ -32,13 +36,13 @@ const Orders = () => {
 
     getSellerOrder();
   }, []);
-  const handleStatusChange = async (itemId, value) => {
+  const handleStatusChange = async (itemId, value, currentOrder) => {
     setLoading(true);
     try {
       await toast.promise(
         axios.post(
           import.meta.env.VITE_SERVER_URL + "/order/changeStatus",
-          { itemId, orderStatus: value, userId: order.userId },
+          { itemId, orderStatus: value, userId: currentOrder.userId },
           {
             withCredentials: true,
           }
@@ -92,9 +96,18 @@ const Orders = () => {
       </div>
     );
   }
-
+  console.log("Order item is ", order);
   return (
     <div className="col-span-10">
+      {/* If the seller want to see the order detail then */}
+      {showOrderDetail && (
+        <OrderDetail
+          orderItem={showOrderItem}
+          setShowOrderDetail={setShowOrderDetail}
+          order={showOrder}
+        />
+      )}
+      {/* --------------------- */}
       <div className="mt-10 ml-12 flex flex-col gap-3">
         <h2 className="text-2xl font-semibold text-gray-500">
           Store <span className="text-black">Orders</span>
@@ -113,31 +126,51 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {orderItems &&
+              {order &&
+                orderItems &&
                 orderItems.map((item, index) => {
+                  const currentOrder = order.filter(
+                    (i) => item.orderId == i.id
+                  )[0];
                   const subTotal = item.price * item.quantity;
                   const discountRatio =
-                    order.discountAmount / order.totalAmount;
+                    currentOrder.discountAmount / currentOrder.totalAmount;
                   const finalAmount = subTotal - discountRatio * subTotal;
                   const coupen =
                     item.coupen !== "" ? item.coupen : "Not applied";
                   return (
                     <tr
+                      onClick={() => {
+                        setShowOrder(currentOrder);
+                        setShowOrderItem(item);
+                        setShowOrderDetail((prev) => !prev);
+                      }}
                       key={item.id}
-                      className="text-xs text-gray-800 align-center"
+                      className="text-xs cursor-pointer transition-colors hover:bg-gray-50 text-gray-800 align-center"
                     >
                       <td className="py-4 px-6">{index + 1}</td>
-                      <td className="py-4 px-6">{order.address.userName}</td>
+                      <td className="py-4 px-6">
+                        {currentOrder.address.userName}
+                      </td>
                       <td className="py-4 px-6">{Math.round(finalAmount)}</td>
-                      <td className="py-4 px-6">{order.paymentMethod}</td>
+                      <td className="py-4 px-6">
+                        {currentOrder.paymentMethod}
+                      </td>
                       <td className="py-4 px-6">{coupen}</td>
                       <td className="py-4 px-6">
                         <select
                           value={item.orderStatus}
                           disabled={loading}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
                           className="outline-none border border-gray-200"
                           onChange={(e) => {
-                            handleStatusChange(item.id, e.target.value);
+                            handleStatusChange(
+                              item.id,
+                              e.target.value,
+                              currentOrder
+                            );
                           }}
                         >
                           {orderStatuses.map((i) => (

@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/authSlice";
 import { deleteCart } from "../../slices/cartSlice";
 import { setShowProfile } from "../../slices/profileSlice";
+import { useNavigate } from "react-router-dom";
 
 const ShowProfile = () => {
   const user = useSelector((state) => state.auth.user);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
@@ -57,7 +58,13 @@ const ShowProfile = () => {
         </div>
       </div>
       <div className="flex flex-col w-full gap-3 text-gray-500 ">
-        <div className="flex gap-1.5 items-center w-full hover:bg-gray-100 cursor-pointer p-2.5">
+        <div
+          onClick={() => {
+            navigate("/orders");
+            dispatch(setShowProfile());
+          }}
+          className="flex gap-1.5 items-center w-full hover:bg-gray-100 cursor-pointer p-2.5"
+        >
           <Cuboid className="size-4 " />
           <span className="text-sm">My orders</span>
         </div>

@@ -17,6 +17,7 @@ import { addCart } from "./slices/cartSlice";
 import Cart from "./Pages/Cart";
 import Success from "./Pages/Success";
 import Orders from "./Pages/Orders";
+import ViewShop from "./Pages/Shop_Dynamic/ViewShop";
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -67,6 +68,7 @@ const App = () => {
           path: "/shop",
           element: <Shop />,
         },
+        { path: "/shop/:shopId", element: <ViewShop /> },
 
         {
           path: "/product/:pid",

@@ -9,7 +9,9 @@ export const getOrders = async (req, res) => {
       where: {
         userId,
       },
+
       include: {
+        user: true,
         items: {
           include: {
             product: {

@@ -122,7 +122,6 @@ export const reapplySeller = async (req, res) => {
 };
 //---------Controller to get the seller orders if received-----
 export const getSellerOrder = async (req, res) => {
-  const sellerId = req.user.id;
   try {
     //Get seller id of the user
     const seller = await prisma.seller.findFirst({
@@ -134,6 +133,7 @@ export const getSellerOrder = async (req, res) => {
     //Get the order with seller info
     const orders = await prisma.order.findMany({
       include: {
+        user: true,
         items: {
           include: {
             product: {
@@ -148,7 +148,7 @@ export const getSellerOrder = async (req, res) => {
     const selectedOrder = orders.filter((i) =>
       i.items.some((item) => item.product.sellerId == sellerId)
     );
-    console.log("Selected order is ", selectedOrder);
+
     const sellerOrders = orders.flatMap((i) => {
       return i.items.filter((i) => i.product.sellerId == sellerId);
     });
@@ -159,5 +159,24 @@ export const getSellerOrder = async (req, res) => {
     });
   } catch (error) {
     return res.json({ success: false, message: error.message });
+  }
+};
+//Controller to get seller by sellerid
+export const getSellerById = async (req, res) => {
+  const sellerId = req.query.sellerId;
+  try {
+    const seller = await prisma.seller.findUnique({
+      where: {
+        id: Number(sellerId),
+      },
+      include: {
+        user: true,
+      },
+    });
+    if (!seller)
+      return res.json({ message: "Seller doesn't exist", success: false });
+    return res.json({ success: true, seller });
+  } catch (error) {
+    console.log(error);
   }
 };

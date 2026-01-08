@@ -367,7 +367,7 @@ export const verifyPayment = async (req, res) => {
           address: JSON.parse(session.metadata.address),
           user: {
             connect: {
-              id: req.user.id,
+              id: Number(req.user.id),
             },
           },
           items: {

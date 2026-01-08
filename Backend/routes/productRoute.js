@@ -11,7 +11,7 @@ import {
 } from "../controllers/ProductController.js";
 import { protectRoute } from "../middlewares/protect.js";
 export const productRoute = express.Router();
-productRoute.get("/get", getProduct);
+productRoute.get("/get", protectRoute, getProduct);
 productRoute.post("/addProduct", upload.array("image", 6), addProduct);
 productRoute.post("/analyzeImage", upload.single("image"), analyzeImage);
 productRoute.post("/handleShow", handleShow);

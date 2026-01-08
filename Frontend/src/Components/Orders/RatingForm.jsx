@@ -29,7 +29,7 @@ const RatingForm = ({
       setComment(existingRating.comment);
     }
     return () => {
-      document.body.style.overflow;
+      document.body.style.overflow = "auto";
     };
   }, [ratingClicked, existingRating]);
   const handleSubmitRating = async () => {
