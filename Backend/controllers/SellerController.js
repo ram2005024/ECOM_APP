@@ -180,3 +180,58 @@ export const getSellerById = async (req, res) => {
     console.log(error);
   }
 };
+//Controller to return all important details aboout seller------
+export const sellerAllDetails = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
+    console.log(sellerId);
+    //Get all order items of seller-------
+    const orderItems = await prisma.orderItem.findMany({
+      include: {
+        product: {
+          include: {
+            reviews: {
+              include: {
+                user: true,
+              },
+            },
+            seller: true,
+          },
+        },
+      },
+    });
+    //Get all the produts of seller id-----
+    const products = await prisma.product.findMany({
+      include: {
+        seller: true,
+        category: true,
+      },
+    });
+    const sellerOrders = orderItems.filter(
+      (i) => i.product.seller.userID === sellerId
+    );
+    const sellerRatings = [...sellerOrders.flatMap((i) => i.product.reviews)];
+    const totalOrders = sellerOrders.length;
+    const totalEarning = sellerOrders.reduce(
+      (a, i) => a + i.quantity * i.price,
+      0
+    );
+    const totalRating = sellerRatings.length;
+    const totalProduct = products.filter(
+      (i) => i.seller.userID == sellerId
+    ).length;
+    const sellerProducts = products.filter((i) => i.seller.userID == sellerId);
+    return res.json({
+      success: true,
+      totalOrders,
+      totalEarning,
+      totalProduct,
+      totalRating,
+      ratings: sellerRatings,
+      sellerProducts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, success: false });
+  }
+};
