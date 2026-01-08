@@ -68,3 +68,36 @@ export const changeStatus = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
+//Controller to get all the orders--------------
+export const getAllOrdersAnDate = async (req, res) => {
+  try {
+    const orders = await prisma.order.findMany({
+      select: {
+        createdAt: true,
+      },
+    });
+
+    if (!orders)
+      return res
+        .status(400)
+        .json({ message: "Order doesn't exists", success: false });
+    const formatted = orders.reduce((acc, date) => {
+      const format = new Date(date.createdAt).toLocaleDateString(
+        "en-CA", // YYYY-MM-DD format
+        { timeZone: "Asia/Kathmandu" }
+      );
+      console.log(format);
+      acc[format] = (acc[format] || 0) + 1;
+      return acc;
+    }, {});
+    const final = Object.entries(formatted).map(([date, orders]) => ({
+      date,
+      orders,
+    }));
+
+    return res.status(200).json({ success: true, value: final });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, success: false });
+  }
+};
