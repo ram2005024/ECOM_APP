@@ -39,6 +39,10 @@ const ManageProduct = () => {
     console.log(products);
   }, []);
   const handleToggle = async (pid, value) => {
+    if (seller.isActive == false) {
+      toast.error("You have been deactivated.Please contact admin");
+      return;
+    }
     setLoading(true);
     try {
       const res = await toast.promise(

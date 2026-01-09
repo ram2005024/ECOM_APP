@@ -17,6 +17,10 @@ const AddProduct = () => {
   const { seller } = useSelector((state) => state.seller);
 
   const analyzeImage = async (file) => {
+    if (seller.isActive == false) {
+      toast.error("You have been deactivated.Please contact admin");
+      return;
+    }
     if (files.length <= 1) {
       try {
         const form = new FormData();
@@ -50,6 +54,10 @@ const AddProduct = () => {
   };
   const handleProductSubmit = async (e) => {
     e.preventDefault();
+    if (seller.isActive == false) {
+      toast.error("You have been deactivated.Please contact admin");
+      return;
+    }
     if (files.length === 0) alert("Please insert at least one image");
     setLoading(true);
     try {

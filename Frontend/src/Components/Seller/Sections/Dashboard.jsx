@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import LoadingSmallDiv from "../../Loading/LoadingSmallDiv";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [totalProducts, setTotalProducts] = useState(0);
@@ -19,6 +20,7 @@ const Dashboard = () => {
   const [ratings, setRatings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const { seller } = useSelector((state) => state.seller);
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -163,14 +165,19 @@ const Dashboard = () => {
                           </span>
                         </div>
                         <button
-                          onClick={() =>
+                          onClick={() => {
+                            if (!seller.isActive) return;
                             navigate(
                               `${import.meta.env.VITE_SERVER_URL}/product/${
                                 product.id
                               }`
-                            )
-                          }
-                          className="bg-gray-200 rounded-sm px-3 py-1.5 w-fit text-indigo-900 text-sm cursor-pointer"
+                            );
+                          }}
+                          className={`bg-gray-200 rounded-sm px-3 py-1.5 w-fit  text-sm cursor-pointer ${
+                            seller.isActive
+                              ? "text-indigo-900 "
+                              : "text-gray-500 font-semibold"
+                          }`}
                         >
                           View Product
                         </button>

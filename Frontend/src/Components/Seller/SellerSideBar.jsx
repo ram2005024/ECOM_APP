@@ -1,5 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppWindow, Home, NotebookPenIcon, PlusSquare } from "lucide-react";
+import {
+  AppWindow,
+  Dot,
+  Home,
+  NotebookPenIcon,
+  PlusSquare,
+} from "lucide-react";
 import { setSection } from "../../slices/sellerSlice";
 const SellerSideBar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -31,6 +37,18 @@ const SellerSideBar = () => {
   ];
   return (
     <div className=" col-span-2    gap-2.5  pt-5  border-r border-gray-300 ">
+      {seller.isActive == true && (
+        <div className="flex absolute top-15 sm:right-15 right-3 items-center">
+          <p
+            className={`text-sm flex font-semibold  items-center ${
+              seller.isActive ? "text-green-500" : "text-red-400"
+            }`}
+          >
+            <span className="text-3xl">•</span>
+            {seller.isActive ? "Active" : "Not active"}
+          </p>
+        </div>
+      )}
       <div className="flex items-center justify-center  py-3">
         <div className="flex flex-col gap-2.5 items-center">
           <div>

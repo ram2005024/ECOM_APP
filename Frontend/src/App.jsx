@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Pages/Home";
 import Shop from "./Pages/Shop";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Seller from "./Pages/Seller";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -10,7 +10,6 @@ import { login } from "./slices/authSlice";
 import Protected from "./middlewares/Protected";
 import Admin from "./Pages/Admin";
 import ProductView from "./Pages/ProductView";
-import { Footer } from "./Components/Home/Footer";
 import MainLayout from "../Layouts/MainLayout";
 import ProtectedLayout from "../Layouts/ProtectedLayout";
 import { addCart } from "./slices/cartSlice";
@@ -18,8 +17,14 @@ import Cart from "./Pages/Cart";
 import Success from "./Pages/Success";
 import Orders from "./Pages/Orders";
 import ViewShop from "./Pages/Shop_Dynamic/ViewShop";
+import ContactAdmin from "./Pages/Contacts/ContactAdmin";
+import ProtectSeller from "./middlewares/ProtectSeller";
+import { createSeller } from "./slices/sellerSlice";
+import ProtectContactAdmin from "./middlewares/ContactAdmin";
+import ProtectAdmin from "./middlewares/ProtectAdmin";
 const App = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -31,8 +36,26 @@ const App = () => {
         );
         if (!res.data.success) return toast.error(res.data.message);
 
-        console.log("ME API USER:", res.data.user);
         dispatch(login(res.data.user));
+        if (res.data.user.role === "seller") {
+          try {
+            const resp = await axios.post(
+              import.meta.env.VITE_SERVER_URL + "/store/get",
+              { userID: res.data.user?.id },
+              {
+                withCredentials: true,
+              }
+            );
+            if (!resp.data.success) {
+              toast.error(resp.data.message);
+              return;
+            }
+
+            dispatch(createSeller(resp.data.seller));
+          } catch (error) {
+            console.log(error);
+          }
+        }
       } catch (error) {
         console.log(error);
       }
@@ -54,7 +77,7 @@ const App = () => {
     };
     getUser();
     getCartDetail();
-  }, []);
+  }, [isAuthenticated]);
 
   const router = createBrowserRouter([
     {
@@ -63,6 +86,15 @@ const App = () => {
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "/contact/admin",
+
+          element: (
+            <ProtectContactAdmin>
+              <ContactAdmin />
+            </ProtectContactAdmin>
+          ),
         },
         {
           path: "/shop",
@@ -107,7 +139,9 @@ const App = () => {
           path: "/admin",
           element: (
             <Protected>
-              <Admin />
+              <ProtectAdmin>
+                <Admin />
+              </ProtectAdmin>
             </Protected>
           ),
         },
@@ -115,7 +149,9 @@ const App = () => {
           path: "/store",
           element: (
             <Protected>
-              <Seller />
+              <ProtectSeller>
+                <Seller />
+              </ProtectSeller>
             </Protected>
           ),
         },

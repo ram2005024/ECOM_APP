@@ -2,6 +2,7 @@ import express from "express";
 import {
   addCategory,
   addCoupens,
+  allDetails,
   approveStatus,
   changeCoupenStatus,
   getCategory,
@@ -15,7 +16,8 @@ adminRouter.get("/approve/store", protectRoute, getStore);
 adminRouter.post("/status/approve", protectRoute, approveStatus);
 adminRouter.post("/status/reject", protectRoute, rejectStatus);
 adminRouter.post("/addCategory", addCategory);
-adminRouter.get("/getCategory", getCategory);
+adminRouter.get("/getCategory", protectRoute, getCategory);
 adminRouter.post("/addCoupens", addCoupens);
 adminRouter.get("/getCoupens", protectRoute, getCoupens);
 adminRouter.post("/changeActive", changeCoupenStatus);
+adminRouter.get("/getDetails", allDetails);

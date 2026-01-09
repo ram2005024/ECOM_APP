@@ -92,8 +92,10 @@ export const getProduct = async (req, res) => {
       },
       include: {
         reviews: true,
+        seller: true,
       },
     });
+
     if (products) return res.json({ success: true, products });
   } catch (error) {
     console.log(error);
@@ -139,7 +141,8 @@ export const getAllProducts = async (req, res) => {
     });
     if (!products)
       return res.json({ success: false, message: "No products uploaded yet!" });
-    return res.json({ success: true, products });
+    const validProducts = products.filter((i) => i.seller.isActive == true);
+    return res.json({ success: true, products: validProducts });
   } catch (error) {
     console.log(error);
     return res.json({ message: error.message, succes: false });

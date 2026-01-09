@@ -2,6 +2,7 @@ import axios from "axios";
 import { Loader, PlusSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import OrderDetail from "../OrderDetail";
 const Orders = () => {
   const [orderItems, setOrderItems] = useState([]);
@@ -10,6 +11,7 @@ const Orders = () => {
   const [showOrderDetail, setShowOrderDetail] = useState(false);
   const [showOrderItem, setShowOrderItem] = useState();
   const [showOrder, setShowOrder] = useState();
+  const seller = useSelector((state) => state.seller.seller);
   const getSellerOrder = async () => {
     try {
       const res = await axios.get(
@@ -37,6 +39,10 @@ const Orders = () => {
     getSellerOrder();
   }, []);
   const handleStatusChange = async (itemId, value, currentOrder) => {
+    if (seller.isActive == false) {
+      toast.error("You have been deactivated.Please contact admin");
+      return;
+    }
     setLoading(true);
     try {
       await toast.promise(

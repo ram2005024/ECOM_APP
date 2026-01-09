@@ -16,7 +16,7 @@ const Product = () => {
       <h2 className="text-xl font-semibold mb-3">Latest Products</h2>
       <div className="flex gap-2.5 mb-8">
         <span className="text-sm text-gray-600">
-          Showing 4 of {products.length} products
+          Showing {Math.min(4, products.length)} of {products.length} products
         </span>
         <Link
           to="/shop"

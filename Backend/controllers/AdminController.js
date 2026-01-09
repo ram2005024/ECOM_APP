@@ -171,3 +171,33 @@ export const changeCoupenStatus = async (req, res) => {
     return res.json({ error: error.message, success: false });
   }
 };
+// Controller to get all details for adminDasboard--------------------
+export const allDetails = async (req, res) => {
+  try {
+    const orders = await prisma.order.findMany();
+    const sellers = await prisma.seller.findMany();
+    const products = await prisma.product.findMany();
+
+    const totalOrders = orders.length;
+    const totalSellers = sellers.length;
+    const totalProducts = products.length;
+    const totalRevenue = orders.reduce((a, i) => a + i.totalAmount, 0);
+    console.log(
+      "Hello",
+      totalSellers,
+      totalOrders,
+      totalProducts,
+      totalRevenue
+    );
+    return res.json({
+      success: true,
+      totalOrders,
+      totalRevenue,
+      totalSellers,
+      totalProducts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: error.message, success: false });
+  }
+};

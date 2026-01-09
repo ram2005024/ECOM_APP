@@ -235,3 +235,40 @@ export const sellerAllDetails = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
+//Controller to get all the seller
+export const getAllSellers = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      include: {
+        user: true,
+      },
+    });
+    if (!sellers)
+      return res.json({ message: "No stores found", success: false });
+    return res.json({ sellers, success: true });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, success: false });
+  }
+};
+//Controller to set and unset the status of seller------
+export const setStatus = async (req, res) => {
+  try {
+    const { value, storeId } = req.body;
+    //Update the store
+    console.log(value);
+    await prisma.seller.update({
+      where: {
+        id: Number(storeId),
+      },
+      data: {
+        isActive: value,
+      },
+    });
+
+    return res.json({ message: "Status changed", success: true });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: error.message });
+  }
+};
