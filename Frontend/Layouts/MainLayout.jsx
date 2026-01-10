@@ -4,12 +4,16 @@ import { Outlet } from "react-router-dom";
 import { Footer } from "../src/Components/Home/Footer";
 import { useState } from "react";
 import { setProduct } from "../src/slices/productSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
+import TrialReminder from "../src/Components/Banners/TrialReminder";
 const MainLayout = () => {
   const [showProfile, setShowProfile] = useState(false);
   const dispath = useDispatch();
+  const [isVisible, setIsVisible] = useState(true);
+  const subscription = useSelector((state) => state.auth.subscription);
+  console.log("Hello", subscription);
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -35,6 +39,9 @@ const MainLayout = () => {
       className="min-h-screen min-w-screen flex flex-col "
       onClick={() => setShowProfile(false)}
     >
+      {subscription && isVisible && (
+        <TrialReminder isVisible={isVisible} setIsVisible={setIsVisible} />
+      )}
       <Nav showProfile={showProfile} setShowProfile={setShowProfile} />
       <main className="grow">
         <Outlet />

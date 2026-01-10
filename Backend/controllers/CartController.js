@@ -294,7 +294,7 @@ export const stripeSession = async (req, res) => {
       payment_method_types: ["card"],
       line_items,
 
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}&type=cart`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
 
       metadata: {
@@ -407,7 +407,6 @@ export const verifyPayment = async (req, res) => {
           },
         },
       });
-      console.log(items);
       const sellers = [
         ...new Map(
           items.items.map((i) => [i.product.seller.id, i.product.seller])

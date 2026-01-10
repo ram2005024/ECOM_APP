@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   DotIcon,
   MoveRight,
@@ -10,12 +10,14 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import RatingForm from "../Components/Orders/RatingForm";
+import { deleteCart } from "../slices/cartSlice";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [currentPId, setCurrentPId] = useState(null);
   const [ratingClicked, setRatingClicked] = useState(false);
   const [currentProductRating, setCurrentProductRating] = useState();
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -29,6 +31,7 @@ const Orders = () => {
           throw new Error(res.data.message);
         }
         setOrders(res.data.orders);
+        dispatch(deleteCart());
       } catch (error) {
         console.log(error.message || error);
       }

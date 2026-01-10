@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  disableStatus,
+  getSubscription,
   getUser,
   handleLogout,
   login,
@@ -13,3 +15,5 @@ userRoute.post("/login", login);
 userRoute.get("/me", protectRoute, getUser);
 userRoute.get("/logout", handleLogout);
 userRoute.post("/seller/register", sellerRegister);
+userRoute.get("/getSubscription", protectRoute, getSubscription);
+userRoute.get("/plusDisable", protectRoute, disableStatus);

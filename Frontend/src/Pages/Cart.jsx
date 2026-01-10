@@ -8,7 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addCart, setAddressFilled } from "../slices/cartSlice";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -21,6 +21,7 @@ const Cart = () => {
   const [isAddressSelected, setIsAddressSelected] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [coupenDetail, setCoupenDetail] = useState(null);
+  const navigate = useNavigate();
   const handleSubmitFromChild = (value) => {
     setCoupenDetail(value);
   };
@@ -100,26 +101,42 @@ const Cart = () => {
       </div>
     );
   }
-  console.log("From parent", coupenDetail);
   const handlePaymentSubmit = async () => {
     try {
-      if (!selectedAddress) {
-        toast.error("Please fill the address field");
-        return;
-      }
-      const res = await axios.post(
-        import.meta.env.VITE_SERVER_URL + "/cart/payment/stripe-session",
-        {
-          items,
-          coupenDetail,
-          selectedAddress,
-        },
-        {
-          withCredentials: true,
+      if (paymentMethod === "stripe") {
+        if (!selectedAddress) {
+          toast.error("Please fill the address field");
+          return;
         }
-      );
-      if (!res.data.success) return toast.error(res.data.message);
-      window.location.href = res.data.url;
+        const res = await axios.post(
+          import.meta.env.VITE_SERVER_URL + "/cart/payment/stripe-session",
+          {
+            items,
+            coupenDetail,
+            selectedAddress,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (!res.data.success) return toast.error(res.data.message);
+        window.location.href = res.data.url;
+      } else {
+        const res = await axios.post(
+          import.meta.env.VITE_SERVER_URL + "/order/create-order",
+          {
+            item: items,
+            coupenDetail,
+            selectedAddress,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          navigate("/orders");
+        }
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
       console.log(error);

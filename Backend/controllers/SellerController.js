@@ -56,7 +56,7 @@ export const getSeller = async (req, res) => {
   try {
     const seller = await prisma.seller.findUnique({
       where: {
-        userID: req.body.userID,
+        userID: req.body.userID || req.user.id,
       },
       include: {
         user: true,

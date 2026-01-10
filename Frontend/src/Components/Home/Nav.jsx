@@ -41,12 +41,17 @@ const Nav = () => {
   return (
     <nav className="flex justify-between  items-center mx-auto w-10/12">
       {/* Logo section */}
-      <Link to="/">
+      <Link to="/" className="relative">
         <img
           src="/Shoppy.png"
           className="size-20 mt-2 cursor-pointer"
           alt="_logo"
         />
+        {user?.plusMember && (
+          <span className="text-sm bg-emerald-600 text-white absolute font-semibold  -right-9 top-4  rounded-full text-center py-1 w-11">
+            plus
+          </span>
+        )}
       </Link>
 
       {/* Link section */}

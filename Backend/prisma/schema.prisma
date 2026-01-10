@@ -20,6 +20,7 @@ model User{
   seller Seller?
   reviews Review[]
   order Order[]
+  subscription SubscriptionDetail[]
 }
 model Seller{
   id Int @id @default(autoincrement())
@@ -110,7 +111,7 @@ model Order{
   id Int @id @default(autoincrement())
   totalAmount Int
   discountAmount Int @default(0)
-  sessionId String @unique
+  sessionId String? @unique
   userId Int
   paymentMethod String
   paymentStatus String
@@ -134,4 +135,15 @@ model OrderItem{
   createdAt DateTime @default(now())
   product Product @relation(fields: [productId],references: [id])
   order Order @relation(fields: [orderId],references: [id],onDelete: Cascade)
+}
+model SubscriptionDetail{
+  id Int @id @default(autoincrement())
+  userId Int
+    subscriptionId String?
+    stripeCustomerId String?
+    planId String?
+    trialStart DateTime?
+    trialEnd DateTime?
+    status String?
+    user User @relation(fields: [userId],references: [id],onDelete: Cascade)
 }

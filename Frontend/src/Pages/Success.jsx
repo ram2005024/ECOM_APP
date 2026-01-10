@@ -1,32 +1,58 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteCart } from "../slices/cartSlice";
+import { login } from "../slices/authSlice";
 const Success = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     const sessionID = new URLSearchParams(window.location.search).get(
       "session_id"
     );
+    const type = new URLSearchParams(window.location.search).get("type");
     const verifyPayment = async () => {
-      try {
-        const res = await axios.post(
-          import.meta.env.VITE_SERVER_URL + "/cart/payment/verify",
-          {
-            sessionID,
-          },
-          {
-            withCredentials: true,
+      if (type === "cart") {
+        try {
+          const res = await axios.post(
+            import.meta.env.VITE_SERVER_URL + "/cart/payment/verify",
+            {
+              sessionID,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+          if (res.data.success) {
+            navigate("/orders");
           }
-        );
-        if (res.data.success) {
-          navigate("/orders");
-          dispatch(deleteCart());
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      } else if (type === "subscription") {
+        try {
+          const sessionId = new URLSearchParams(window.location.search).get(
+            "session_id"
+          );
+          const res = await axios.post(
+            import.meta.env.VITE_SERVER_URL +
+              "/subscription/plus/session/verify",
+            {
+              sessionId,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+          if (res.data.success) {
+            dispatch(login({ ...user, plusMember: true }));
+            navigate("/");
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
     verifyPayment();

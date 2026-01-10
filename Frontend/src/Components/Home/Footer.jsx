@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 export const Footer = () => {
+  const { user } = useSelector((state) => state.auth);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
   return (
     <div>
       <footer class="px-6 md:px-16 lg:px-24 xl:px-32  mx-auto">
@@ -106,6 +109,11 @@ export const Footer = () => {
                 <li>
                   <a href="#">Terms</a>
                 </li>
+                {!user?.plusMember && (
+                  <li>
+                    <Link to="/plus">Become a plus member</Link>
+                  </li>
+                )}
               </div>
             </div>
           </div>

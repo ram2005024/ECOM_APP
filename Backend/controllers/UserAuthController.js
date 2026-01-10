@@ -42,8 +42,11 @@ export const login = async (req, res) => {
 };
 //--------------Getting user-----------------------
 export const getUser = async (req, res) => {
-  const user = req.user;
-  console.log(req.user);
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user.id,
+    },
+  });
   return res.json({
     success: true,
     user,
@@ -100,5 +103,41 @@ export const sellerRegister = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ message: error.message, status: false });
+  }
+};
+//Controller to get user subscription if he/she is plus member----
+export const getSubscription = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    //Fetch the subscription details of user
+    const subscription = await prisma.subscriptionDetail.findFirst({
+      where: { userId: Number(userId) },
+    });
+    if (!subscription) console.log();
+    return res.json({
+      success: false,
+      message: "No subscription details found",
+    });
+    console.log("It is", subscription);
+    return res.json({ success: true, subscription });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+//-------Disable the free trial status---------
+export const disableStatus = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        plusMember: false,
+      },
+    });
+    return res.json({ success: false });
+  } catch (error) {
+    console.log(error);
   }
 };
