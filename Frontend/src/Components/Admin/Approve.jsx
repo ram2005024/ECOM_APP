@@ -3,6 +3,7 @@ import LoadingScreen from "../Loading/AdminLoading";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { MapPin, NotepadTextIcon, Phone, User, X } from "lucide-react";
+import { imageURL } from "../../utils/imageURLCheck.js";
 const Approve = () => {
   const [stores, setStore] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -128,7 +129,7 @@ const Approve = () => {
             >
               <div className="flex flex-col  gap-2">
                 <img
-                  src={i?.image}
+                  src={imageURL(i?.image)}
                   className="size-18 rounded-full"
                   alt="_storeLogo"
                 />

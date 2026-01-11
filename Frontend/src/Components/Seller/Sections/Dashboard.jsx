@@ -119,7 +119,7 @@ const Dashboard = () => {
                     <div className="flex justify-between w-10/12">
                       <div className="flex flex-col gap-3">
                         <div className="flex gap-1.5 items-center">
-                          {user.image ? (
+                          {user?.image ? (
                             <img
                               src={user.image}
                               alt={`user_${user.id}_image`}

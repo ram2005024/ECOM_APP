@@ -42,7 +42,10 @@ const Dashboard = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          import.meta.env.VITE_SERVER_URL + "/admin/getDetails"
+          import.meta.env.VITE_SERVER_URL + "/admin/getDetails",
+          {
+            withCredentials: true,
+          }
         );
 
         if (res.data.success) {

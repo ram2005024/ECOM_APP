@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../slices/authSlice";
 import { deleteCart } from "../../slices/cartSlice";
-import { setShowProfile } from "../../slices/profileSlice";
+import {
+  setShowProfile,
+  setShowProfileProtected,
+} from "../../slices/profileSlice";
 import { useNavigate } from "react-router-dom";
 
 const ShowProfile = () => {
@@ -24,7 +27,9 @@ const ShowProfile = () => {
         toast.success(res.data.message);
         dispatch(logout());
         dispatch(deleteCart());
-        dispatch(setShowProfile());
+        dispatch(setShowProfile(false));
+        dispatch(setShowProfileProtected(false));
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
@@ -35,7 +40,7 @@ const ShowProfile = () => {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="absolute top-15 right-2 flex gap-4  z-50 flex-col bg-white border shadow-xl min-w-sm rounded-lg"
+      className="absolute top-15 right-2 flex gap-4  z-50 flex-col bg-white border border-gray-100 shadow-xl sm:w-sm w-auto rounded-lg"
     >
       <div className="flex gap-2.5 ">
         {/* Avatar */}
@@ -61,7 +66,8 @@ const ShowProfile = () => {
         <div
           onClick={() => {
             navigate("/orders");
-            dispatch(setShowProfile());
+            dispatch(setShowProfile(false));
+            dispatch(setShowProfileProtected(false));
           }}
           className="flex gap-1.5 items-center w-full hover:bg-gray-100 cursor-pointer p-2.5"
         >

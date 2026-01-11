@@ -129,6 +129,9 @@ export const handleShow = async (req, res) => {
 export const getAllProducts = async (req, res) => {
   try {
     const products = await prisma.product.findMany({
+      where: {
+        show: true,
+      },
       include: {
         seller: true,
         category: true,
@@ -170,10 +173,28 @@ export const addReview = async (req, res) => {
         comment: comment ? comment : "",
       },
     });
-
-    return res.json({ message: "Thanks for your review", success: true });
+    //Return updated products with after reviews
+    const products = await prisma.product.findMany({
+      where: {
+        show: true,
+      },
+      include: {
+        seller: true,
+        category: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return res.json({
+      message: "Thanks for your review",
+      success: true,
+      products,
+    });
   } catch (error) {
-    console.log("Bro", error.message);
+    console.log(error.message);
   }
 };
 //Controller to update review/rating to the product-----------------
@@ -199,8 +220,23 @@ export const updateReview = async (req, res) => {
         createdAt: new Date(),
       },
     });
-    return res.json({ message: "Review updated", success: true });
+    //Return updated products with after reviews
+    const products = await prisma.product.findMany({
+      where: {
+        show: true,
+      },
+      include: {
+        seller: true,
+        category: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return res.json({ message: "Review updated", success: true, products });
   } catch (error) {
-    console.log("Bro", error.message);
+    console.log(error.message);
   }
 };

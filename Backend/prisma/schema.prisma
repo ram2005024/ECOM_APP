@@ -35,7 +35,7 @@ model Seller{
   income Int?
   address String?
   image String?
-  isActive Boolean @default(false)
+  isActive Boolean @default(true)
   approvedBy String?
   filled Boolean @default(false)
   products Product[]
@@ -58,6 +58,7 @@ model Product{
   name String
   description String?
   stock Int?
+
   price Int?
   image String[]
   offerPrice Int?
@@ -142,6 +143,7 @@ model SubscriptionDetail{
     subscriptionId String?
     stripeCustomerId String?
     planId String?
+    subscriptionType String?
     trialStart DateTime?
     trialEnd DateTime?
     status String?

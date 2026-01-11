@@ -1,12 +1,5 @@
 import axios from "axios";
-import {
-  Minus,
-  MoveRight,
-  NotebookPen,
-  Plus,
-  Trash,
-  Trash2,
-} from "lucide-react";
+import { Minus, MoveRight, NotebookPen, Plus, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addCart, setAddressFilled } from "../slices/cartSlice";
@@ -105,7 +98,11 @@ const Cart = () => {
     try {
       if (paymentMethod === "stripe") {
         if (!selectedAddress) {
-          toast.error("Please fill the address field");
+          toast.error(
+            address.length > 0
+              ? "Please select the address"
+              : "Please fill the address "
+          );
           return;
         }
         const res = await axios.post(
@@ -122,6 +119,14 @@ const Cart = () => {
         if (!res.data.success) return toast.error(res.data.message);
         window.location.href = res.data.url;
       } else {
+        if (!selectedAddress) {
+          toast.error(
+            address.length > 0
+              ? "Please select the address"
+              : "Please fill the address "
+          );
+          return;
+        }
         const res = await axios.post(
           import.meta.env.VITE_SERVER_URL + "/order/create-order",
           {
@@ -273,10 +278,10 @@ const Cart = () => {
                         const index = parseInt(e.target.value);
                         if (index === -1) {
                           setSelectedAddress(null);
+
                           setIsAddressSelected(false);
                         } else {
                           setSelectedAddress(address[index]);
-                          console.log(selectedAddress);
                           setIsAddressSelected(true);
                         }
                       }}
@@ -333,7 +338,11 @@ const Cart = () => {
       </div>
       {addressFilled && (
         <AddressForm
-          onEdit={(finalAddress) => setSelectedAddress(finalAddress)}
+          onEdit={
+            selectedAddress
+              ? (finalAddress) => setSelectedAddress(finalAddress)
+              : false
+          }
           addresses={selectedAddress}
         />
       )}

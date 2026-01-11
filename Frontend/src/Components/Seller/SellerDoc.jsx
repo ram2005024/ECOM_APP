@@ -12,6 +12,7 @@ import {
   Briefcase,
   Image,
 } from "lucide-react";
+import { imageURL } from "../../utils/imageURLCheck.js";
 
 export default function SellerVerificationPage({ sellerDetails }) {
   const [seller] = useState(sellerDetails || {});
@@ -211,7 +212,7 @@ export default function SellerVerificationPage({ sellerDetails }) {
                 {seller?.image ? (
                   <div className="mb-6 rounded-lg overflow-hidden border-2 border-gray-300 shadow-md hover:shadow-lg transition">
                     <img
-                      src={seller.image}
+                      src={imageURL(seller.image)}
                       alt="Store"
                       className="w-full h-48 object-cover hover:scale-105 transition"
                     />

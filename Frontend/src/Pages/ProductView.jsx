@@ -59,7 +59,7 @@ const ProductView = () => {
     } else {
       setRating(null);
     }
-  }, [product]);
+  }, [product, products]);
   const handleAddCart = async () => {
     try {
       const res = await axios.post(
@@ -181,32 +181,35 @@ const ProductView = () => {
               <span className="text-sm text-gray-500">No rating yet</span>
             )}
 
-            {product?.offerPrice ? (
+            {product && product?.offerPrice != 0 ? (
               <div className="flex gap-3 mt-4">
                 <span className="text-2xl font-semibold">
                   $ {product.price - product.offerPrice}
                 </span>
                 <span className="line-through text-xl font-semibold text-gray-600">
-                  {product.price}
+                  {product?.price}
                 </span>
               </div>
             ) : (
-              <span className="line-through text-xl font-semibold text-gray-600">
-                {product?.price}
+              <span className=" text-xl font-semibold text-gray-800 ">
+                ${product?.price}
               </span>
             )}
             <div className="flex gap-2.5 items-center text-gray-600">
-              <Tag size={15} />
-              {product?.offerPrice ? (
-                <span>
-                  Save{" "}
-                  {Math.floor(
-                    ((product?.price - (product?.price - product?.offerPrice)) *
-                      100) /
-                      product?.price
-                  )}
-                  % right now
-                </span>
+              {product?.offerPrice != 0 ? (
+                <>
+                  <Tag size={15} />
+                  <span>
+                    Save{" "}
+                    {Math.floor(
+                      ((product?.price -
+                        (product?.price - product?.offerPrice)) *
+                        100) /
+                        product?.price
+                    )}
+                    % right now
+                  </span>
+                </>
               ) : (
                 <span> {}</span>
               )}
@@ -353,7 +356,7 @@ const ProductView = () => {
           <div className="sm:mt-10 sm:ml-15">
             <div className="flex  items-center">
               <img
-                src={product.seller.image}
+                src={imageURL(product.seller.image)}
                 alt="_seller_image"
                 className="size-20 rounded-full bg-white border-gray-100"
               />

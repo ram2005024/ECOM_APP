@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  disableSeller,
   getAllSellers,
   getSeller,
   getSellerById,
@@ -7,7 +8,6 @@ import {
   reapplySeller,
   registerSellerData,
   sellerAllDetails,
-  setStatus,
 } from "../controllers/SellerController.js";
 import { upload } from "../config/multer.js";
 import { protectRoute } from "../middlewares/protect.js";
@@ -16,30 +16,31 @@ export const sellerRoute = express.Router();
 sellerRoute.post(
   "/register",
   protectRoute,
-  protectSellerRoute,
+
   upload.single("storeImage"),
   registerSellerData
 );
-sellerRoute.post("/get", protectRoute, protectSellerRoute, getSeller);
+sellerRoute.post("/get", protectRoute, getSeller);
 sellerRoute.post(
   "/reapply",
   protectRoute,
-  protectSellerRoute,
+
   upload.single("storeImage"),
   reapplySeller
 );
 sellerRoute.get("/getOrders", protectRoute, protectSellerRoute, getSellerOrder);
-sellerRoute.get("/getSeller", protectRoute, protectSellerRoute, getSellerById);
+sellerRoute.get("/getSeller", protectRoute, getSellerById);
 sellerRoute.get(
   "/getAllDetails",
   protectRoute,
-  protectSellerRoute,
+
   sellerAllDetails
 );
 sellerRoute.get(
   "/getAllStores",
   protectRoute,
-  protectSellerRoute,
+
   getAllSellers
 );
-sellerRoute.post("/status", protectRoute, protectSellerRoute, setStatus);
+
+sellerRoute.get("/disable/seller", protectRoute, disableSeller);

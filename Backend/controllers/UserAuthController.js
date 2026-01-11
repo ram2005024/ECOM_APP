@@ -62,7 +62,7 @@ export const handleLogout = async (req, res) => {
   }
 };
 //Handle seller register
-export const sellerRegister = async (req, res) => {
+export const userRegister = async (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password || !name)
     return res.json({ message: "All fields are required", success: false });
@@ -83,7 +83,7 @@ export const sellerRegister = async (req, res) => {
         email: email,
         password: hashPassword,
         name: name,
-        role: "seller",
+        role: "customer",
       },
     });
     const token = await generateToken(user);
@@ -113,12 +113,13 @@ export const getSubscription = async (req, res) => {
     const subscription = await prisma.subscriptionDetail.findFirst({
       where: { userId: Number(userId) },
     });
-    if (!subscription) console.log();
-    return res.json({
-      success: false,
-      message: "No subscription details found",
-    });
-    console.log("It is", subscription);
+    if (!subscription) {
+      return res.json({
+        success: false,
+        message: "No subscription details found",
+      });
+    }
+
     return res.json({ success: true, subscription });
   } catch (error) {
     console.log(error.message);

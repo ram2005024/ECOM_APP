@@ -1,7 +1,8 @@
 import imagekit from "../config/imageKit.js";
 import { prisma } from "../config/db.config.js";
 import { inngest } from "../inngest/index.js";
-import { openai } from "../config/geminiAI.js";
+
+import { uploadImage } from "../utils/uploadImage.js";
 export const registerSellerData = async (req, res) => {
   const file = req.file;
   try {
@@ -9,12 +10,7 @@ export const registerSellerData = async (req, res) => {
 
     //Storing image url into the cloud i.e. imagekit database
     if (file) {
-      const urlInResponse = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        folder: "/sellers_profile",
-      });
-      imageURL = urlInResponse.url;
+      imageURL = await uploadImage(file);
     }
     const seller = await prisma.seller.create({
       data: {
@@ -23,6 +19,7 @@ export const registerSellerData = async (req, res) => {
         phoneNo: req.body.phone,
         address: req.body.address,
         isApproved: "pending",
+        isActive: true,
         image: imageURL,
         filled: true,
         storename: req.body.name,
@@ -251,24 +248,17 @@ export const getAllSellers = async (req, res) => {
     return res.json({ message: error.message, success: false });
   }
 };
-//Controller to set and unset the status of seller------
-export const setStatus = async (req, res) => {
-  try {
-    const { value, storeId } = req.body;
-    //Update the store
-    console.log(value);
-    await prisma.seller.update({
-      where: {
-        id: Number(storeId),
-      },
-      data: {
-        isActive: value,
-      },
-    });
 
-    return res.json({ message: "Status changed", success: true });
-  } catch (error) {
-    console.log(error);
-    res.json({ message: error.message });
-  }
+export const disableSeller = async (req, res) => {
+  const userId = req.user.id;
+  //Find seller from this user id
+  await prisma.seller.updateMany({
+    where: {
+      userID: userId,
+    },
+    data: {
+      isActive: false,
+    },
+  });
+  return res.json({ success: true });
 };

@@ -5,7 +5,7 @@ import {
   getUser,
   handleLogout,
   login,
-  sellerRegister,
+  userRegister,
 } from "../controllers/UserAuthController.js";
 import { protectRoute } from "../middlewares/protect.js";
 
@@ -14,6 +14,6 @@ export const userRoute = express.Router();
 userRoute.post("/login", login);
 userRoute.get("/me", protectRoute, getUser);
 userRoute.get("/logout", handleLogout);
-userRoute.post("/seller/register", sellerRegister);
+userRoute.post("/register", userRegister);
 userRoute.get("/getSubscription", protectRoute, getSubscription);
 userRoute.get("/plusDisable", protectRoute, disableStatus);

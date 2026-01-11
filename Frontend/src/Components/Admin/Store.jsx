@@ -16,7 +16,7 @@ const Store = () => {
       try {
         await toast.promise(
           axios.post(
-            import.meta.env.VITE_SERVER_URL + "/store/status",
+            import.meta.env.VITE_SERVER_URL + "/admin/status",
             {
               value,
               storeId,
@@ -57,7 +57,10 @@ const Store = () => {
       setLoading(true);
       // Get all the store
       const res = await axios.get(
-        import.meta.env.VITE_SERVER_URL + "/store/getAllStores"
+        import.meta.env.VITE_SERVER_URL + "/store/getAllStores",
+        {
+          withCredentials: true,
+        }
       );
       if (!res.data.success) {
         setStores([]);

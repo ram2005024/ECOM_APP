@@ -7,6 +7,7 @@ import {
   PlusSquare,
 } from "lucide-react";
 import { setSection } from "../../slices/sellerSlice";
+import { imageURL } from "../../utils/imageURLCheck.js";
 const SellerSideBar = () => {
   const user = useSelector((state) => state.auth.user);
   const { seller, section } = useSelector((state) => state.seller);
@@ -35,10 +36,11 @@ const SellerSideBar = () => {
       icon: <AppWindow size={16} className="text-gray-500" />,
     },
   ];
+
   return (
     <div className=" col-span-2    gap-2.5  pt-5  border-r border-gray-300 ">
       {seller.isActive == true && (
-        <div className="flex absolute top-15 sm:right-15 right-3 items-center">
+        <div className="flex absolute top-16 sm:right-20 right-2   items-center">
           <p
             className={`text-sm flex font-semibold  items-center ${
               seller.isActive ? "text-green-500" : "text-red-400"
@@ -54,7 +56,7 @@ const SellerSideBar = () => {
           <div>
             {seller?.image ? (
               <img
-                src={seller?.image}
+                src={imageURL(seller?.image)}
                 alt="_profile_avatar"
                 className="size-18 rounded-full"
               />

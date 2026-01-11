@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import RatingForm from "../Components/Orders/RatingForm";
 import { deleteCart } from "../slices/cartSlice";
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState();
   const [currentPId, setCurrentPId] = useState(null);
   const [ratingClicked, setRatingClicked] = useState(false);
   const [currentProductRating, setCurrentProductRating] = useState();
@@ -31,14 +31,23 @@ const Orders = () => {
           throw new Error(res.data.message);
         }
         setOrders(res.data.orders);
+
         dispatch(deleteCart());
       } catch (error) {
         console.log(error.message || error);
       }
     };
+    const getProduct = async () => {
+      if (products.length > 0) {
+        const found = products.find((i) => i.id == pid);
+        setProduct(found);
+        setSelected(found.image[0]);
+      }
+    };
+    getProduct();
     fetchCart();
   }, [ratingClicked]);
-  if (orders.length === 0) {
+  if (orders?.length === 0) {
     return (
       <div className="min-h-screen min-w-screen flex items-center justify-center">
         <div className="flex flex-col gap-1.5 items-center">
@@ -111,75 +120,78 @@ const Orders = () => {
                     <tr key={index} className="py-2">
                       <td className="px-6 text-center align-middle">
                         <div className="flex flex-col sm:gap-6 gap-3 text-xs mt-10">
-                          {item.items.map((i, idx) => {
-                            const review = i.product.reviews.find(
-                              (i) => i.userId == user.id
-                            );
-                            console.log(review);
-                            return (
-                              <div
-                                key={idx}
-                                className="flex justify-center items-center gap-6 text-xs"
-                              >
-                                <img
-                                  src={imageURL(i.image)}
-                                  alt="product_image"
-                                  className="sm:size-13 size-8 rounded-xs"
-                                />
-                                <div className="flex flex-col items-start">
-                                  <h2>{i.name}</h2>
-                                  <div className="flex sm:flex-row flex-col sm:gap-2 sm:text-sm text-xs">
-                                    <span className=" text-gray-600">
-                                      ${i.price}
+                          {item &&
+                            item.items.map((i, idx) => {
+                              const review = i.product.reviews.find(
+                                (i) => i.userId == user.id
+                              );
+                              return (
+                                <div
+                                  key={idx}
+                                  className="flex justify-center items-center gap-6 text-xs"
+                                >
+                                  <img
+                                    src={imageURL(i.image)}
+                                    alt="product_image"
+                                    className="sm:size-13 size-8 rounded-xs"
+                                  />
+                                  <div className="flex flex-col items-start">
+                                    <h2>{i.name}</h2>
+                                    <div className="flex sm:flex-row flex-col sm:gap-2 sm:text-sm text-xs">
+                                      <span className=" text-gray-600">
+                                        ${i.price}
+                                      </span>
+                                      <span className=" text-gray-600">
+                                        Qty: {i.quantity}
+                                      </span>
+                                    </div>
+                                    <span>
+                                      {new Date(
+                                        i.createdAt
+                                      ).toLocaleDateString()}
                                     </span>
-                                    <span className=" text-gray-600">
-                                      Qty: {i.quantity}
-                                    </span>
-                                  </div>
-                                  <span>
-                                    {new Date(i.createdAt).toLocaleDateString()}
-                                  </span>
-                                  {review ? (
-                                    <div className="flex gap-2 items-center">
-                                      <div className="flex gap-1.5">
-                                        {Array.from({ length: 5 }).map(
-                                          (_, idx) => (
-                                            <Star
-                                              size={12}
-                                              className={`text-gray-400 ${
-                                                Math.round(review.rating) > idx
-                                                  ? "fill-yellow-300 text-yellow-300"
-                                                  : "fill-gray-400"
-                                              }`}
-                                            />
-                                          )
-                                        )}
+                                    {review ? (
+                                      <div className="flex gap-2 items-center">
+                                        <div className="flex gap-1.5">
+                                          {Array.from({ length: 5 }).map(
+                                            (_, idx) => (
+                                              <Star
+                                                size={12}
+                                                className={`text-gray-400 ${
+                                                  Math.round(review.rating) >
+                                                  idx
+                                                    ? "fill-yellow-300 text-yellow-300"
+                                                    : "fill-gray-400"
+                                                }`}
+                                              />
+                                            )
+                                          )}
+                                        </div>
+                                        <NotebookPen
+                                          onClick={() => {
+                                            setCurrentPId(i.productId);
+                                            setRatingClicked(true);
+                                            setCurrentProductRating(review);
+                                          }}
+                                          size={16}
+                                          className="text-gray-600 cursor-pointer"
+                                        />
                                       </div>
-                                      <NotebookPen
+                                    ) : (
+                                      <button
                                         onClick={() => {
                                           setCurrentPId(i.productId);
                                           setRatingClicked(true);
-                                          setCurrentProductRating(review);
                                         }}
-                                        size={16}
-                                        className="text-gray-600 cursor-pointer"
-                                      />
-                                    </div>
-                                  ) : (
-                                    <button
-                                      onClick={() => {
-                                        setCurrentPId(i.productId);
-                                        setRatingClicked(true);
-                                      }}
-                                      className="mt-1.5 text-start sm:self-start text-blue-700 cursor-pointer"
-                                    >
-                                      Rate Product
-                                    </button>
-                                  )}
+                                        className="mt-1.5 text-start sm:self-start text-blue-700 cursor-pointer"
+                                      >
+                                        Rate Product
+                                      </button>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
                         </div>
                       </td>
                       <td className="px-6 text-center align-middle">

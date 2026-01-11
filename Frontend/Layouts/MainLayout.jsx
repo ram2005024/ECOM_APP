@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect } from "react";
 import TrialReminder from "../src/Components/Banners/TrialReminder";
+import { setShowProfile } from "../src/slices/profileSlice";
 const MainLayout = () => {
-  const [showProfile, setShowProfile] = useState(false);
   const dispath = useDispatch();
   const [isVisible, setIsVisible] = useState(true);
   const subscription = useSelector((state) => state.auth.subscription);
-  console.log("Hello", subscription);
+  //Banner ids----
+  const bannerId = "subscription_banner";
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -31,18 +32,28 @@ const MainLayout = () => {
         console.log(error);
       }
     };
+    if (localStorage.getItem(`banner_show_${bannerId}`)) {
+      setIsVisible(false);
+    }
     getProduct();
   }, []);
+
   return (
     <div
       id="#"
       className="min-h-screen min-w-screen flex flex-col "
-      onClick={() => setShowProfile(false)}
+      onClick={() => {
+        dispath(setShowProfile(false));
+      }}
     >
       {subscription && isVisible && (
-        <TrialReminder isVisible={isVisible} setIsVisible={setIsVisible} />
+        <TrialReminder
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          bannerId={bannerId}
+        />
       )}
-      <Nav showProfile={showProfile} setShowProfile={setShowProfile} />
+      <Nav />
       <main className="grow">
         <Outlet />
       </main>

@@ -4,6 +4,8 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setProduct } from "../../slices/productSlice";
 const RatingForm = ({
   ratingClicked,
   setIsRatingClicked,
@@ -12,6 +14,7 @@ const RatingForm = ({
   existingRating = null,
   setCurrentProductRating,
 }) => {
+  const dispatch = useDispatch();
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
@@ -47,6 +50,7 @@ const RatingForm = ({
             withCredentials: true,
           }
         );
+        if (res.data.success) dispatch(setProduct(res.data.products));
       } else {
         res = await axios.post(
           import.meta.env.VITE_SERVER_URL + "/product/updateReview",
@@ -59,6 +63,7 @@ const RatingForm = ({
             withCredentials: true,
           }
         );
+        if (res.data.success) dispatch(setProduct(res.data.products));
       }
 
       if (!res.data.success) {

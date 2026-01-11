@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { deleteCart } from "../slices/cartSlice";
+import { replace, useNavigate } from "react-router-dom";
 import { login } from "../slices/authSlice";
 const Success = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     const sessionID = new URLSearchParams(window.location.search).get(
       "session_id"
@@ -26,7 +26,7 @@ const Success = () => {
             }
           );
           if (res.data.success) {
-            navigate("/orders");
+            navigate("/orders", { replace: true });
           }
         } catch (error) {
           console.log(error);
@@ -48,7 +48,36 @@ const Success = () => {
           );
           if (res.data.success) {
             dispatch(login({ ...user, plusMember: true }));
-            navigate("/");
+            navigate("/", { replace: true });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (type === "sellerSubscription") {
+        try {
+          const sessionId = new URLSearchParams(window.location.search).get(
+            "session_id"
+          );
+          const res = await axios.post(
+            import.meta.env.VITE_SERVER_URL +
+              "/subscription/seller/session/verify",
+            {
+              sessionId,
+            },
+            {
+              withCredentials: true,
+            }
+          );
+          if (res.data.success) {
+            console.log("hello bri");
+            const user = await axios.get(
+              import.meta.env.VITE_SERVER_URL + "/auth/user/me",
+              {
+                withCredentials: true,
+              }
+            );
+            dispatch(login(user.data.user));
+            navigate("/", { replace: true });
           }
         } catch (error) {
           console.log(error);

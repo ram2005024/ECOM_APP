@@ -7,7 +7,7 @@ export const protectSellerRoute = async (req, res, next) => {
     const seller = await prisma.seller.findFirst({
       where: { userID: user.id },
     });
-    if (!seller)
+    if (!seller && user.role !== "seller")
       return res
         .status(401)
         .json({ message: "Unauthorized access", success: false });

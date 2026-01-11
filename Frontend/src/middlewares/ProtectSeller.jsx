@@ -1,16 +1,39 @@
-import { useSelector } from "react-redux";
+import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { createSeller } from "../slices/sellerSlice";
 const ProtectSeller = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const { seller, loading } = useSelector((state) => state.seller);
-  console.log(seller);
-  //Check the role
-  if (user?.role === "customer" || user?.role === "admin") {
-    return <Navigate to="/" replace />;
-  }
+  useEffect(() => {
+    if (user?.role !== "seller" || seller) return;
+
+    const fetchSeller = async () => {
+      try {
+        const seller = await axios.post(
+          import.meta.env.VITE_SERVER_URL + "/store/get",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        if (seller.data.success) {
+          dispatch(createSeller(seller.data.seller));
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSeller();
+  }, [user?.role, dispatch, seller]);
+
   if (loading) return <div>loading seller.....</div>;
-  if (!seller) return <Navigate to="/" replace />;
-  if (seller?.isActive) return children;
+  if (user?.role !== "seller") return <Navigate to="/" replace />;
+
+  if (seller && seller?.isActive) return children;
   else {
     return <Navigate to="/contact/admin" />;
   }

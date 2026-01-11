@@ -28,8 +28,9 @@ export const getOrders = async (req, res) => {
     if (!orders)
       return res
         .status(400)
-        .json({ message: "Order doesn't exists", success: false });
+        .json({ message: "Order doesn't exist", success: false });
     //If order exists send to the frontend
+
     return res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);

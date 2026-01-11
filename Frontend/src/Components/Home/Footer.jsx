@@ -1,12 +1,11 @@
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 export const Footer = () => {
   const { user } = useSelector((state) => state.auth);
-  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState(false);
+
   return (
     <div>
-      <footer class="px-6 md:px-16 lg:px-24 xl:px-32  mx-auto">
+      <footer className="px-6 md:px-16 lg:px-24 xl:px-32  mx-auto">
         <div class="flex flex-col md:flex-row items-start justify-center gap-10 py-10 border-b border-gray-500/30">
           <div class="max-w-8/12">
             <img
@@ -109,9 +108,16 @@ export const Footer = () => {
                 <li>
                   <a href="#">Terms</a>
                 </li>
-                {!user?.plusMember && (
+                {!user?.plusMember &&
+                  user?.role !== "seller" &&
+                  user?.role !== "admin" && (
+                    <li>
+                      <Link to="/plus">Become a plus member</Link>
+                    </li>
+                  )}
+                {user?.role === "customer" && (
                   <li>
-                    <Link to="/plus">Become a plus member</Link>
+                    <Link to="/seller/subscription">Become a seller</Link>
                   </li>
                 )}
               </div>

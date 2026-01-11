@@ -201,3 +201,24 @@ export const allDetails = async (req, res) => {
     res.json({ message: error.message, success: false });
   }
 };
+//Controller to set and unset the status of seller------
+export const setStatus = async (req, res) => {
+  try {
+    const { value, storeId } = req.body;
+    //Update the store
+    console.log(value);
+    await prisma.seller.update({
+      where: {
+        id: Number(storeId),
+      },
+      data: {
+        isActive: value,
+      },
+    });
+
+    return res.json({ message: "Status changed", success: true });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: error.message });
+  }
+};

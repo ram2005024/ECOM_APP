@@ -55,10 +55,10 @@ const Login = ({ setLogButton }) => {
         setLoading(false);
       }
     }
-    if (currentState === "Seller") {
+    if (currentState === "Sign Up") {
       try {
         const res = await axios.post(
-          import.meta.env.VITE_SERVER_URL + "/auth/user/seller/register",
+          import.meta.env.VITE_SERVER_URL + "/auth/user/register",
           {
             email,
             password,
@@ -98,7 +98,7 @@ const Login = ({ setLogButton }) => {
   return (
     <div
       onClick={() => {
-        if (location.pathname === "/") setLogButton(false);
+        setLogButton(false);
       }}
       className="fixed z-50 inset-0 bg-slate-400/30 backdrop-blur-sm flex justify-center items-center p-4"
     >
@@ -128,9 +128,7 @@ const Login = ({ setLogButton }) => {
           <p className="text-gray-500 text-sm mb-6">
             {currentState === "Login"
               ? "Sign in to your account"
-              : currentState === "Sign Up"
-              ? "Create a new account"
-              : "Start selling on our platform"}
+              : currentState === "Sign Up" && "Create a new account"}
           </p>
 
           {/* Tabs */}
@@ -155,20 +153,10 @@ const Login = ({ setLogButton }) => {
             >
               Sign Up
             </button>
-            <button
-              onClick={() => setCurrentState("Seller")}
-              className={`flex-1 py-2 px-4 rounded font-medium transition-all ${
-                currentState === "Seller"
-                  ? "bg-amber-600 text-white"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-            >
-              Seller
-            </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {(currentState === "Sign Up" || currentState === "Seller") && (
+            {currentState === "Sign Up" && (
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -216,17 +204,11 @@ const Login = ({ setLogButton }) => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full font-semibold py-2.5 px-4 rounded-lg transition-colors ${
-                currentState === "Seller"
-                  ? "bg-amber-600 hover:bg-amber-700 disabled:bg-gray-400 text-white"
-                  : "bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white"
-              }`}
+              className={`w-full font-semibold py-2.5 px-4 rounded-lg transition-colors bg-indigo-600 text-white`}
             >
               {currentState === "Login"
                 ? "Log in"
-                : currentState === "Sign Up"
-                ? "Sign up"
-                : "Become a Seller"}
+                : currentState === "Sign Up" && "Sign Up"}
             </button>
 
             {message && (

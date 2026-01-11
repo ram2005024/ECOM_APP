@@ -57,6 +57,7 @@ export const verifySubscriptionSession = async (req, res) => {
       data: {
         userId: Number(subscription.metadata.userId) || req.user.id,
         subscriptionId: subscription.id,
+        subscriptionType: "plusMember",
         stripeCustomerId: subscription.customer,
         planId: subscription.items.data[0].price.id,
         trialStart: new Date(subscription.trial_start * 1000),
@@ -77,6 +78,94 @@ export const verifySubscriptionSession = async (req, res) => {
       },
       data: {
         plusMember: true,
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "Your free trial is activated🎉🎉", success: true });
+  } catch (error) {
+    console.log(error);
+  }
+};
+//Controller to register a seller subscription------
+export const sellerSubscriptionSession = async (req, res) => {
+  const { plan } = req.body;
+  const userId = req.user.id;
+  const email = req.user.email;
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [
+        plan === "anually"
+          ? {
+              price: "price_1Snx4kAjVvX0Obs1seNsvee5",
+              quantity: 1,
+            }
+          : {
+              price: "price_1Snx41AjVvX0Obs1OOSqo3Tn",
+              quantity: 1,
+            },
+      ],
+      subscription_data: {
+        trial_period_days: 7,
+        metadata: {
+          userId,
+        },
+      },
+      customer_email: email,
+      success_url:
+        process.env.CLIENT_URL +
+        "/success?session_id={CHECKOUT_SESSION_ID}&type=sellerSubscription",
+      cancel_url: process.env.CLIENT_URL + "/cancel",
+    });
+
+    res.json({ success: true, url: session.url });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+//Verify controller to verify seller Subscription-------
+export const verifySellerSubscription = async (req, res) => {
+  const { sessionId } = req.body;
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["subscription", "customer"],
+    });
+    const subscription = session.subscription;
+    const customer = session.customer;
+    if (!customer) {
+      return res
+        .status(400)
+        .json({ message: "No subscription found", success: false });
+    }
+    //If the user has taken the subscription save into the DB and make him plus member
+    const subscriptionDetail = await prisma.subscriptionDetail.create({
+      data: {
+        userId: Number(subscription.metadata.userId) || req.user.id,
+        subscriptionId: subscription.id,
+        subscriptionType: "seller",
+        stripeCustomerId: subscription.customer,
+        planId: subscription.items.data[0].price.id,
+        trialStart: new Date(subscription.trial_start * 1000),
+        trialEnd: new Date(subscription.trial_end * 1000),
+        status: subscription.status,
+      },
+    });
+
+    if (!subscriptionDetail)
+      return res.status(400).json({
+        message: "Subscription can't be created or it may already existed",
+        success: false,
+      });
+    //Make the user plus and return into the frontend-------
+    await prisma.user.update({
+      where: {
+        id: Number(subscription.metadata.userId),
+      },
+      data: {
+        role: "seller",
       },
     });
     return res

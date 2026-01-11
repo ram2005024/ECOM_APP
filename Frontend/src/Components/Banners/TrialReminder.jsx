@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { getSubscriptionTime } from "../../utils/getSubscriptionTime.js";
 import { X } from "lucide-react";
 
-const TrialReminder = ({ isVisible, setIsVisible }) => {
+const TrialReminder = ({ isVisible, setIsVisible, bannerId }) => {
   const subscription = useSelector((state) => state.auth.subscription);
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
@@ -24,9 +24,7 @@ const TrialReminder = ({ isVisible, setIsVisible }) => {
   }, []);
 
   if (!isVisible) return null;
-  if (days == 0 && hours == 0 && mins == 0 && sec == 0) {
-    window.location.reload();
-  }
+
   return (
     <div className="w-full bg-blue-600 border-b border-blue-700">
       <div className="max-w-7xl mx-auto px-4 py-2.5 sm:px-6">
@@ -58,7 +56,12 @@ const TrialReminder = ({ isVisible, setIsVisible }) => {
             onClick={() => setIsVisible(false)}
             className="text-white/70 hover:text-white transition-colors flex-shrink-0"
           >
-            <X className="w-4 h-4" />
+            <X
+              onClick={() => {
+                localStorage.setItem(`banner_show_${bannerId}`, false);
+              }}
+              className="w-4 h-4"
+            />
           </button>
         </div>
       </div>
