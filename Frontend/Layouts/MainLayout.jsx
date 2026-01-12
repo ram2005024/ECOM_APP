@@ -27,6 +27,7 @@ const MainLayout = () => {
         if (!res.data.success) {
           return;
         }
+        console.log("products are: ", res.data.products);
         dispath(setProduct(res.data.products));
       } catch (error) {
         console.log(error);

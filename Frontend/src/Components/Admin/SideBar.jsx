@@ -45,9 +45,9 @@ const SideBar = () => {
       <div className="flex items-center justify-center  py-3">
         <div className="flex flex-col gap-2.5 items-start">
           <div>
-            {user?.userImage ? (
+            {user?.image ? (
               <img
-                src={user?.userImage}
+                src={user?.image}
                 alt="_profile_avatar"
                 className="size-10 rounded-full"
               />

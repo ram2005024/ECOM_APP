@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.config.js";
+import { sendContactMessage } from "../config/sendEmail.js";
 import { inngest } from "../inngest/index.js";
 //-----------Getting stores to check approval--------------------
 export const getStore = async (req, res) => {
@@ -220,5 +221,20 @@ export const setStatus = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ message: error.message });
+  }
+};
+//Controller to contact the admin----------------
+export const contact = async (req, res) => {
+  const { formData } = req.body;
+  try {
+    //Send the form data to admin using email
+    await sendContactMessage(formData);
+    return res.json({
+      message: "Form submitted.Thankyou for contacting us!",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message });
   }
 };

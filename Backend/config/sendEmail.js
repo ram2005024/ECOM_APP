@@ -5,6 +5,7 @@ import { approveSuccessEmail } from "./EmailTemplate/approveSuccess.js";
 import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotification.js";
 import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
+import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -28,6 +29,19 @@ export const sendEmail = async ({
     to,
     subject,
     html: sellerRegister(storename, username, id, type),
+  });
+};
+export const sendContactMessage = async (formData) => {
+  await transporter.sendMail({
+    from: process.env.USER_EMAIL,
+    to: "sharmashekhar20050@gmail.com",
+    subject: "Contact appeal from a user",
+    html: contactEmailTemplate({
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    }),
   });
 };
 export const sendAdminMessage = async ({

@@ -45,9 +45,9 @@ const ShowProfile = () => {
       <div className="flex gap-2.5 ">
         {/* Avatar */}
         <div className="ml-3">
-          {user?.userImage ? (
+          {user?.image ? (
             <img
-              src={user?.userImage}
+              src={user?.image}
               alt="_profile_avatar"
               className="size-10 rounded-full"
             />

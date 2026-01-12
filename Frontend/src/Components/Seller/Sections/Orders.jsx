@@ -134,62 +134,64 @@ const Orders = () => {
             <tbody>
               {order &&
                 orderItems &&
-                orderItems.map((item, index) => {
-                  const currentOrder = order.filter(
-                    (i) => item.orderId == i.id
-                  )[0];
-                  const subTotal = item.price * item.quantity;
-                  const discountRatio =
-                    currentOrder.discountAmount / currentOrder.totalAmount;
-                  const finalAmount = subTotal - discountRatio * subTotal;
-                  const coupen =
-                    item.coupen !== "" ? item.coupen : "Not applied";
-                  return (
-                    <tr
-                      onClick={() => {
-                        setShowOrder(currentOrder);
-                        setShowOrderItem(item);
-                        setShowOrderDetail((prev) => !prev);
-                      }}
-                      key={item.id}
-                      className="text-xs cursor-pointer transition-colors hover:bg-gray-50 text-gray-800 align-center"
-                    >
-                      <td className="py-4 px-6">{index + 1}</td>
-                      <td className="py-4 px-6">
-                        {currentOrder.address.userName}
-                      </td>
-                      <td className="py-4 px-6">{Math.round(finalAmount)}</td>
-                      <td className="py-4 px-6">
-                        {currentOrder.paymentMethod}
-                      </td>
-                      <td className="py-4 px-6">{coupen}</td>
-                      <td className="py-4 px-6">
-                        <select
-                          value={item.orderStatus}
-                          disabled={loading}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                          className="outline-none border border-gray-200"
-                          onChange={(e) => {
-                            handleStatusChange(
-                              item.id,
-                              e.target.value,
-                              currentOrder
-                            );
-                          }}
-                        >
-                          {orderStatuses.map((i) => (
-                            <option value={i}>{i}</option>
-                          ))}
-                        </select>
-                      </td>
-                      <td className="py-4 px-6">
-                        {new Date(item.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  );
-                })}
+                [...orderItems]
+                  .sort((a, b) => a.id - b.id)
+                  .map((item, index) => {
+                    const currentOrder = order.filter(
+                      (i) => item.orderId == i.id
+                    )[0];
+                    const subTotal = item.price * item.quantity;
+                    const discountRatio =
+                      currentOrder.discountAmount / currentOrder.totalAmount;
+                    const finalAmount = subTotal - discountRatio * subTotal;
+                    const coupen =
+                      item.coupen !== "" ? item.coupen : "Not applied";
+                    return (
+                      <tr
+                        onClick={() => {
+                          setShowOrder(currentOrder);
+                          setShowOrderItem(item);
+                          setShowOrderDetail((prev) => !prev);
+                        }}
+                        key={item.id}
+                        className="text-xs cursor-pointer transition-colors hover:bg-gray-50 text-gray-800 align-center"
+                      >
+                        <td className="py-4 px-6">{index + 1}</td>
+                        <td className="py-4 px-6">
+                          {currentOrder.address.userName}
+                        </td>
+                        <td className="py-4 px-6">{Math.round(finalAmount)}</td>
+                        <td className="py-4 px-6">
+                          {currentOrder.paymentMethod}
+                        </td>
+                        <td className="py-4 px-6">{coupen}</td>
+                        <td className="py-4 px-6">
+                          <select
+                            value={item.orderStatus}
+                            disabled={loading}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            className="outline-none border border-gray-200"
+                            onChange={(e) => {
+                              handleStatusChange(
+                                item.id,
+                                e.target.value,
+                                currentOrder
+                              );
+                            }}
+                          >
+                            {orderStatuses.map((i) => (
+                              <option value={i}>{i}</option>
+                            ))}
+                          </select>
+                        </td>
+                        <td className="py-4 px-6">
+                          {new Date(item.createdAt).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
             </tbody>
           </table>
         </div>

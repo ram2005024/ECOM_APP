@@ -5,6 +5,7 @@ import {
   allDetails,
   approveStatus,
   changeCoupenStatus,
+  contact,
   getCategory,
   getCoupens,
   getStore,
@@ -29,3 +30,4 @@ adminRouter.post(
 );
 adminRouter.get("/getDetails", protectRoute, protectAdmin, allDetails);
 adminRouter.post("/status", protectRoute, protectAdmin, setStatus);
+adminRouter.post("/contact", protectRoute, contact);

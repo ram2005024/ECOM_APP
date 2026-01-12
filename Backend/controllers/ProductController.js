@@ -82,13 +82,14 @@ Rules:
     res.json({ message: "Quota exceeded", success: false });
   }
 };
-//---------Controller to get product according to seller ---------------
+//---------Controller to get product according to seller to show for customer ---------------
 export const getProduct = async (req, res) => {
   try {
     const sellerId = req.query.sellerId;
     const products = await prisma.product.findMany({
       where: {
         sellerId: Number(sellerId),
+        show: true,
       },
       include: {
         reviews: true,
@@ -238,5 +239,24 @@ export const updateReview = async (req, res) => {
     return res.json({ message: "Review updated", success: true, products });
   } catch (error) {
     console.log(error.message);
+  }
+};
+export const getProductForSellerDashboard = async (req, res) => {
+  try {
+    const sellerId = req.query.sellerId;
+    const products = await prisma.product.findMany({
+      where: {
+        sellerId: Number(sellerId),
+      },
+      include: {
+        reviews: true,
+        seller: true,
+      },
+    });
+
+    if (products) return res.json({ success: true, products });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, succes: false });
   }
 };

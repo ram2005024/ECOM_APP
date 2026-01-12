@@ -94,7 +94,17 @@ const Login = ({ setLogButton }) => {
     const timer = setTimeout(() => setMessage(""), 2000);
     return () => clearTimeout(timer);
   }, [message]);
-
+  //Function to handle google login-----------
+  const handleGoogleLogin = async () => {
+    try {
+      window.location.href =
+        import.meta.env.VITE_SERVER_URL + "/auth/user/google";
+    } catch (error) {
+      console.log(
+        error.response?.data?.message || error.message || "Something went wrong"
+      );
+    }
+  };
   return (
     <div
       onClick={() => {
@@ -224,7 +234,10 @@ const Login = ({ setLogButton }) => {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          <button className="w-full bg-gray-50 border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full bg-gray-50 border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

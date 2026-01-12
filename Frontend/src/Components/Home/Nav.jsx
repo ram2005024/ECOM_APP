@@ -114,11 +114,20 @@ const Nav = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+
                 dispatch(setShowProfile());
               }}
               className="text-center size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
             >
-              {user?.name?.slice(0, 1)}
+              {user?.image ? (
+                <img
+                  src={user?.image}
+                  alt={`user_${user?.id}_image`}
+                  className="rounded-full"
+                />
+              ) : (
+                user?.name.slice(0, 1)
+              )}
               {showProfile && <ShowProfile />}
             </button>
           ) : (

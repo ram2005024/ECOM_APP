@@ -6,6 +6,7 @@ import {
   analyzeImage,
   getAllProducts,
   getProduct,
+  getProductForSellerDashboard,
   handleShow,
   updateReview,
 } from "../controllers/ProductController.js";
@@ -18,3 +19,4 @@ productRoute.post("/handleShow", handleShow);
 productRoute.get("/getAllProduct", getAllProducts);
 productRoute.post("/addReview", protectRoute, addReview);
 productRoute.post("/updateReview", protectRoute, updateReview);
+productRoute.get("/get/forSeller", protectRoute, getProductForSellerDashboard);

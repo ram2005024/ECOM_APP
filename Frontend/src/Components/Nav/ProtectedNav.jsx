@@ -25,9 +25,9 @@ const Nav = () => {
             dispatch(setShowProfileProtected());
           }}
         >
-          {user?.userImage ? (
+          {user?.image ? (
             <img
-              src={user?.userImage}
+              src={user?.image}
               alt="_profile_avatar"
               className="size-10 rounded-full"
             />

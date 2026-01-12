@@ -37,14 +37,7 @@ const Orders = () => {
         console.log(error.message || error);
       }
     };
-    const getProduct = async () => {
-      if (products.length > 0) {
-        const found = products.find((i) => i.id == pid);
-        setProduct(found);
-        setSelected(found.image[0]);
-      }
-    };
-    getProduct();
+
     fetchCart();
   }, [ratingClicked]);
   if (orders?.length === 0) {

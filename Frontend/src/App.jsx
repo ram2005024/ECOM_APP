@@ -27,6 +27,7 @@ import ProtectAdmin from "./middlewares/ProtectAdmin";
 import { login, setSubscription } from "./slices/authSlice";
 import { createSeller } from "./slices/sellerSlice";
 import { addCart } from "./slices/cartSlice";
+import ContactPage from "./Pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             <ContactAdmin />
           </ProtectContactAdmin>
         ),
+      },
+      {
+        path: "/contact",
+        element: <ContactPage />,
       },
       { path: "/seller/subscription", element: <BecomeASeller /> },
       { path: "/shop", element: <Shop /> },

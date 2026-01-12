@@ -58,7 +58,7 @@ model Product{
   name String
   description String?
   stock Int?
-
+  createdAt DateTime @default(now())
   price Int?
   image String[]
   offerPrice Int?

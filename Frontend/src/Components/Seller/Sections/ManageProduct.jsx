@@ -13,7 +13,7 @@ const ManageProduct = () => {
     const getProduct = async () => {
       try {
         const res = await axios.get(
-          import.meta.env.VITE_SERVER_URL + "/product/get",
+          import.meta.env.VITE_SERVER_URL + "/product/get/forSeller",
           {
             params: {
               sellerId: seller.id,

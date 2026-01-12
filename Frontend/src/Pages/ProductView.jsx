@@ -120,6 +120,7 @@ const ProductView = () => {
       console.log(error);
     }
   };
+  console.log("Product is : ", product);
   return (
     <div className="min-h-screen min-w-screen">
       <div className="mt-10 flex flex-col gap-3 w-10/12 m-auto">
@@ -181,7 +182,7 @@ const ProductView = () => {
               <span className="text-sm text-gray-500">No rating yet</span>
             )}
 
-            {product && product?.offerPrice != 0 ? (
+            {product && product?.offerPrice !== 0 ? (
               <div className="flex gap-3 mt-4">
                 <span className="text-2xl font-semibold">
                   $ {product.price - product.offerPrice}
@@ -304,20 +305,21 @@ const ProductView = () => {
                   return (
                     <div className="flex gap-3">
                       {/* User image */}
-                      {i.user.image && (
+                      {i.user.image ? (
                         <img
                           src={i.user.image}
                           alt="_userImage"
-                          className="size-18 rounded-full "
+                          className="size-9 rounded-full "
                         />
+                      ) : (
+                        <div>
+                          <User
+                            size={30}
+                            strokeWidth={1}
+                            className="bg-slate-800 rounded-full text-white fill-white"
+                          />
+                        </div>
                       )}
-                      <div>
-                        <User
-                          size={30}
-                          strokeWidth={1}
-                          className="bg-slate-800 rounded-full text-white fill-white"
-                        />
-                      </div>
                       <div className="flex flex-col gap-2">
                         <div className="flex gap-1 ">
                           {Array.from({ length: 5 }).map((_, inx) => (
