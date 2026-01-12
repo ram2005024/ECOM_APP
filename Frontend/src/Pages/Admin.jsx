@@ -11,7 +11,7 @@ const Admin = () => {
   return (
     <div className="h-screen w-screen overflow-y-scroll  grid grid-cols-12 grid-rows-10">
       <SideBar />
-      <div className="col-span-9 row-span-11 overflow-y-scroll">
+      <div className="col-span-10 row-span-11 overflow-y-scroll">
         {section === "dashboard" && <Dashboard />}
         {section === "store" && <Store />}
         {section === "approve" && <Approve />}

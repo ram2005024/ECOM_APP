@@ -49,7 +49,7 @@ const SideBar = () => {
               <img
                 src={user?.image}
                 alt="_profile_avatar"
-                className="size-10 rounded-full"
+                className="sm:size-10 size-9 rounded-full"
               />
             ) : (
               <div className="flex justify-center items-center sm:size-13 size-6 rounded-full bg-gray-700 text-white text-xs sm:text-2xl  cursor-pointer">
@@ -57,7 +57,7 @@ const SideBar = () => {
               </div>
             )}
           </div>
-          <span>{user?.name || "Admin"}</span>
+          <span className="sm:block hidden">{user?.name || "Admin"}</span>
         </div>
       </div>
       <div className="relative">
@@ -76,7 +76,7 @@ const SideBar = () => {
             >
               <div className="flex gap-4 items-center relative">
                 {i.icon}
-                <span className="text-gray-700">{i.name}</span>
+                <span className="text-gray-700 sm:block hidden">{i.name}</span>
                 {isActive && (
                   <div className="h-9 w-1 transition-all bg-emerald-600 rounded-xl absolute right-0"></div>
                 )}

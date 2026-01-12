@@ -138,7 +138,7 @@ const ProductView = () => {
                   src={image}
                   alt="product_image"
                   onClick={() => setSelected(i)}
-                  className="sm:w-10/12 sm:h-3/12 size-8 transition transform hover:scale-105 cursor-pointer border border-gray-200 rounded-md"
+                  className="sm:w-10/12 sm:h-3/12 size-15 transition transform hover:scale-105 cursor-pointer border border-gray-200 rounded-md"
                 />
               );
             })}
@@ -146,11 +146,11 @@ const ProductView = () => {
           <div className="w-1/3  mr-7  border flex items-center justify-center border-gray-100 bg-gray-200 rounded-md">
             <img
               src={imageURL(selectedImage)}
-              className="sm:size-70  size-full"
+              className="sm:size-70  w-full h-40"
               alt="product_image"
             />
           </div>
-          <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-3.5 sm:m-none mt-8">
             <h2 className="sm:text-3xl text-sm font-semibold">
               {product?.name}
             </h2>
@@ -269,7 +269,7 @@ const ProductView = () => {
             </div>
           </div>
         </div>
-        <div className="sm:mt-15 sm:ml-15 p-0">
+        <div className="sm:mt-15 sm:ml-15  mt-10 p-0">
           <div className="border-b  border-gray-200 flex text-sm text-gray-700">
             <span
               onClick={() => setActiveLink("description")}
@@ -294,7 +294,7 @@ const ProductView = () => {
           </div>
           {activeLink === "description" ? (
             <div className=" text-sm  mt-5 text-gray-500 w-md ">
-              <p className="px-2">{product?.description}</p>
+              <p className="px-2 sm:w-auto w-sm">{product?.description}</p>
             </div>
           ) : (
             <div className="text-sm  mt-5 text-gray-500 w-md space-y-3">
@@ -320,7 +320,7 @@ const ProductView = () => {
                           />
                         </div>
                       )}
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 sm:w-auto w-xs">
                         <div className="flex gap-1 ">
                           {Array.from({ length: 5 }).map((_, inx) => (
                             <Star

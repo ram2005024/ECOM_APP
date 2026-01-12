@@ -90,7 +90,7 @@ const Store = () => {
         <h2 className="text-2xl text-gray-500">
           Live <span className="text-black">Stores</span>
         </h2>
-        <div className="flex flex-col gap-3.5 pb-10">
+        <div className="flex flex-col gap-3.5 sm:p-auto pl-3 pb-10">
           {stores &&
             [...stores]
               .sort((a, b) => a.id - b.id)
@@ -98,7 +98,7 @@ const Store = () => {
                 return (
                   <div
                     key={i.id}
-                    className="w-full border  border-gray-200 shadow-md rounded-md sm:px-6 px-2 sm:py-6 py-2 flex flex-col gap-2.5"
+                    className="w-full sm:text-sm text-xs  border  border-gray-200 shadow-md rounded-md sm:px-6 px-2 sm:py-6 py-2 flex flex-col gap-2.5"
                   >
                     <div>
                       <img
@@ -108,38 +108,40 @@ const Store = () => {
                       />
                     </div>
                     <div className="flex sm:gap-4 gap-2 items-center">
-                      <strong className="text-xl font-semibold">
+                      <strong className="sm:text-xl text-sm   font-semibold">
                         {i.storename}
                       </strong>
-                      <span className="text-sm text-gray-500">
+                      <span className="sm:text-sm text-xs  text-gray-500">
                         @{i.storename}
                       </span>
                       <span className="bg-slate-100 rounded-full text-xs px-3 p-1.5 font-semibold">
                         {i.isApproved}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">{i.description}</p>
+                    <p className="sm:text-sm text-xs  text-gray-600">
+                      {i.description}
+                    </p>
                     <div className="flex flex-col gap-1.5">
                       <div className="flex gap-1.5 items-center">
                         <MapPin className="size-4 text-gray-500" />
-                        <span className="text-sm text-gray-500">
+                        <span className="sm:text-sm text-xs  text-gray-500">
                           {i.address}
                         </span>
                       </div>
                       <div className="flex gap-1.5 items-center">
                         <Phone className="size-4 text-gray-500" />
-                        <span className="text-sm text-gray-500">
+                        <span className="sm:text-sm text-xs  text-gray-500">
                           {i.phoneNo}
                         </span>
                       </div>
                       <div className="flex gap-1.5 items-center">
                         <Mail className="size-4 text-gray-500" />
-                        <span className="text-sm text-gray-500">
+                        <span className="sm:text-sm text-xs  text-gray-500">
                           {i.user.email}
                         </span>
                       </div>
                     </div>
-                    <span className="text-sm mt-3 text-gray-500">
+                    <span className="sm:text-sm text-xs  mt-3 text-gray-500">
                       Applied on {new Date(i.createdAt).toLocaleDateString()} by
                     </span>
                     <div className="flex justify-between">
@@ -156,26 +158,26 @@ const Store = () => {
                           </div>
                         )}
                         <div className="flex flex-col ">
-                          <span className="text-sm text-gray-700 font-semibold">
+                          <span className="sm:text-sm text-xs  text-gray-700 font-semibold">
                             {" "}
                             {i.user.name}
                           </span>
-                          <span className="text-sm text-gray-400">
+                          <span className="sm:text-sm text-xs text-gray-400">
                             {i.user.email}
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-2 items-center">
+                      <div className="flex sm:flex-row flex-col gap-2 items-center">
                         <span>Active</span>
 
                         <label>
                           <div
-                            className={`rounded-full w-10 h-5 flex items-center justify-start ${
+                            className={`rounded-full sm:w-10 sm:h-5 w-8 h-4 flex items-center justify-start ${
                               i.isActive ? "bg-green-400" : "bg-gray-400"
                             }`}
                           >
                             <div
-                              className={`rounded-full size-4 bg-white transition-transform ${
+                              className={`rounded-full sm:size-5 size-3  bg-white transition-transform ${
                                 i.isActive ? "translate-x-4" : "translate-x-0"
                               }`}
                             ></div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Search, ShoppingCart } from "lucide-react";
+import { Menu, Search, ShoppingCart } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Login from "../SignIn/Login.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ const Nav = () => {
   const dispatch = useDispatch();
   const { totalItems } = useSelector((state) => state.cart);
   const [logButton, setLogButton] = useState(false);
+  const [showSideBar, setShowSideBar] = useState(false);
   const navigate = useNavigate();
   const links = [
     {
@@ -38,8 +39,16 @@ const Nav = () => {
       document.body.style.overflow = "auto";
     };
   }, [logButton]);
+  useEffect(() => {
+    if (showSideBar) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => (document.body.style.overflow = "auto");
+  }, [showSideBar]);
   return (
-    <nav className="flex justify-between  items-center mx-auto w-10/12">
+    <nav className="flex pl-15 sm:justify-between relative  items-center sm:mx-auto w-10/12">
       {/* Logo section */}
       <Link to="/" className="relative">
         <img
@@ -56,35 +65,37 @@ const Nav = () => {
 
       {/* Link section */}
       <div className="flex gap-2  sm:gap-4 items-center">
-        {links.map((i, index) => {
-          return (
+        <div className="sm:block hidden space-x-4">
+          {links.map((i, index) => {
+            return (
+              <Link
+                id={index}
+                to={i.linkPath}
+                className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+              >
+                {i.linkName}
+              </Link>
+            );
+          })}
+          {user?.role === "seller" && (
             <Link
-              id={index}
-              to={i.linkPath}
+              to="/store"
               className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
             >
-              {i.linkName}
+              Seller
             </Link>
-          );
-        })}
-        {user?.role === "seller" && (
-          <Link
-            to="/store"
-            className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
-          >
-            Seller
-          </Link>
-        )}
-        {user?.role === "admin" && (
-          <Link
-            to="/admin"
-            className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
-          >
-            Admin
-          </Link>
-        )}
-        <div className="flex gap:2 sm:gap-5 items-center">
-          <div className="relative ml-3">
+          )}
+          {user?.role === "admin" && (
+            <Link
+              to="/admin"
+              className="text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+            >
+              Admin
+            </Link>
+          )}
+        </div>
+        <div className="flex gap-2 sm:gap-5 items-center">
+          <div className="relative ml-6">
             <input
               type="text"
               placeholder="Search Products"
@@ -117,7 +128,7 @@ const Nav = () => {
 
                 dispatch(setShowProfile());
               }}
-              className="text-center size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
+              className="text-center m-4 size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
             >
               {user?.image ? (
                 <img
@@ -144,6 +155,86 @@ const Nav = () => {
       </div>
       {/* For login Button when someone clicks Sign in */}
       {logButton && <Login setLogButton={setLogButton} />}
+      {/* Responsive nav bar */}
+
+      <div className="absolute block sm:hidden left-7 top-8">
+        <Menu
+          onClick={() => setShowSideBar((prev) => !prev)}
+          className="size-6 cursor-pointer "
+        />
+      </div>
+      {/* Side bar for mobile phones */}
+      {showSideBar && (
+        <>
+          <div
+            onClick={() => setShowSideBar((prev) => !prev)}
+            className="fixed inset-0 z-40 bg-black/30"
+          />
+        </>
+      )}
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={`h-screen w-60 fixed  left-0 top-0 z-50 text-black bg-white  flex flex-col transform transition-transform duration-300 ${
+          showSideBar
+            ? "translate-x-0 pointer-events-auto"
+            : "-translate-x-full pointer-events-none"
+        }`}
+      >
+        <div className="flex gap-2 items-center bg-gradient-to-r from purple-500 to bg-indigo-700 justify-between">
+          <div className="flex gap-2 items-center pt-2">
+            <Menu
+              onClick={() => setShowSideBar((prev) => !prev)}
+              className="size-6 absolute stroke-3 right-4 cursor-pointer text-white"
+            />
+            <div>
+              <img src="/Shoppy.png" className="w-12 h-18" alt="_logo" />
+            </div>
+            <span className="font-bold text-white font-sans text-2xl ">
+              Shoppy <span className="text-red-500"> Go</span>
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col font-medium text-sm text-slate-950 items-center space-y-5 mt-6">
+          {links.map((i, index) => {
+            return (
+              <div className="flex gap-4 items-center ">
+                <Link
+                  onClick={() => setShowSideBar((prev) => !prev)}
+                  id={index}
+                  to={i.linkPath}
+                  className="text-gray-600 sm:text-sm text-xs hover:text-gray-600"
+                >
+                  {i.linkName}
+                </Link>
+              </div>
+            );
+          })}
+
+          {user?.role === "seller" && (
+            <div className="border-t border-gray-500">
+              <Link
+                onClick={() => setShowSideBar((prev) => !prev)}
+                to="/store"
+                className="border-t border-gray-300 text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+              >
+                Seller
+              </Link>
+            </div>
+          )}
+          {user?.role === "admin" && (
+            <div className="border-t w-full border-gray-100 flex items-center justify-center pt-4">
+              <Link
+                onClick={() => setShowSideBar((prev) => !prev)}
+                to="/admin"
+                className="text-white bg-indigo-600 w-11/12 p-3 font-semibold  rounded-lg text-center text-sm sm:text-sm  hover:text-gray-600"
+              >
+                Admin Panel
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };

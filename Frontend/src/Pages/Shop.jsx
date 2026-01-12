@@ -18,9 +18,9 @@ const Shop = () => {
           <h2 className="text-2xl font-semibold">
             <span className="text-2xl text-green-700">All</span> Products
           </h2>
-          <div className="flex flex-wrap gap-10 ">
+          <div className="flex flex-wrap gap-10">
             <div className="w-full">
-              <div className="flex flex-wrap gap-10 ">
+              <div className="flex flex-wrap gap-10 sm:justify-start justify-evenly">
                 {products.map((i) => {
                   const rating = findAverageRatingFromReviews(i.reviews);
                   const imageURL = () => {
@@ -36,11 +36,11 @@ const Shop = () => {
                       className="group cursor-pointer"
                       onClick={() => handleClick(i)}
                     >
-                      <div className="size-50 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
+                      <div className="size-30 sm:size-50  border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
                         <img
                           src={imageURL()}
                           alt="_productImage"
-                          className="size-30 bg-white rounded-lg transform transition-all group-hover:scale-110"
+                          className="sm:size-30 size-full bg-white rounded-lg transform transition-all group-hover:scale-110"
                         />
                       </div>
                       <div className="flex justify-between w-full">

@@ -69,7 +69,7 @@ const AddCategory = () => {
     <div className="flex flex-col">
       <form
         onSubmit={(e) => handleAddCategory(e)}
-        className="flex flex-col gap-3 ml-8 px-6 p-2 mt-10 w-1/3 rounded-lg border border-gray-200"
+        className="flex flex-col gap-3 ml-8 px-6 p-2 mt-10 sm:w-1/3 w-10/12 rounded-lg border border-gray-200"
       >
         <h2 className="text-xl text-center font-semibold">Add Category</h2>
         <input
@@ -88,7 +88,7 @@ const AddCategory = () => {
         </button>
       </form>
       {categories.length > 0 ? (
-        <div className="flex flex-col  gap-3 ml-8 px-6 p-2 mt-10 w-5/12 rounded-lg border border-gray-200">
+        <div className="flex flex-col  gap-3 ml-8 px-6 p-2 mt-10 sm:w-5/12 w-10/12 rounded-lg border border-gray-200">
           <div className="flex w-full justify-between font-bold">
             <span>Name</span>
             <span>Id</span>
