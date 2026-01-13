@@ -55,7 +55,11 @@ export const getUser = async (req, res) => {
 //Handle logout--------------------------------
 export const handleLogout = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
     return res.json({ message: "Logout successful", success: true });
   } catch (error) {
     return res.json({ message: error, success: false });
