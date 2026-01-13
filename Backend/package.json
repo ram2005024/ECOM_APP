@@ -6,7 +6,8 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "saveDB": "npx prisma migrate dev --name init"
+    "saveDB": "npx prisma migrate dev --name init",
+    "postinstall": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
