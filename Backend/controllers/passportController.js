@@ -16,7 +16,9 @@ export const googleAuthController = async (req, res) => {
       maxAge: 1 * 24 * 60 * 60 * 1000,
     });
     user.password = undefined;
-    return res.redirect(process.env.CLIENT_URL);
+    setTimeout(() => {
+      return res.redirect(process.env.CLIENT_URL);
+    }, 5000);
   } catch (error) {
     console.log(error);
   }
