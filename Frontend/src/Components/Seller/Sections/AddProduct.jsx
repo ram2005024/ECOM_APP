@@ -17,38 +17,38 @@ const AddProduct = () => {
   const { seller } = useSelector((state) => state.seller);
 
   const analyzeImage = async (file) => {
-    // if (seller.isActive == false) {
-    //   toast.error("You have been deactivated.Please contact admin");
-    //   return;
-    // }
-    // if (files.length <= 1) {
-    //   try {
-    //     const form = new FormData();
-    //     form.append("image", file);
-    //     setLoading(true);
-    //     const res = await toast.promise(
-    //       axios.post(
-    //         import.meta.env.VITE_SERVER_URL + "/product/analyzeImage",
-    //         form,
-    //         {
-    //           headers: { "Content-Type": "multipart/form-data" },
-    //           withCredentials: true,
-    //         }
-    //       ),
-    //       {
-    //         loading: "Analyzing image...",
-    //         success: (res) => res.data.message,
-    //         error: (err) => err.response?.data?.message || err.message,
-    //       }
-    //     );
-    //     setProductName(res.data.output.title);
-    //     setProductDescription(res.data.output.description);
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.log(error);
-    //     setLoading(false);
-    //   }
-    // }
+    if (seller.isActive == false) {
+      toast.error("You have been deactivated.Please contact admin");
+      return;
+    }
+    if (files.length <= 1) {
+      try {
+        const form = new FormData();
+        form.append("image", file);
+        setLoading(true);
+        const res = await toast.promise(
+          axios.post(
+            import.meta.env.VITE_SERVER_URL + "/product/analyzeImage",
+            form,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+              withCredentials: true,
+            }
+          ),
+          {
+            loading: "Analyzing image...",
+            success: (res) => res.data.message,
+            error: (err) => err.response?.data?.message || err.message,
+          }
+        );
+        setProductName(res.data.output.title);
+        setProductDescription(res.data.output.description);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
     return;
   };
   const handleProductSubmit = async (e) => {
