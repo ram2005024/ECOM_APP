@@ -13,7 +13,7 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    origin: "https://ecom-app-1-w7it.onrender.com/",
+    origin: "https://ecom-app-1-w7it.onrender.com",
     credentials: true,
   })
 );
