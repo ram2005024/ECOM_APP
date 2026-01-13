@@ -6,7 +6,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8000/auth/user/google/callback",
+      callbackURL:
+        "https://ecom-app-psi0.onrender.com/auth/user/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       try {
