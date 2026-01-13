@@ -4,7 +4,7 @@ import cloudinary from "../config/cloudinary.js";
 export const uploadImage = async (file) => {
   const uploadDir = "uploads";
   //Upload image into the local storage for local NODE_ENV
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV === "development") {
     //Check if the folder to store file exists or not
     if (!fs.existsSync(uploadDir)) {
       //Make a directory if it doesnot exist.
