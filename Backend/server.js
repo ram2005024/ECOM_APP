@@ -13,7 +13,10 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    origin: "https://ecom-app-1-w7it.onrender.com",
+    origin:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:5173"
+        : process.env.CLIENT_URL,
     credentials: true,
   })
 );

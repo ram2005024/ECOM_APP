@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -106,7 +106,7 @@ const router = createBrowserRouter([
 
 const App = () => {
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.auth.user);
   const fetchUserData = async () => {
     try {
       // 1️ Get user
@@ -177,7 +177,7 @@ const App = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
-
+  console.log("Bro", user);
   return <RouterProvider router={router} />;
 };
 
