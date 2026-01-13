@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Menu, Search, ShoppingCart } from "lucide-react";
+import { Crown, Menu, Search, ShoppingCart } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Login from "../SignIn/Login.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,8 +48,9 @@ const Nav = () => {
     return () => (document.body.style.overflow = "auto");
   }, [showSideBar]);
   return (
-    <nav className="flex pl-15 sm:justify-between relative  items-center sm:mx-auto w-10/12">
+    <nav className="flex pl-10 sm:justify-between relative  items-center sm:mx-auto w-10/12">
       {/* Logo section */}
+
       <Link to="/" className="relative">
         <img
           src="/Shoppy.png"
@@ -57,7 +58,7 @@ const Nav = () => {
           alt="_logo"
         />
         {user?.plusMember && (
-          <span className="text-sm bg-emerald-600 text-white absolute font-semibold  -right-9 top-4  rounded-full text-center py-1 w-11">
+          <span className="text-sm sm:block hidden bg-emerald-600 text-white absolute font-semibold  -right-9 top-4  rounded-full text-center py-1 w-11">
             plus
           </span>
         )}
@@ -121,14 +122,14 @@ const Nav = () => {
             >
             Login
             </button> */}
-          {user?.id ? (
+          {user && user?.id ? (
             <button
               onClick={(e) => {
                 e.stopPropagation();
 
                 dispatch(setShowProfile());
               }}
-              className="text-center m-4 size-10 rounded-full bg-gray-700 text-white cursor-pointer relative"
+              className="text-center m-4 size-10 rounded-full  bg-gray-700 text-white cursor-pointer relative"
             >
               {user?.image ? (
                 <img
@@ -140,13 +141,18 @@ const Nav = () => {
                 user?.name.slice(0, 1)
               )}
               {showProfile && <ShowProfile />}
+              {user?.plusMember && (
+                <span className="absolute font-medium sm:hidden block right-2 -top-5 ">
+                  <Crown className="text-yellow-400 fill-yellow-400" />
+                </span>
+              )}
             </button>
           ) : (
             <button
               onClick={() => {
                 setLogButton(true);
               }}
-              className="rounded-full bg-emerald-700 text-center py-2 px-8 cursor-pointer hover:bg-emerald-600 text-white"
+              className="sm:rounded-full rounded-xl bg-emerald-700 text-center py-2 sm:px-8 px-4 cursor-pointer hover:bg-emerald-600 text-white"
             >
               Login
             </button>
@@ -212,11 +218,11 @@ const Nav = () => {
           })}
 
           {user?.role === "seller" && (
-            <div className="border-t border-gray-500">
+            <div className="border-t w-full border-gray-100 flex items-center justify-center pt-4">
               <Link
                 onClick={() => setShowSideBar((prev) => !prev)}
                 to="/store"
-                className="border-t border-gray-300 text-gray-900 sm:text-sm text-xs hover:text-gray-600"
+                className="text-white bg-orange-600 tracking-wide w-11/12 p-3 font-semibold  rounded-lg text-center text-sm sm:text-sm  hover:text-gray-600"
               >
                 Seller
               </Link>

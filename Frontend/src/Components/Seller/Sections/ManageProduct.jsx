@@ -85,16 +85,20 @@ const ManageProduct = () => {
   }
   return (
     <div className="col-span-10">
-      <div className="flex flex-col gap-8 ml-10 mt-10  ">
+      <div className="flex flex-col gap-8 sm:ml-10 sm:mt-10 ml-3 mt-3 sm:w-auto w-11/12 ">
         <h2 className="text-gray-500 text-2xl">
           Manage <span className="text-black">Product</span>
         </h2>
-        <table className="table-fixed w-10/12 border-collapse border border-slate-300 rounded-lg">
+        <table className="table-fixed sm:w-10/12 border-collapse border border-slate-300 rounded-lg  w-full">
           <thead className="bg-slate-200">
             <tr className="border border-gray-300  ">
               <th className="p-4 text-sm text-gray-900">Name</th>
-              <th className="p-4 text-sm text-gray-900">Description</th>
-              <th className="p-4 text-sm text-gray-900">MRP</th>
+              <th className="p-4 text-sm text-gray-900 sm:table-cell hidden">
+                Description
+              </th>
+              <th className="p-4 text-sm text-gray-900 sm:table-cell hidden">
+                MRP
+              </th>
               <th className="p-4 text-sm text-gray-900">Price</th>
               <th className="p-4 text-sm text-gray-900">In Stock</th>
             </tr>
@@ -111,7 +115,7 @@ const ManageProduct = () => {
               return (
                 <tr
                   key={i.id}
-                  className="border border-gray-200 transition-all cursor-pointer hover:bg-gray-100 "
+                  className="border sm:text-sm text-xs border-gray-200 transition-all cursor-pointer hover:bg-gray-100 "
                 >
                   <td className=" p-2 flex gap-3">
                     <div className="w-20 h-12 rounded-sm border bg-white border-gray-200   flex items-center justify-center   ">
@@ -124,12 +128,14 @@ const ManageProduct = () => {
 
                     <span>{i.name}</span>
                   </td>
-                  <td className=" p-2 text-center">
+                  <td className=" p-2 text-center sm:table-cell hidden">
                     {i.description.length > 30
                       ? i.description.substring(0, 30) + "..."
                       : i.description}
                   </td>
-                  <td className=" text-center">${i.price}</td>
+                  <td className=" text-center sm:table-cell hidden">
+                    ${i.price}
+                  </td>
                   <td className=" text-center">${i.price - i.offerPrice}</td>
                   <td className=" p-2 text-center">
                     <button>

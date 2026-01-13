@@ -29,6 +29,7 @@ const ProtectSeller = ({ children }) => {
   }, [user?.role, dispatch]);
 
   if (user?.role !== "seller") return <Navigate to="/" replace />;
+  if (user?.role === "seller" && !seller) return children;
   if (loading) return <div>loading seller.....</div>;
 
   if (seller && seller?.isActive) return children;

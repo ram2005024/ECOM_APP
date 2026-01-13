@@ -13,7 +13,7 @@ const Selling = () => {
   };
 
   return products?.length > 0 ? (
-    <div className="w-8/12 mx-auto flex flex-col p-5 items-center">
+    <div className="sm:w-8/12 w-11/12 mx-auto flex flex-col p-5 items-center">
       <h2 className="text-xl font-semibold mb-3">Latest Products</h2>
       <div className="flex gap-2.5 mb-8">
         <span className="text-sm text-gray-600">
@@ -28,7 +28,7 @@ const Selling = () => {
         </Link>
       </div>
       <div className="w-full">
-        <div className="flex flex-wrap gap-10 ">
+        <div className="flex flex-wrap sm:gap-10 gap-5">
           {[...products]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .slice(0, 8)
@@ -47,11 +47,11 @@ const Selling = () => {
                   className="group cursor-pointer"
                   onClick={() => handleClick(i)}
                 >
-                  <div className="size-50 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
+                  <div className="sm:size-50 size-40 border border-gray-100 flex items-center justify-center group bg-white rounded-lg">
                     <img
                       src={imageURL()}
                       alt="_productImage"
-                      className="size-30 bg-white rounded-lg transform transition-all group-hover:scale-110"
+                      className="sm:size-30 size-20 bg-white rounded-lg transform transition-all group-hover:scale-110"
                     />
                   </div>
                   <div className="flex justify-between w-full">

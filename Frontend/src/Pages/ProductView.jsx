@@ -120,7 +120,6 @@ const ProductView = () => {
       console.log(error);
     }
   };
-  console.log("Product is : ", product);
   return (
     <div className="min-h-screen min-w-screen">
       <div className="mt-10 flex flex-col gap-3 w-10/12 m-auto">
@@ -143,7 +142,7 @@ const ProductView = () => {
               );
             })}
           </div>
-          <div className="w-1/3  mr-7  border flex items-center justify-center border-gray-100 bg-gray-200 rounded-md">
+          <div className="sm:w-1/3 sm:flex-none flex-1  mr-7  border flex items-center justify-center border-gray-100 bg-gray-200 rounded-md">
             <img
               src={imageURL(selectedImage)}
               className="sm:size-70  w-full h-40"

@@ -1,7 +1,7 @@
 import { ArrowRight, MoveRight } from "lucide-react";
 import heroModel from "../../assets/hero_model_img.png";
-import heroProduct1 from "../../assets/hero_product_img1.png";
-import heroProduct2 from "../../assets/hero_product_img2.png";
+import heroImage1 from "../../assets/c1.png";
+import heroImage2 from "../../assets/g2.png";
 import { useNavigate } from "react-router-dom";
 const Hero = () => {
   const navigate = useNavigate();
@@ -65,19 +65,19 @@ const Hero = () => {
             </span>
           </div>
           <div className="ml-3">
-            <img src={heroProduct1} alt="_productHero1" className="size-40" />
+            <img src={heroImage1} alt="_productHero1" className="size-40" />
           </div>
         </div>
         <div className="col-span-3 py-8 px-6 group flex items-center gap-15 bg-blue-200 rounded-lg sm:mr-20 m-0">
           <div>
             <h2 className="text-3xl text-indigo-900 font-light">
-              10% <br />
+              8% <br />
               <span className=" bg-gradient-to-r from-indigo-900 to-indigo-400 bg-clip-text text-transparent ">
                 discount
               </span>
             </h2>
             <span
-              onClick={() => navigate("/product/27")}
+              onClick={() => navigate("/product/52")}
               className="inline-flex gap-1.5 mt-3 tex-sm text-slate-600  cursor-pointer  font-semibold items-center"
             >
               View More{" "}
@@ -88,7 +88,7 @@ const Hero = () => {
             </span>
           </div>
           <div className="ml-3">
-            <img src={heroProduct2} alt="_productHero1" className="size-40" />
+            <img src={heroImage2} alt="_productHero1" className="size-40" />
           </div>
         </div>
       </div>

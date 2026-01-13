@@ -12,6 +12,7 @@ const Cart = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const { address, addressFilled } = useSelector((state) => state.cart);
   const [isAddressSelected, setIsAddressSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [coupenDetail, setCoupenDetail] = useState(null);
   const navigate = useNavigate();
@@ -95,6 +96,7 @@ const Cart = () => {
     );
   }
   const handlePaymentSubmit = async () => {
+    setLoading(true);
     try {
       if (paymentMethod === "stripe") {
         if (!selectedAddress) {
@@ -145,6 +147,8 @@ const Cart = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -326,10 +330,14 @@ const Cart = () => {
                   <CoupenSection onSubmit={handleSubmitFromChild} />
                 </div>
                 <button
+                  disabled={loading}
                   onClick={handlePaymentSubmit}
-                  className="py-3 mt-8 rounded-sm text-sm cursor-pointer text-center bg-slate-800 text-white font-semibold"
+                  className="py-3 mt-8 gap-3 justify-center items-center inline-flex rounded-sm text-sm cursor-pointer  bg-slate-800 text-white font-semibold"
                 >
-                  Place order
+                  {loading && (
+                    <div className="size-6  border-t-2 border-gray-200 rounded-full animate-spin"></div>
+                  )}
+                  <span>Place order</span>
                 </button>
               </div>
             </div>

@@ -49,15 +49,15 @@ const Dashboard = () => {
     return <LoadingSmallDiv />;
   }
   return (
-    <div className="col-span-10">
-      <div className="sm:mt-10 sm:ml-15 space-y-3.5">
+    <div className="col-span-10 ">
+      <div className="sm:mt-10 sm:ml-15 ml-5 mt-10 space-y-3.5">
         <h2 className="text-2xl font-semibold text-gray-500">
           Seller
           <span className="text-black"> Dashboard</span>
         </h2>
-        <div className="flex sm:flex-row flex-col sm:gap-12">
+        <div className="flex sm:flex-row flex-col sm:gap-12 gap-3">
           {/* For total products */}
-          <div className="px-5 flex sm:gap-10 py-2 border rounded-md border-gray-100 shadow-sm">
+          <div className="px-5 flex sm:gap-10 justify-between sm:w-auto w-10/12  py-2 border rounded-md border-gray-100 shadow-sm">
             <div className="flex flex-col gap-2 ">
               <span className="text-sm text-gray-500">Total Products</span>
               <span className="text-2xl font-semibold">{totalProducts}</span>
@@ -70,7 +70,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/* For total Earning */}
-          <div className="px-5 flex sm:gap-10 py-2 border rounded-md border-gray-100 shadow-sm">
+          <div className="px-5 flex sm:gap-10 justify-between sm:w-auto w-10/12 py-2 border rounded-md border-gray-100 shadow-sm">
             <div className="flex flex-col gap-2 ">
               <span className="text-sm text-gray-500">Total Earning</span>
               <span className="text-2xl font-semibold">{totalEarning}</span>
@@ -83,7 +83,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/* Total Order */}
-          <div className="px-5 flex sm:gap-10 py-2 border rounded-md border-gray-100 shadow-sm">
+          <div className="px-5 flex sm:gap-10 justify-between sm:w-auto w-10/12 py-2 border rounded-md border-gray-100 shadow-sm">
             <div className="flex flex-col gap-2 ">
               <span className="text-sm text-gray-500">Total Orders</span>
               <span className="text-2xl font-semibold">{totalOrders}</span>
@@ -93,7 +93,7 @@ const Dashboard = () => {
             </div>
           </div>
           {/* Total rating */}
-          <div className="px-5 flex sm:gap-10 py-2 border rounded-md border-gray-100 shadow-sm">
+          <div className="px-5 flex sm:gap-10 justify-between sm:w-auto w-10/12 py-2 border rounded-md border-gray-100 shadow-sm">
             <div className="flex flex-col gap-2 ">
               <span className="text-sm text-gray-500">Total rating</span>
               <span className="text-2xl font-semibold">{totalRating}</span>
@@ -116,14 +116,14 @@ const Dashboard = () => {
                 const product = products.find((p) => p.id == i.productId);
                 return (
                   <div className="border-b border-gray-200 flex flex-col gap-3 mb-10 py-4 w-10/12">
-                    <div className="flex justify-between w-10/12">
+                    <div className="flex sm:justify-between sm:flex-row flex-col gap-2 w-10/12">
                       <div className="flex flex-col gap-3">
                         <div className="flex gap-1.5 items-center">
                           {user?.image ? (
                             <img
                               src={user.image}
                               alt={`user_${user.id}_image`}
-                              className="size-18 rounded-full"
+                              className="size-10 rounded-full"
                             />
                           ) : (
                             <div>

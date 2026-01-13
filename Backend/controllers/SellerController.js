@@ -1,4 +1,3 @@
-import imagekit from "../config/imageKit.js";
 import { prisma } from "../config/db.config.js";
 import { inngest } from "../inngest/index.js";
 
@@ -72,12 +71,7 @@ export const reapplySeller = async (req, res) => {
     console.log(typeof req.body.sellerId);
     //Storing image url into the cloud i.e. imagekit database
     if (file) {
-      const urlInResponse = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: req.file.originalname,
-        folder: "/sellers_profile",
-      });
-      imageURL = urlInResponse.url;
+      imageURL = await uploadImage(file);
     }
     const seller = await prisma.seller.update({
       where: { id: Number(req.body.sellerId) },

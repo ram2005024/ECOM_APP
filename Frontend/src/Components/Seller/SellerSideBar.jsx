@@ -18,22 +18,22 @@ const SellerSideBar = () => {
     {
       name: "Dashboard",
       id: "dashboard",
-      icon: <Home size={16} className="text-gray-500" />,
+      icon: <Home className="sm:size-4 size-6 text-gray-500" />,
     },
     {
       name: "Add Product",
       id: "addProduct",
-      icon: <PlusSquare size={16} className="text-gray-500" />,
+      icon: <PlusSquare className="sm:size-4 size-6 text-gray-500" />,
     },
     {
       name: "Manage Products",
       id: "manageProduct",
-      icon: <NotebookPenIcon size={16} className="text-gray-500" />,
+      icon: <NotebookPenIcon className="sm:size-4 size-6 text-gray-500" />,
     },
     {
       name: "Orders",
       id: "order",
-      icon: <AppWindow size={16} className="text-gray-500" />,
+      icon: <AppWindow className="sm:size-4 size-6 text-gray-500" />,
     },
   ];
 
@@ -58,7 +58,7 @@ const SellerSideBar = () => {
               <img
                 src={imageURL(seller?.image)}
                 alt="_profile_avatar"
-                className="size-18 rounded-full"
+                className="sm:size-18 h-20 w-25 rounded-full"
               />
             ) : (
               <div className="flex justify-center items-center sm:size-13 size-6 rounded-full bg-gray-700 text-white text-xs sm:text-2xl  cursor-pointer">
@@ -66,7 +66,7 @@ const SellerSideBar = () => {
               </div>
             )}
           </div>
-          <span>{user?.name || "Seller"}</span>
+          <span className="sm:block hidden">{user?.name || "Seller"}</span>
         </div>
       </div>
       <div className="relative">
@@ -83,9 +83,9 @@ const SellerSideBar = () => {
                   : "pl-5 py-2.5 w-full hover:bg-gray-100 cursor-pointer transition-colors"
               }
             >
-              <div className="flex gap-4 items-center relative">
+              <div className="flex sm:gap-4 items-center relative">
                 {i.icon}
-                <span className="text-gray-700">{i.name}</span>
+                <span className="text-gray-700 sm:block hidden">{i.name}</span>
                 {isActive && (
                   <div className="h-9 w-1 transition-all bg-emerald-600 rounded-xl absolute right-0"></div>
                 )}

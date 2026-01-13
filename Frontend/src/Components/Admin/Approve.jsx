@@ -116,7 +116,7 @@ const Approve = () => {
     );
   } else {
     return (
-      <div className="pl-10 flex flex-col ">
+      <div className="sm:pl-10 pl-3 flex flex-col ">
         <div className="mt-8 text-2xl flex gap-2">
           <span className="text-2xl text-gray-600 ">Approve</span>Store
         </div>
@@ -125,7 +125,7 @@ const Approve = () => {
           return (
             <div
               key={index}
-              className="w-7/12 mt-3 mb-6 border border-gray-300 rounded-lg p-7 shadow-2xs py-5"
+              className="sm:w-7/12 w-11/12 mt-3 mb-6 border border-gray-300 rounded-lg p-7 shadow-2xs py-5"
             >
               <div className="flex flex-col  gap-2">
                 <img
@@ -178,12 +178,12 @@ const Approve = () => {
                       <img
                         src={i.image}
                         alt="_user_image"
-                        className="size-18 rounded-full"
+                        className="sm:size-8 size-6 rounded-full"
                       />
                     ) : (
-                      <User className="size-10 bg-blue-400 p-1 rounded-full stroke-1 text-white fill-white " />
+                      <User className="sm:size-10 size-8 bg-blue-400 p-1 rounded-full stroke-1 text-white fill-white " />
                     )}
-                    <span className="text-gray-600 font-semibold">
+                    <span className="text-gray-600 text-xs sm:text-sm font-semibold">
                       {" "}
                       {i.user.name}
                     </span>
@@ -191,7 +191,7 @@ const Approve = () => {
                   <div className="flex gap-1.5">
                     <button
                       onClick={() => handleAccept(i.id)}
-                      className="bg-green-500 cursor-pointer text-white px-6 py-1.5 text-center rounded-lg transition-all hover:scale-105 active:scale-100"
+                      className="bg-green-500 cursor-pointer text-white  sm:px-6 sm:py-1.5 py-1.5 px-3   text-center rounded-lg transition-all hover:scale-105 active:scale-100"
                     >
                       Accept
                     </button>
@@ -200,7 +200,7 @@ const Approve = () => {
                         setRejectStatus(true);
                         setStoreID(i.id);
                       }}
-                      className="bg-red-500 cursor-pointer text-white px-6 py-1.5 text-center rounded-lg transition-all hover:scale-105 active:scale-100"
+                      className="bg-red-500 cursor-pointer text-white sm:px-6 sm:py-1.5 py-1.5 px-3 text-center rounded-lg transition-all hover:scale-105 active:scale-100"
                     >
                       Reject
                     </button>
@@ -218,7 +218,7 @@ const Approve = () => {
             <form
               onClick={(e) => e.stopPropagation()}
               onSubmit={(e) => handleReject(e)}
-              className="px-4 py-5 flex flex-col relative w-1/3 bg-slate-100 rounded-lg gap-4"
+              className="px-4 py-5 flex flex-col relative sm:w-1/3 w-10/12 bg-slate-100 rounded-lg gap-4"
             >
               <h2 className="text-xl text-center font-semibold">
                 Rejecting reason

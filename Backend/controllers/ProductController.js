@@ -1,7 +1,6 @@
 import { prisma } from "../config/db.config.js";
-import imagekit from "../config/imageKit.js";
-import { openai } from "../config/geminiAI.js";
 import { uploadImage } from "../utils/uploadImage.js";
+import openai from "../config/openai.js";
 export const addProduct = async (req, res) => {
   const files = req.files;
   try {
@@ -39,7 +38,7 @@ Input:
 A product image.
 
 Task:
-Analyze the image and generate a short product title and a clear product description like which product is this as title and description for the product title.
+Analyze the image and generate a very short product title and a clear product description like which product is this as title and description for the product title.
 
 Return ONLY valid JSON.
 Do NOT include markdown.
@@ -59,27 +58,38 @@ Rules:
 `;
 
   const file = req.file;
-  const imageURL = await uploadImage(file);
-  console.log(imageURL);
   try {
-    const response = await openai.chat.completions.create({
-      model: process.env.GEMINI_MODEL,
-      messages: [
-        { role: "system", content: prompt },
+    const imageURL = await uploadImage(file);
+    const response = await openai.responses.create({
+      model: "gpt-4o-mini",
+      input: [
         {
           role: "user",
-          content: imageURL,
+          content: [
+            {
+              type: "input_image",
+              image_url: imageURL,
+            },
+            {
+              type: "input_text",
+              text: prompt,
+            },
+          ],
         },
       ],
-      response_format: {
-        type: "json_object",
-      },
     });
-    const output = JSON.parse(response.choices[0].message.content);
+    const rawText = response.output_text || "";
+    let output = {};
+    try {
+      output = JSON.parse(rawText);
+    } catch (error) {
+      output = { text: "", description: rawText };
+    }
+
     return res.json({ success: true, message: "Analyzed image", output });
   } catch (error) {
-    console.log(error.message);
-    res.json({ message: "Quota exceeded", success: false });
+    console.log(error);
+    res.status(503).json({ message: "Quota exceeded", success: false });
   }
 };
 //---------Controller to get product according to seller to show for customer ---------------

@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs";
-import imagekit from "../config/imageKit.js";
+import cloudinary from "../config/cloudinary.js";
 export const uploadImage = async (file) => {
   const uploadDir = "uploads";
   //Upload image into the local storage for local NODE_ENV
@@ -16,13 +16,17 @@ export const uploadImage = async (file) => {
     const filePath = path.join(uploadDir, fileName);
     fs.writeFileSync(filePath, file.buffer);
     return `/uploads/${fileName}`;
+  } else {
+    // Upload image into the cloud storage if the mode in deployment
+    const base64File = `data:${file.mimetype};base64,${file.buffer.toString(
+      "base64"
+    )}`;
+
+    const result = await cloudinary.uploader.upload(base64File, {
+      folder: "product_image",
+      public_id: `product_${Date.now()}`,
+    });
+
+    return result.secure_url;
   }
-  // Upload image into the cloud storage if the mode in deployment
-  const upload = await imagekit.upload({
-    file: file.buffer,
-    folder: "/product_image",
-    fileName: `product_${Date.now()}`,
-  });
-  const imageURL = upload.url;
-  return imageURL;
 };

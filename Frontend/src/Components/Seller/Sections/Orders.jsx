@@ -114,21 +114,21 @@ const Orders = () => {
         />
       )}
       {/* --------------------- */}
-      <div className="mt-10 ml-12 flex flex-col gap-3">
+      <div className="sm:mt-10 sm:ml-12 ml-4 mt-4 flex flex-col gap-3">
         <h2 className="text-2xl font-semibold text-gray-500">
           Store <span className="text-black">Orders</span>
         </h2>
-        <div className="border border-gray-100 rounded-md w-fit">
+        <div className="border border-gray-100 rounded-md sm:w-fit w-11/12 overflow-x-hidden ">
           <table className="border-collapse">
             <thead>
               <tr className="border-b border-b-gray-200 bg-gray-50 text-gray-700 text-sm">
-                <th className="py-4 px-6">SN.</th>
-                <th className="py-4 px-6">CUSTOMER</th>
-                <th className="py-4 px-6">TOTAL</th>
-                <th className="py-4 px-6">PAYMENT</th>
-                <th className="py-4 px-6">COUPEN</th>
-                <th className="py-4 px-6">STATUS</th>
-                <th className="py-4 px-6">DATE</th>
+                <th className="py-4 px-6 sm:table-cell hidden">SN.</th>
+                <th className="py-4 px-3 sm:px-6">CUSTOMER</th>
+                <th className="py-4 px-6 sm:table-cell hidden">TOTAL</th>
+                <th className="py-4 px-3 sm:px-6">PAYMENT</th>
+                <th className="py-4 px-6 sm:table-cell hidden">COUPEN</th>
+                <th className="py-4 px-3 sm:px-6">STATUS</th>
+                <th className="py-4 px-6 sm:table-cell hidden">DATE</th>
               </tr>
             </thead>
             <tbody>
@@ -156,23 +156,29 @@ const Orders = () => {
                         key={item.id}
                         className="text-xs cursor-pointer transition-colors hover:bg-gray-50 text-gray-800 align-center"
                       >
-                        <td className="py-4 px-6">{index + 1}</td>
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 sm:table-cell hidden">
+                          {index + 1}
+                        </td>
+                        <td className="py-4 px-3 sm:px-6">
                           {currentOrder.address.userName}
                         </td>
-                        <td className="py-4 px-6">{Math.round(finalAmount)}</td>
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 sm:table-cell hidden">
+                          {Math.round(finalAmount)}
+                        </td>
+                        <td className="py-4 px-3 sm:px-6">
                           {currentOrder.paymentMethod}
                         </td>
-                        <td className="py-4 px-6">{coupen}</td>
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 sm:table-cell hidden">
+                          {coupen}
+                        </td>
+                        <td className="py-4 px-3 sm:px-6">
                           <select
                             value={item.orderStatus}
                             disabled={loading}
                             onClick={(e) => {
                               e.stopPropagation();
                             }}
-                            className="outline-none border border-gray-200"
+                            className="outline-none border sm:w-auto w-fit border-gray-200"
                             onChange={(e) => {
                               handleStatusChange(
                                 item.id,
@@ -186,7 +192,7 @@ const Orders = () => {
                             ))}
                           </select>
                         </td>
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 sm:table-cell hidden">
                           {new Date(item.createdAt).toLocaleDateString()}
                         </td>
                       </tr>
