@@ -11,7 +11,7 @@ passport.use(
           ? "http://localhost:8000/auth/user/google/callback"
           : "https://ecom-app-1-lte5.onrender.com/auth/user/google/callback",
     },
-    async function (accessToken, refreshToken, profile, cb) {
+    async function (req,accessToken, refreshToken, profile, cb) {
       try {
         //Check if the user exists or not----
         const email = profile.emails[0].value;
