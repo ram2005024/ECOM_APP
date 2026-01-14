@@ -8,7 +8,7 @@ export const googleAuthController = async (req, res) => {
     if (!user)
       return res.status(500).json({ message: "Server error", success: false });
     const token = await generateToken(user);
-
+  console.log(user)
     res.cookie("token", token, {
       httpOnly: true,
       secure: true ,
