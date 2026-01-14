@@ -19,10 +19,10 @@ const GoogleSuccess = () => {
           dispatch(login(res.data.user));
           navigate("/"); // go to homepage or previous page
         } else {
-          navigate("/login");
+          navigate("/");
         }
       })
-      .catch(() => navigate("/login"));
+      .catch(() => navigate("/"));
   }, []);
 
   return <div>Logging in...</div>;
