@@ -17,7 +17,7 @@ export const googleAuthController = async (req, res) => {
     });
     user.password = undefined;
 
-    return res.redirect(process.env.CLIENT_URL);
+    return res.redirect(process.env.CLIENT_URL+"/auth/success/google");
   } catch (error) {
     console.log(error);
   }
