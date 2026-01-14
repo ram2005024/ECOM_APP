@@ -18,7 +18,7 @@ import ViewShop from "./Pages/Shop_Dynamic/ViewShop";
 import ContactAdmin from "./Pages/Contacts/ContactAdmin";
 import PlusMember from "./Pages/Membership/PlusMember";
 import BecomeASeller from "./Pages/Membership/SellerSubscription";
-import GoogleSuccess from "./googleAuthSuccess.js"
+import GoogleSuccess from "./googleAuthSuccess.jsx"
 import Protected from "./middlewares/Protected";
 import ProtectSeller from "./middlewares/ProtectSeller";
 import ProtectContactAdmin from "./middlewares/ContactAdmin";
