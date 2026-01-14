@@ -9,7 +9,7 @@ passport.use(
       callbackURL:
         process.env.NODE_ENV === "development"
           ? "http://localhost:8000/auth/user/google/callback"
-          : "https://ecom-app-1-lte5.onrender.com",
+          : "https://ecom-app-1-lte5.onrender.com/auth/user/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       try {
