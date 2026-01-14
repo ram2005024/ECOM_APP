@@ -18,7 +18,7 @@ import ViewShop from "./Pages/Shop_Dynamic/ViewShop";
 import ContactAdmin from "./Pages/Contacts/ContactAdmin";
 import PlusMember from "./Pages/Membership/PlusMember";
 import BecomeASeller from "./Pages/Membership/SellerSubscription";
-
+import GoogleSuccess from "./googleAuthSuccess.js
 import Protected from "./middlewares/Protected";
 import ProtectSeller from "./middlewares/ProtectSeller";
 import ProtectContactAdmin from "./middlewares/ContactAdmin";
@@ -76,6 +76,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/success", element: <Success /> },
+  {path:"/auth/google/success",element:<GoogleSuccess/>},
   {
     element: <ProtectedLayout />,
     children: [
