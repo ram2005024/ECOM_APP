@@ -1,4 +1,6 @@
 import Hero from "../Components/Home/Hero";
+import { useEffect } from "react";
+
 import Join from "../Components/Home/Join";
 import Product from "../Components/Home/Product";
 import ScrollProduct from "../Components/Home/ScrollProduct";
