@@ -8,12 +8,12 @@ import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,  
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,  
   secure:false,
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS, 
+    user:"35a830d0eb5769",
+    pass: "e575294e47e234", 
   }
 
 });
