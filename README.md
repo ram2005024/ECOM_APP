@@ -1,7 +1,5 @@
 
----
 
-````md
 # Multi-Vendor E-Commerce Platform
 
 A full-stack **multi-vendor e-commerce web application** that allows multiple sellers to manage products while customers can browse, purchase, and track orders seamlessly.  
@@ -154,5 +152,3 @@ If you are looking for a **dedicated and growth-oriented developer**, feel free 
 ⭐ If you find this project useful, consider giving it a star!
 
 
-We’ll make your GitHub look **company-ready** 💼🚀
-```
