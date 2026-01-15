@@ -8,14 +8,17 @@ import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-
+  host: "smtp.gmail.com",
+  port: 587,        
+  secure: false,     
   auth: {
     user: process.env.USER_EMAIL,
-    pass: process.env.GMAIL_APP_PASSWORD,
+    pass: process.env.GMAIL_APP_PASSWORD, 
   },
+  tls: {
+    rejectUnauthorized: false 
+  }
 });
-
 export const sendEmail = async ({
   to,
   subject,
