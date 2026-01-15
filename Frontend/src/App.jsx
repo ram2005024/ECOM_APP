@@ -76,6 +76,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/success", element: <Success /> },
+  
   {
     element: <ProtectedLayout />,
     children: [

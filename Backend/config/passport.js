@@ -6,10 +6,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL:
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:8000/auth/user/google/callback"
-          : process.env.CLIENT_URL,
+      callbackURL: "http://localhost:8000/auth/user/google/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       try {
