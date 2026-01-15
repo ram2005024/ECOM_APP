@@ -127,6 +127,8 @@ npm run dev
 * Performance optimization for large-scale usage
 
 ---
+## Some screenshots of the given projects
+
 
 ## 👨‍💻 Author
 
