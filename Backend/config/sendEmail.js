@@ -8,14 +8,18 @@ import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 // adcb gpaz npft grxu
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  service: 'gmail',
+  host: 'smtp.gmail.com',
   port: 587,
-  secure: false, 
+  secure: false, // Use TLS
   auth: {
-    user: "sharmashekhar20050@gmail.com",
-    pass: "adcbgpaznpftgrxu",
+    user: "sharmashekhar20050@gmail.com", 
+    pass: "adcb gpaz npft grxu", 
   },
-});;
+  tls: {
+    rejectUnauthorized: false // Helps with some production certificate issues
+  }
+});
 export const sendEmail = async ({
   to,
   subject,
