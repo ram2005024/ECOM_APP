@@ -78,11 +78,11 @@ Built with a modern tech stack focusing on scalability, security, and real-world
 src/
  ┣ controllers/
  ┣ routes/
- ┣ services/
+ ┣ libs/
  ┣ utils/
  ┣ inngest/
  ┣ prisma/
- ┗ index.js
+ ┗ server.js
 ````
 
 ---
