@@ -8,12 +8,10 @@ import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false, // true for 465, false for 587
+ service: "gmail",
   auth: {
-    user: "9df898001@smtp-brevo.com",   
-    pass:"xsmtpsib-fd4e464ffaa5c6020653d8f07c1c1f1a859e57d6b1380c655f01abb31bcdc91c-8msg46bwBnE3ebeu",       
+    user: "sharmashekhar20050@gmail.com",   
+    pass:"adcb gpaz npft grxu",       
   },
 });
 export const sendEmail = async ({
