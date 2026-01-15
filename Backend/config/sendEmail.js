@@ -32,7 +32,8 @@ export const sendEmail = async ({
   });
 };
 export const sendContactMessage = async (formData) => {
-  await transporter.sendMail({
+  try{
+     await transporter.sendMail({
     from: process.env.USER_EMAIL,
     to: "sharmashekhar20050@gmail.com",
     subject: "Contact appeal from a user",
@@ -43,6 +44,9 @@ export const sendContactMessage = async (formData) => {
       message: formData.message,
     }),
   });
+  }catch(error){
+    return res.json({message:error.message})}
+ 
 };
 export const sendAdminMessage = async ({
   to,
