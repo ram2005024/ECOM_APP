@@ -31,21 +31,40 @@ export const sendEmail = async ({
     html: sellerRegister(storename, username, id, type),
   });
 };
-export const sendContactMessage = async (formData) => {
-  
-     await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: "sharmashekhar20050@gmail.com",
-    subject: "Contact appeal from a user",
-    html: contactEmailTemplate({
-      name: formData.name,
-      email: formData.email,
-      subject: formData.subject,
-      message: formData.message,
-    }),
-  });
+async function sendContactMessage() {
+  try {
+    const response = await axios.post(
+      'https://api.brevo.com/v3/smtp/email',
+      {
+        sender: {
+          name: "My App", 
+          email: "sharmashekhar20050@gmail.com" // MUST be verified in Brevo
+        },
+        to: [
+          {
+            email: "sharmashekhar20050@gmail.com"
+          }
+        ],
+        subject: "Hello",
+        htmlContent: `<html><body><p>Hello</p></body></html>`
+      },
+      {
+        headers: {
+          'accept': 'application/json',
+          'api-key': "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", // Use the xkeysib- key here
+          'content-type': 'application/json'
+        }
+      }
+    );
 
-};
+    console.log("Email sent successfully:", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error("Error sending email:", error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
 export const sendAdminMessage = async ({
   to,
   type,
