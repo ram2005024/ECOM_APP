@@ -9,10 +9,8 @@ import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// base sender
 const FROM = process.env.RESEND_FROM;
 
-// helper
 const send = async ({ to, subject, html }) => {
   return await resend.emails.send({
     from: FROM,
@@ -21,10 +19,6 @@ const send = async ({ to, subject, html }) => {
     html,
   });
 };
-
-// =============================
-// EMAIL FUNCTIONS
-// =============================
 
 export const sendEmail = async ({
   to,
