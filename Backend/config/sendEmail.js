@@ -6,7 +6,7 @@ import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotification.js";
 import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
-
+import axios from "axios"
 const transporter = nodemailer.createTransport({
       host: "smtp-relay.brevo.com",
       port: 465,
