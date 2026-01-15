@@ -134,9 +134,12 @@ npm run dev
 B.Sc. Computer Science & Information Technology
 Amrit Campus, Kathmandu
 
-🔗 GitHub: *(https://github.com/ram2005024)
-🔗 LinkedIn: *(https://www.linkedin.com/in/ram-sharma-7b8426316/)*
-🔗 Social Media: *(https://www.facebook.com/shekhar.sharma.390674)
+🔗 GitHub: 
+https://github.com/ram2005024
+🔗 LinkedIn:
+https://www.linkedin.com/in/ram-sharma-7b8426316/
+🔗 Social Media:
+https://www.facebook.com/shekhar.sharma.390674
 
 ---
 
