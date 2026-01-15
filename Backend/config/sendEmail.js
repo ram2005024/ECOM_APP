@@ -6,20 +6,16 @@ import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotification.js";
 import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
-// adcb gpaz npft grxu
+
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // Use TLS
-  auth: {
-    user: "sharmashekhar20050@gmail.com", 
-    pass: "adcb gpaz npft grxu", 
-  },
-  tls: {
-    rejectUnauthorized: false // Helps with some production certificate issues
-  }
-});
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      secure: false, 
+      auth: {
+        user: process.env.BREVO_USER, // Your Brevo SMTP Login
+        pass: process.env.BREVO_PASS, // Your Brevo SMTP Master Password/Key
+      },
+    });
 export const sendEmail = async ({
   to,
   subject,
