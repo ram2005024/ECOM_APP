@@ -228,13 +228,13 @@ const Login = ({ setLogButton }) => {
             )}
           </form>
 
-          {/* <div className="flex items-center gap-3 my-4">
+         <div className="flex items-center gap-3 my-4">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="text-gray-500 text-sm">or</span>
             <div className="flex-1 h-px bg-gray-300"></div>
-          </div> */}
+          </div> 
 
-          {/* <button
+          <button
             onClick={handleGoogleLogin}
             className="w-full bg-gray-50 border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
           >
@@ -259,7 +259,7 @@ const Login = ({ setLogButton }) => {
             {currentState === "Login"
               ? "Login with Google"
               : "Sign up with Google"}
-          </button> */}
+          </button> 
         </div>
       </div>
     </div>
