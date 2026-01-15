@@ -59,6 +59,8 @@ Built with a modern tech stack focusing on scalability, security, and real-world
 - Passport.js (Authentication)
 - REST APIs
 - Git & GitHub
+- Cloudinary
+- OpenAI (For analyzing image and auto description and title⭐⭐)
 
 ---
 
