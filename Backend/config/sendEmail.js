@@ -31,7 +31,7 @@ export const sendEmail = async ({
     html: sellerRegister(storename, username, id, type),
   });
 };
-export const sendContactMessage(formData) =async()=>{
+export const sendContactMessage =async(formData)=>{
   try {
     const response = await axios.post(
       'https://api.brevo.com/v3/smtp/email',
