@@ -46,7 +46,7 @@ export const sendContactMessage =async(formData)=>{
           }
         ],
         subject: formData.subject,
-        htmlContent: `<html><body><p>{formData.message}</p></body></html>`
+        htmlContent: `<html><body><p>${formData.message}</p></body></html>`
       },
       {
         headers: {
