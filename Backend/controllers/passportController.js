@@ -12,13 +12,13 @@ export const googleAuthController = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1 * 24 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     user.password = undefined;
 
-    return res.redirect(process.env.CLIENT_URL);
+    return res.redirect(process.env.CLIENT_URL + "/auth/google/success");
   } catch (error) {
     console.log(error);
   }

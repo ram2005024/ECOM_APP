@@ -6,9 +6,12 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8000/auth/user/google/callback",
+      callbackURL:
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:8000/auth/user/google/callback"
+          : "https://ecom-app-1-lte5.onrender.com/auth/user/google/callback",
     },
-    async function (accessToken, refreshToken, profile, cb) {
+    async function (req, accessToken, refreshToken, profile, cb) {
       try {
         //Check if the user exists or not----
         const email = profile.emails[0].value;

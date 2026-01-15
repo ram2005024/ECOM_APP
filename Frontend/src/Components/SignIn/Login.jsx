@@ -228,11 +228,11 @@ const Login = ({ setLogButton }) => {
             )}
           </form>
 
-          <div className="flex items-center gap-3 my-4">
+         <div className="flex items-center gap-3 my-4">
             <div className="flex-1 h-px bg-gray-300"></div>
             <span className="text-gray-500 text-sm">or</span>
             <div className="flex-1 h-px bg-gray-300"></div>
-          </div>
+          </div> 
 
           <button
             onClick={handleGoogleLogin}
@@ -259,7 +259,7 @@ const Login = ({ setLogButton }) => {
             {currentState === "Login"
               ? "Login with Google"
               : "Sign up with Google"}
-          </button>
+          </button> 
         </div>
       </div>
     </div>

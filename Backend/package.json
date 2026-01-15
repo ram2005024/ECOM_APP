@@ -6,8 +6,7 @@
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js",
-    "saveDB": "npx prisma migrate dev --name init",
-    "postinstall": "npx prisma migrate deploy"
+    "saveDB": "npx prisma migrate dev --name init"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +33,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.16.3",
+    "resend": "^6.7.0",
     "stripe": "^20.1.0"
   },
   "devDependencies": {

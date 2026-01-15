@@ -24,6 +24,7 @@ userRoute.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
+    session:false,
   })
 );
 //Redirect
@@ -31,6 +32,7 @@ userRoute.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
+    failureRedirect:process.env.CLIENT_URL,
   }),
   googleAuthController
 );

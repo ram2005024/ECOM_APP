@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { sellerRegister } from "./EmailTemplate/sellerRegistationTemplate.js";
 import { adminReviewEmail } from "./EmailTemplate/adminReview.js";
 import { approveSuccessEmail } from "./EmailTemplate/approveSuccess.js";
@@ -7,14 +7,24 @@ import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotif
 import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-  auth: {
-    user: process.env.USER_EMAIL,
-    pass: process.env.USER_PASSWORD,
-  },
-});
+// base sender
+const FROM = process.env.RESEND_FROM;
+
+// helper
+const send = async ({ to, subject, html }) => {
+  return await resend.emails.send({
+    from: FROM,
+    to,
+    subject,
+    html,
+  });
+};
+
+// =============================
+// EMAIL FUNCTIONS
+// =============================
 
 export const sendEmail = async ({
   to,
@@ -24,42 +34,28 @@ export const sendEmail = async ({
   username,
   id,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
+  return send({
     to,
     subject,
     html: sellerRegister(storename, username, id, type),
   });
 };
-export const sendContactMessage = async (formData) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: "sharmashekhar20050@gmail.com",
-    subject: "Contact appeal from a user",
-    html: contactEmailTemplate({
-      name: formData.name,
-      email: formData.email,
-      subject: formData.subject,
-      message: formData.message,
-    }),
-  });
-};
+
 export const sendAdminMessage = async ({
   to,
-  type,
   subject,
   storename,
   username,
   id,
   registrationDate,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
+  return send({
     to,
     subject,
-    html: adminReviewEmail(storename, username, id, type, registrationDate),
+    html: adminReviewEmail(storename, username, id, registrationDate),
   });
 };
+
 export const approvalMessage = async ({
   to,
   subject,
@@ -69,10 +65,9 @@ export const approvalMessage = async ({
   registrationDate,
   approvedAt,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: to,
-    subject: subject,
+  return send({
+    to,
+    subject,
     html: approveSuccessEmail(
       storename,
       username,
@@ -82,6 +77,7 @@ export const approvalMessage = async ({
     ),
   });
 };
+
 export const rejectionMessage = async ({
   to,
   subject,
@@ -90,13 +86,13 @@ export const rejectionMessage = async ({
   id,
   rejectionMessage,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: to,
-    subject: subject,
+  return send({
+    to,
+    subject,
     html: rejectMessageTemplate(storename, username, id, rejectionMessage),
   });
 };
+
 export const sendSellerNotification = async ({
   to,
   subject,
@@ -104,13 +100,13 @@ export const sendSellerNotification = async ({
   sellername,
   customerName,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: to,
-    subject: subject,
+  return send({
+    to,
+    subject,
     html: sendSellerNotificationTemplate(storename, sellername, customerName),
   });
 };
+
 export const sendUserNotificationAboutOrderStatus = async ({
   to,
   subject,
@@ -119,10 +115,17 @@ export const sendUserNotificationAboutOrderStatus = async ({
   customerName,
   status,
 }) => {
-  await transporter.sendMail({
-    from: process.env.USER_EMAIL,
-    to: to,
+  return send({
+    to,
     subject,
     html: sendUserOrderStatus(storename, productName, customerName, status),
+  });
+};
+
+export const sendContactMessage = async (formData) => {
+  return send({
+    to: "sharmashekhar20050@gmail.com",
+    subject: formData.subject,
+    html: contactEmailTemplate(formData),
   });
 };
