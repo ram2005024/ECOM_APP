@@ -6,14 +6,16 @@ import { rejectMessageTemplate } from "./EmailTemplate/rejectMessage.js";
 import { sendSellerNotificationTemplate } from "./EmailTemplate/sellerOrderNotification.js";
 import { sendUserOrderStatus } from "./EmailTemplate/sendStatusMessage.js";
 import { contactEmailTemplate } from "./EmailTemplate/contactFormTemplate.js";
-
+// adcb gpaz npft grxu
 const transporter = nodemailer.createTransport({
- service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, 
   auth: {
-    user: "sharmashekhar20050@gmail.com",   
-    pass:"adcb gpaz npft grxu",       
+    user: "sharmashekhar20050@gmail.com",
+    pass: "adcbgpaznpftgrxu",
   },
-});
+});;
 export const sendEmail = async ({
   to,
   subject,
