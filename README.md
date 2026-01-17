@@ -354,14 +354,25 @@ npm test              # Run tests
 > Add your application screenshots here to showcase the platform
 
 ### Customer Interface
-![Homepage](path/to/homepage.png)
-![Product Page](path/to/product.png)
+<img width="1919" height="986" alt="Screenshot 2026-01-18 001504" src="https://github.com/user-attachments/assets/a6682dc2-1ce0-4b43-8faa-46b1fa95b52f" />
+<img width="1911" height="990" alt="Screenshot 2026-01-18 001455" src="https://github.com/user-attachments/assets/03d425d9-1093-4fb9-9952-03b683195d12" />
+<img width="1916" height="993" alt="Screenshot 2026-01-18 001449" src="https://github.com/user-attachments/assets/90c023a7-1911-4db3-a01f-56e8ced83ce1" />
+<img width="1914" height="995" alt="Screenshot 2026-01-18 001556" src="https://github.com/user-attachments/assets/582489c2-2eda-4655-80d1-65268f1790e4" />
+
 
 ### Vendor Dashboard
-![Vendor Dashboard](path/to/vendor-dashboard.png)
+<img width="1919" height="996" alt="Screenshot 2026-01-18 001738" src="https://github.com/user-attachments/assets/b92cab22-d734-415d-9f72-b4045b93ed77" />
+<img width="1919" height="1000" alt="Screenshot 2026-01-18 001732" src="https://github.com/user-attachments/assets/80b773d8-7a12-4c69-97a6-e4c0c0e40164" />
+<img width="1919" height="989" alt="Screenshot 2026-01-18 001752" src="https://github.com/user-attachments/assets/8c3a3f75-edb1-4d03-b173-0413d9684b69" />
+
 
 ### Admin Panel
-![Admin Panel](path/to/admin-panel.png)
+
+<img width="1919" height="987" alt="Screenshot 2026-01-18 001927" src="https://github.com/user-attachments/assets/72193be7-41bf-4279-b6f7-647a27a05c1f" />
+<img width="1918" height="990" alt="Screenshot 2026-01-18 001921" src="https://github.com/user-attachments/assets/a81293cf-60d7-4fa0-b3a6-5ad4aff42daa" />
+<img width="1919" height="987" alt="Screenshot 2026-01-18 001916" src="https://github.com/user-attachments/assets/7d78c7bf-601d-42ac-896f-e5df7c2a06d7" />
+<img width="1919" height="986" alt="Screenshot 2026-01-18 001909" src="https://github.com/user-attachments/assets/4657e27d-f5cc-44e8-b871-04a14c705f27" />
+<img width="1919" height="989" alt="Screenshot 2026-01-18 001932" src="https://github.com/user-attachments/assets/7e7841b3-d50c-427f-a1bf-e27adf29516a" />
 
 ---
 
