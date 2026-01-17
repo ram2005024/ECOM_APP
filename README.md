@@ -351,7 +351,7 @@ npm test              # Run tests
 
 ## 📸 Screenshots
 
-> Add your application screenshots here to showcase the platform
+
 
 ### Customer Interface
 <img width="1919" height="986" alt="Screenshot 2026-01-18 001504" src="https://github.com/user-attachments/assets/a6682dc2-1ce0-4b43-8faa-46b1fa95b52f" />
@@ -390,7 +390,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License 
 
 ---
 
